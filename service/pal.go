@@ -20,6 +20,8 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+const PAL_RECORDS_PAGESIZE = 400
+
 type AssetLibraryPhillips struct {
 
 	onceGetApiUrl 	sync.Once
@@ -194,51 +196,57 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (*modelsP
 		log.Println(err.Error())
 		return nil, err
 	}
-	defer zipFile.Close()
-	defer o.deleteFile(zipFilename)
 	// Copy response to zipfile.
-	_, err = io.Copy(zipFile, response.Body)
+	fileSize, err := io.Copy(zipFile, response.Body)
+	if err == nil {
+		err = zipFile.Close()
+	}
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
 	}
 
-	// Create zipReader from zipfile.
-	zipReader, err := zip.OpenReader(zipFilename)
-	if err != nil {
-		log.Println(err.Error())
-		return nil, err
-	}
-	defer zipReader.Close()
-	// Create original file from zip with source filename.
-	file.OutFilename = o.getTmpPath() + uuid.NewV4().String()
-	outFile, err := os.Create(file.OutFilename)
-	if err != nil {
-		log.Println(err.Error())
-		return nil, err
-	}
-	defer outFile.Close()
-	fileSize := int64(0)
-	for _, unzFile := range zipReader.File {
-		// Unzip only first file from directory.
-		unzFileReader, err := unzFile.Open()
+	if response.Header.Get("Content-Type") == "application/zip" {
+		defer o.deleteFile(zipFilename) // Do not forget to delete anyway.
+		// Create zipReader from zipfile.
+		zipReader, err := zip.OpenReader(zipFilename)
+		if err != nil {
+			log.Println(fmt.Sprintf("Open zip (%s / %s):"+err.Error(), record.MasterFile.Id, record.Id))
+			return nil, err
+		}
+		defer zipReader.Close()
+		// Create original file from zip with source filename.
+		file.OutFilename = o.getTmpPath() + uuid.NewV4().String()
+		outFile, err := os.Create(file.OutFilename)
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err
 		}
-		fileSize, err = io.Copy(outFile, unzFileReader)
-		if err != nil {
-			log.Println(err.Error())
-			return nil, err
+		defer outFile.Close()
+		for _, unzFile := range zipReader.File {
+			// Unzip only first file from directory.
+			unzFileReader, err := unzFile.Open()
+			if err != nil {
+				log.Println(fmt.Sprintf("Open zipfile in arcihve (%s):"+err.Error(), record.MasterFile.Id))
+				return nil, err
+			}
+			fileSize, err = io.Copy(outFile, unzFileReader)
+			if err != nil {
+				log.Println(fmt.Sprintf("Save unzipped file (%s):"+err.Error(), record.MasterFile.Id))
+				return nil, err
+			}
+			//log.Println(strconv.Itoa(int(fileSize)))
+			break // Only first
 		}
-		//log.Println(strconv.Itoa(int(fileSize)))
-		break // Only first
+	} else {
+		// Just use original file.
+		file.OutFilename = zipFilename
 	}
 
 	// Check filesize correct
 	if fileSize != int64(file.FileSize) {
 		o.deleteFile(file.OutFilename)
-		message := fmt.Sprintf("Unziped filesize is %d, but must be %d", fileSize, file.FileSize)
+		message := fmt.Sprintf("Unziped (downloaded) filesize is %d, but must be %d", fileSize, file.FileSize)
 		return nil, errors.New(message)
 	}
 
@@ -262,7 +270,7 @@ func (o *AssetLibraryPhillips) getRecords(classificationId string) (*modelsPal.R
 	if err != nil {
 		return nil, err
 	}
-	o.setRequestPagintaion(request, 1, 10, "createdon")
+	o.setRequestPagintaion(request, 1, PAL_RECORDS_PAGESIZE, "createdon")
 	o.setRequestFilter(request, "classification=" + classificationId)
 	o.setRequestFields(request, "fields,masterfile") // "fields,classifications,masterfile"
 	response, err := request.Response()
@@ -278,7 +286,8 @@ func (o *AssetLibraryPhillips) getRecords(classificationId string) (*modelsPal.R
 	}
 
 	if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
-		log.Println(fmt.Sprintf("Can not get Records (%s): %s", strconv.Itoa(response.StatusCode), body))
+		err = errors.New(fmt.Sprintf("Can not get Records (%s): %s", strconv.Itoa(response.StatusCode), body))
+		log.Println(err.Error())
 		return nil, err
 	}
 
@@ -311,7 +320,8 @@ func (o *AssetLibraryPhillips) getFile(masterfileId string) (*modelsPal.File, er
 	}
 
 	if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
-		log.Println(fmt.Sprintf("Can not get File (%s): %s", strconv.Itoa(response.StatusCode), body))
+		err = errors.New(fmt.Sprintf("Can not get File (%s): %s", strconv.Itoa(response.StatusCode), body))
+		log.Println(err.Error())
 		return nil, err
 	}
 
@@ -347,7 +357,8 @@ func (o *AssetLibraryPhillips) getFileDownloadLink(recordId string) (string, err
 	}
 
 	if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
-		log.Println(fmt.Sprintf("Can not get File (%s): %s", strconv.Itoa(response.StatusCode), body))
+		err = errors.New(fmt.Sprintf("Can not get File (%s): %s", strconv.Itoa(response.StatusCode), body))
+		log.Println(err.Error())
 		return "", err
 	}
 
@@ -419,7 +430,8 @@ func (o *AssetLibraryPhillips) refreshToken() (string, error) {
 	}
 
 	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
-		log.Println(fmt.Sprintf("Can not auth (%s): %s", strconv.Itoa(response.StatusCode), body))
+		err = errors.New(fmt.Sprintf("Can not auth (%s): %s", strconv.Itoa(response.StatusCode), body))
+		log.Println(err.Error())
 		return "", err
 	}
 
@@ -430,9 +442,9 @@ func (o *AssetLibraryPhillips) refreshToken() (string, error) {
 	}
 	o.token = tokenObj.Token
 	if o.token == "" {
-		message := "Token is empty in response"
-		log.Println(message)
-		return "", errors.New(message)
+		err = errors.New("Token is empty in response")
+		log.Println(err.Error())
+		return "", err
 	}
 
 	return o.token, nil

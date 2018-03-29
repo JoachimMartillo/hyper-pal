@@ -18,7 +18,7 @@ type FileInPal struct {
 }
 
 func (*FileInPal) TableName() string {
-	return "filesInPal"
+	return "files_in_pal"
 }
 
 func CreateFileInPal(contentItemId, spaceId, recordId string, file *modelsData.File) *FileInPal {
