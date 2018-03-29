@@ -6,5 +6,6 @@ type File struct {
 	FileSize		int64				`json:"fileSize"`
 
 	Description		string				`json:"-"`	// We just store description from other object here.
+	Title			string				`json:"-"`
 	OutFilename		string				`json:"-"`	// Filename in OS where we stored downloaded file.
 }

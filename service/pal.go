@@ -46,6 +46,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 
 	for _, record := range records.Items {
 		// Prepare File from Record.
+		log.Println(fmt.Sprintf("Proceed record: %s", record.Id))
 		filePal, err := o.proceedRecord(&record)
 		if err != nil {
 			continue
@@ -167,6 +168,9 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (*modelsP
 	// Find description of file infields of Record.
 	if fieldDescription := record.Fields.FindByFieldName("Asset_Description"); fieldDescription != nil {
 		file.Description = fieldDescription.GetValueFirstString()
+	}
+	if fieldTitle := record.Fields.FindByFieldName("Asset_Media_Title"); fieldTitle != nil {
+		file.Title = fieldTitle.GetValueFirstString()
 	}
 
 	// Order direct link to file.

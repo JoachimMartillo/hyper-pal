@@ -28,9 +28,14 @@ func CreateContentItemFromFile(file *modelsData.File) *ContentItem {
 		Size: file.Size,
 		Tags: make([]string, 0),
 		TagsUuid: make([]string, 0),
+		Title: file.Title,
+		Description: file.Description,
+	}
+	if o.Title == "" {
+		o.SetTitleFromFilename()
 	}
 
-	return o.SetTitleFromFilename()
+	return o
 }
 
 func (o *ContentItem) SetTitleFromFilename() *ContentItem {

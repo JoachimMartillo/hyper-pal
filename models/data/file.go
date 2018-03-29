@@ -11,6 +11,7 @@ type File struct {
 	Filename		string
 	Size			int64
 	Description		string
+	Title			string
 	Fullpath		string
 }
 
@@ -21,6 +22,7 @@ func CreateFileFromPal(palFile *modelsPal.File) *File {
 		Filename:		palFile.FileName,
 		Size:			int64(palFile.FileSize),
 		Description:	palFile.Description,
+		Title:			palFile.Title,
 		Fullpath:		palFile.OutFilename,
 	}
 }
