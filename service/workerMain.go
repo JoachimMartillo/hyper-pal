@@ -23,7 +23,7 @@ func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 	o.SetOrmer(ormer)
 	//didSomething := false
 	pauseTime := 5 * time.Second // 5 Seconds.
-	updateRepeatTime := 1 * time.Hour // 1 Hour
+	updateRepeatTime := 15 * time.Minute // 15 Min
 	firstTime := true
 	if err := modelsOrm.ClearPalSpaces(o.GetOrmer()); err != nil {
 		log.Println(err.Error())
@@ -85,7 +85,16 @@ func (o *WorkerMainInstance) importSpace(space *modelsOrm.PalSpace) (err error) 
 }
 
 func (o *WorkerMainInstance) updateSpace(space *modelsOrm.PalSpace) (err error) {
-	log.Println(fmt.Sprintf("Start update space %s", space.Uuid))
+	if space.LibraryId == "" {
+		log.Println(fmt.Sprintf("No library to silent-update space %s", space.Uuid))
+		return
+	}
+	log.Println(fmt.Sprintf("Start silent-update space %s", space.Uuid))
+
+	// Proceed importer
+	if err = o.getPal().ProceedImport(space, o.GetOrmer()); err != nil {
+		return o.finishImportUpdate(space, err)
+	}
 
 	return o.finishImportUpdate(space, err)
 }
