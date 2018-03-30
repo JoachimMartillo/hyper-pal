@@ -20,7 +20,7 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-const PAL_RECORDS_PAGESIZE = 400
+const PAL_RECORDS_PAGESIZE = 10
 
 type AssetLibraryPhillips struct {
 
@@ -38,40 +38,71 @@ type AssetLibraryPhillips struct {
 
 func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer orm.Ormer) (err error) {
 	// Prepare all Records for Classification.
-	records, err := o.getRecords(space.ClassificationId)
+	page := 1
+	countProceededWithPages := 0
+	countProceed := 0
+	countProceedSuccess := 0
+	records, err := o.getRecords(space.ClassificationId, page)
 	if err != nil {
 		return
 	}
-	log.Println(fmt.Sprintf("Got %d records from PAL", len(records.Items)))
+	log.Println(fmt.Sprintf("Starting import PAL with %d records", records.TotalCount))
 
-	for _, record := range records.Items {
-		// Prepare File from Record.
-		log.Println(fmt.Sprintf("Proceed record: %s", record.Id))
-		filePal, err := o.proceedRecord(&record)
-		if err != nil {
-			continue
+	for {
+		log.Println(fmt.Sprintf("Proceed page %d, records %d", page, len(records.Items)))
+		for _, record := range records.Items {
+			countProceed++
+			// Prepare File from Record.
+			log.Println(fmt.Sprintf("Proceed record: %s", record.Id))
+			filePal, err := o.proceedRecord(&record)
+			if err != nil {
+				continue
+			}
+
+			// Check file already imported
+			fip, err := modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid, record.Id, space.LibraryId)
+			if err != nil {
+				log.Println(err.Error())
+				continue
+			} else if fip == nil {
+				// Download file from PAL.
+				if err = o.proceedRecordDownload(&record, filePal); err != nil {
+					continue
+				}
+				file := modelsData.CreateFileFromPal(filePal)
+
+				// Upload to ContentItem.
+				contentItemId, err := o.uploadFile(file, space.LibraryId)
+				if err != nil {
+					continue
+				}
+
+				// Save data to DB.
+				_, err = ormer.Insert(modelsOrm.CreateFileInPal(contentItemId, space.LibraryId, space.Uuid, record.Id, file))
+				if err != nil {
+					log.Println("AHTUNG! Can not insert files_in_pal: " + err.Error())
+					continue
+				}
+				log.Println(fmt.Sprintf("File uploaded (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
+			} else {
+				log.Println(fmt.Sprintf("File already uploaded (contentItemId: %s)", fip.ContentItemId))
+			}
+
+			countProceedSuccess++
 		}
-		file := modelsData.CreateFileFromPal(filePal)
+		countProceededWithPages += PAL_RECORDS_PAGESIZE
 
-		// Upload to ContentItem.
-		contentItemId, err := o.uploadFile(file, space.LibraryId)
-		if err != nil {
-			continue
+		// Do we have to procced more pages?
+		if countProceededWithPages >= records.TotalCount {
+			break // Finish!
 		}
-
-		// Save data to DB.
-		_, err = ormer.Insert(modelsOrm.CreateFileInPal(contentItemId, space.Uuid, record.Id, file))
-		if err != nil {
-			log.Println("AHTUNG! Can not insert files_in_pal: " + err.Error())
-			continue
+		// Prepare new page for cycling.
+		page++; if records, err = o.getRecords(space.ClassificationId, page); err != nil {
+			return
 		}
-		log.Println(fmt.Sprintf("File uploaded (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
-
-		//text, _ := json.Marshal(file)
-		//log.Println(contentItemId, string(text)/*, file.OutFilename, file.Description*/)
-		//break
 	}
 
+	log.Println(fmt.Sprintf("PAL proceeded successfully %d from %d records", countProceedSuccess, countProceed))
 	err = nil
 	return
 }
@@ -158,11 +189,11 @@ func (o *AssetLibraryPhillips) uploadFile(file *modelsData.File, libraryId strin
 	return
 }
 
-func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (*modelsPal.File, error) {
+func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (file *modelsPal.File, err error) {
 	// Get MasterFile for Record.
-	file, err := o.getFile(record.MasterFile.Id)
+	file, err = o.getFile(record.MasterFile.Id)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	// Find description of file infields of Record.
@@ -173,21 +204,25 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (*modelsP
 		file.Title = fieldTitle.GetValueFirstString()
 	}
 
+	return
+}
+
+func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, file *modelsPal.File) (err error) {
 	// Order direct link to file.
 	link, err := o.getFileDownloadLink(record.Id)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	// Try to open file.
 	request, err := o.createGetRequest(link)
 	if err != nil {
-		return nil, err
+		return
 	}
 	response, err := request.Response()
 	if err != nil {
 		log.Println(err.Error())
-		return nil, err
+		return
 	}
 	defer response.Body.Close()
 
@@ -198,7 +233,7 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (*modelsP
 	zipFile, err := os.Create(zipFilename)
 	if err != nil {
 		log.Println(err.Error())
-		return nil, err
+		return
 	}
 	// Copy response to zipfile.
 	fileSize, err := io.Copy(zipFile, response.Body)
@@ -207,37 +242,40 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (*modelsP
 	}
 	if err != nil {
 		log.Println(err.Error())
-		return nil, err
+		return
 	}
 
 	if response.Header.Get("Content-Type") == "application/zip" {
 		defer o.deleteFile(zipFilename) // Do not forget to delete anyway.
 		// Create zipReader from zipfile.
-		zipReader, err := zip.OpenReader(zipFilename)
+		var zipReader *zip.ReadCloser
+		zipReader, err = zip.OpenReader(zipFilename)
 		if err != nil {
 			log.Println(fmt.Sprintf("Open zip (%s / %s):"+err.Error(), record.MasterFile.Id, record.Id))
-			return nil, err
+			return
 		}
 		defer zipReader.Close()
 		// Create original file from zip with source filename.
 		file.OutFilename = o.getTmpPath() + uuid.NewV4().String()
-		outFile, err := os.Create(file.OutFilename)
+		var outFile *os.File
+		outFile, err = os.Create(file.OutFilename)
 		if err != nil {
 			log.Println(err.Error())
-			return nil, err
+			return
 		}
 		defer outFile.Close()
 		for _, unzFile := range zipReader.File {
 			// Unzip only first file from directory.
-			unzFileReader, err := unzFile.Open()
+			var unzFileReader io.ReadCloser
+			unzFileReader, err = unzFile.Open()
 			if err != nil {
 				log.Println(fmt.Sprintf("Open zipfile in arcihve (%s):"+err.Error(), record.MasterFile.Id))
-				return nil, err
+				return
 			}
 			fileSize, err = io.Copy(outFile, unzFileReader)
 			if err != nil {
 				log.Println(fmt.Sprintf("Save unzipped file (%s):"+err.Error(), record.MasterFile.Id))
-				return nil, err
+				return
 			}
 			//log.Println(strconv.Itoa(int(fileSize)))
 			break // Only first
@@ -250,11 +288,12 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (*modelsP
 	// Check filesize correct
 	if fileSize != int64(file.FileSize) {
 		o.deleteFile(file.OutFilename)
-		message := fmt.Sprintf("Unziped (downloaded) filesize is %d, but must be %d", fileSize, file.FileSize)
-		return nil, errors.New(message)
+		err = errors.New(fmt.Sprintf("Unziped (downloaded) filesize is %d, but must be %d", fileSize, file.FileSize))
+		log.Println(err.Error())
+		return
 	}
 
-	return file, nil
+	return
 }
 
 func (o *AssetLibraryPhillips) deleteFile(filename string) error {
@@ -269,12 +308,12 @@ func (o *AssetLibraryPhillips) getTmpPath() string {
 	return beego.AppPath + "/tmp/"
 }
 
-func (o *AssetLibraryPhillips) getRecords(classificationId string) (*modelsPal.Records, error) {
+func (o *AssetLibraryPhillips) getRecords(classificationId string, page int) (*modelsPal.Records, error) {
 	request, err := o.createGetRequest("records")
 	if err != nil {
 		return nil, err
 	}
-	o.setRequestPagintaion(request, 1, PAL_RECORDS_PAGESIZE, "createdon")
+	o.setRequestPagintaion(request, page, PAL_RECORDS_PAGESIZE, "createdon")
 	o.setRequestFilter(request, "classification=" + classificationId)
 	o.setRequestFields(request, "fields,masterfile") // "fields,classifications,masterfile"
 	response, err := request.Response()

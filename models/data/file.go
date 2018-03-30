@@ -20,7 +20,7 @@ func CreateFileFromPal(palFile *modelsPal.File) *File {
 		Id: 			uuid.NewV4().String(),
 		ExternalId:		palFile.Id,
 		Filename:		palFile.FileName,
-		Size:			int64(palFile.FileSize),
+		Size:			palFile.FileSize,
 		Description:	palFile.Description,
 		Title:			palFile.Title,
 		Fullpath:		palFile.OutFilename,

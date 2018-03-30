@@ -25,6 +25,10 @@ func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 	pauseTime := 5 * time.Second // 5 Seconds.
 	updateRepeatTime := 1 * time.Hour // 1 Hour
 	firstTime := true
+	if err := modelsOrm.ClearPalSpaces(o.GetOrmer()); err != nil {
+		log.Println(err.Error())
+		return
+	}
 
 	// Forever
 	for {

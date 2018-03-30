@@ -37,6 +37,11 @@ func FindPalSpacesAll(ormer orm.Ormer) (spaces []*PalSpace, err error) {
 	return
 }
 
+func ClearPalSpaces(ormer orm.Ormer) (err error) {
+	_, err = ormer.Raw(fmt.Sprintf("update %s set status = ?, message = ? where status = ?", new(PalSpace).TableName()), SPACE_STATUS_ERROR, "Importer was restarted.", SPACE_STATUS_STARTED).Exec()
+	return
+}
+
 func (o *PalSpace) UpdateProceededAt(ormer orm.Ormer) (err error) {
 	_, err = ormer.Raw("update " + o.TableName() + " set proceeded_at = NOW() where uuid = ?", o.Uuid).Exec()
 	return
