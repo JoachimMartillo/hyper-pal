@@ -15,8 +15,8 @@ type WorkerMainInstance struct {
 
 	onceGetHyper	sync.Once
 	hyper			*Hyper
-	onceGetPal		sync.Once
-	pal				*AssetLibraryPhillips
+	//onceGetPal		sync.Once
+	//pal				*AssetLibraryPhillips
 }
 
 func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
@@ -110,10 +110,11 @@ func (o *WorkerMainInstance) getHyper() *Hyper {
 }
 
 func (o *WorkerMainInstance) getPal() *AssetLibraryPhillips {
-	o.onceGetPal.Do(func () {
+	return new(AssetLibraryPhillips)
+	/*o.onceGetPal.Do(func () {
 		o.pal = new(AssetLibraryPhillips)
 	})
-	return o.pal
+	return o.pal*/
 }
 
 // Silent mode.
