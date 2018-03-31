@@ -18,11 +18,14 @@ import (
 	"net/http"
 	"hyper-pal/models/orm"
 	"github.com/astaxie/beego/orm"
+	"time"
 )
 
-const PAL_RECORDS_PAGESIZE = 10
+const PAL_RECORDS_PAGESIZE = 20
 
 type AssetLibraryPhillips struct {
+	digMaxDuration	time.Duration
+	digStartTime	time.Time
 
 	onceGetApiUrl 	sync.Once
 	apiUrl			string
@@ -38,10 +41,13 @@ type AssetLibraryPhillips struct {
 
 func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer orm.Ormer) (err error) {
 	// Prepare all Records for Classification.
+	o.digMaxDuration = 10 * time.Minute
 	page := 1
 	countProceededWithPages := 0
 	countProceed := 0
-	countProceedSuccess := 0
+	countProceedUploaded := 0
+	countProceedUpdated := 0
+	countProceedSkipped := 0
 	records, err := o.getRecords(space.ClassificationId, page)
 	if err != nil {
 		return
@@ -84,11 +90,11 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 					continue
 				}
 				log.Println(fmt.Sprintf("File uploaded (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
+				countProceedUploaded++
 			} else {
 				log.Println(fmt.Sprintf("File already uploaded (contentItemId: %s)", fip.ContentItemId))
+				countProceedSkipped++
 			}
-
-			countProceedSuccess++
 		}
 		countProceededWithPages += PAL_RECORDS_PAGESIZE
 
@@ -102,7 +108,12 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 		}
 	}
 
-	log.Println(fmt.Sprintf("PAL proceeded successfully %d from %d records", countProceedSuccess, countProceed))
+	log.Println(fmt.Sprintf("PAL proceeded (New upload / Updated / Skipped / Error) : (%d / %d / %d / %d) from %d records",
+		countProceedUploaded,
+		countProceedUpdated,
+		countProceedSkipped,
+		countProceed - countProceedUploaded - countProceedUpdated - countProceedSkipped,
+		countProceed))
 	err = nil
 	return
 }
@@ -400,7 +411,7 @@ func (o *AssetLibraryPhillips) getFileDownloadLink(recordId string) (string, err
 	}
 
 	if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
-		err = errors.New(fmt.Sprintf("Can not get File (%s): %s", strconv.Itoa(response.StatusCode), body))
+		err = errors.New(fmt.Sprintf("Can not Order file (%s): %s", strconv.Itoa(response.StatusCode), body))
 		log.Println(err.Error())
 		return "", err
 	}
@@ -411,20 +422,62 @@ func (o *AssetLibraryPhillips) getFileDownloadLink(recordId string) (string, err
 		return "", err
 	}
 
-	link := ""
-	for _, deliveredFile := range orderFile.DeliveredFiles {
-		if deliveredFile != "" {
-			link = deliveredFile
-			break
+	o.digStartTime = time.Now()
+	return o.digLinkFromOrder(orderFile)
+}
+
+func (o *AssetLibraryPhillips) digLinkFromOrder(order *modelsPal.OrderFile) (link string, err error) {
+	if order.Status == modelsPal.ORDER_STATUS_SUCCESS {
+		link = order.GetFirstFileLink()
+		if link == "" {
+			err = errors.New(fmt.Sprintf("No link in Success ordered file,, order %s", order.Id))
 		}
-	}
-	if link == "" {
-		message := "No delivered file in Order"
-		log.Println(message)
-		return "", errors.New(message)
+	} else if order.Status == modelsPal.ORDER_STATUS_EXECUTING {
+		// Executing.
+		if time.Now().Sub(o.digStartTime) > o.digMaxDuration {
+			err = errors.New(fmt.Sprintf("Too much time for executing order, aborting, order %s", order.Id))
+		} else {
+			//log.Println(fmt.Sprintf("Waiting order %s for executing (%s)...", order.Id, order.ExecutionTime))
+			log.Println(fmt.Sprintf("Waiting order %s for executing...", order.Id))
+			time.Sleep(1 * time.Second)
+			// Ask for new order object.
+			request, err := o.createGetRequest("order/" + order.Id)
+			if err != nil {
+				return "", err
+			}
+			response, err := request.Response()
+			if err != nil {
+				log.Println(err.Error())
+				return "", err
+			}
+			defer response.Body.Close()
+			body, err := request.String()
+			if err != nil {
+				log.Println(err.Error())
+				return "", err
+			}
+			if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
+				err = errors.New(fmt.Sprintf("Can not get Order (%s): %s", strconv.Itoa(response.StatusCode), body))
+				log.Println(err.Error())
+				return "", err
+			}
+			var orderFile *modelsPal.OrderFile
+			if err := json.Unmarshal([]byte(body), &orderFile); err != nil {
+				log.Println(fmt.Sprintf("Can not decode Order: %s", err.Error()))
+				return "", err
+			}
+			return o.digLinkFromOrder(orderFile)
+		}
+	} else if order.Status == "" {
+		err = errors.New(fmt.Sprintf("Empty status in order %s", order.Id))
+	} else {
+		err = errors.New(fmt.Sprintf("Undefined status: \"%s\" in order", order.Status, order.Id))
 	}
 
-	return link, nil
+	if err != nil {
+		log.Println(err.Error())
+	}
+	return
 }
 
 func (o *AssetLibraryPhillips) getApiUrl() string {
