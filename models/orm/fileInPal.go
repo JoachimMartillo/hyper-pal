@@ -50,6 +50,7 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 	o.Description = file.Description
 	o.Filename = file.FileName
 	o.Size = file.FileSize
+	o.ModifiedAt = time.Now()
 
 	if newContentItemId != "" && newContentItemId != o.ContentItemId {
 		// Change PK
@@ -59,10 +60,11 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 			"filename":        o.Filename,
 			"size":            o.Size,
 			"content_item_id": newContentItemId,
+			"modified_at":	   o.ModifiedAt,
 		})
 	} else {
 		// The same PK
-		_, err = ormer.Update(o, "title", "description", "filename", "size")
+		_, err = ormer.Update(o, "title", "description", "filename", "size", "modified_at")
 	}
 
 	return
