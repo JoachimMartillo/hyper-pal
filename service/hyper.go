@@ -34,11 +34,19 @@ type Hyper struct {
 	languageIdentifier			string
 }
 
-func (o *Hyper) UploadFile(file *modelsData.File, libraryId string) (contentItemId string, err error) {
+func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, needDeleteBefore bool) (contentItemId string, err error) {
 	// Prepare auth
 	cookies, err := o.sendAuthSession()
 	if err != nil {
 		return
+	}
+
+	if needDeleteBefore && file.Id != "" {
+		o.deleteContentItem(file.Id, libraryId, cookies) // Ignore deleting error.
+		/*if err = o.deleteContentItem(file.Id, libraryId, cookies); err != nil {
+			contentItemId = file.Id
+			return
+		}*/
 	}
 
 	// Upload file to Hyper temporary.
@@ -74,7 +82,11 @@ func (o *Hyper) UploadFile(file *modelsData.File, libraryId string) (contentItem
 	//log.Println(string(txt))
 
 	// Push contentItem.
-	log.Println("Trying creating contentItem...")
+	if needDeleteBefore {
+		log.Println(fmt.Sprintf("Trying updating contentItem %s...", file.Id))
+	} else {
+		log.Println("Trying creating contentItem...")
+	}
 	contentItemId, err = o.createContentItem(contentItem, libraryId, cookies)
 	if err != nil {
 		return
@@ -273,7 +285,38 @@ func (o *Hyper) createContentItem(contentItem *modelsHyper.ContentItem, libraryI
 	}
 
 	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
-		log.Println(fmt.Sprintf("Can not create contentItem (%d): %s", response.StatusCode, body))
+		err = errors.New(fmt.Sprintf("Can not create contentItem (%d): %s", response.StatusCode, body))
+		log.Println(err.Error())
+		return
+	}
+
+	return
+}
+
+func (o *Hyper) deleteContentItem(contentItemId, libraryId string, cookies []*http.Cookie) (err error) {
+	request := httplib.Post(o.getApiUrl() + "contentItems/" + contentItemId + "?dbUuid=" + libraryId).
+		Header("Accept", "application/json").
+		Header("Content-Type", "application/json")
+	for _, cookie := range cookies {
+		request.SetCookie(cookie)
+	}
+
+	response, err := request.Response()
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
+		var body string
+		body, err = request.String()
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		err = errors.New(fmt.Sprintf("Can not delete contentItem (%d): %s", response.StatusCode, body))
+		log.Println(err.Error())
 		return
 	}
 

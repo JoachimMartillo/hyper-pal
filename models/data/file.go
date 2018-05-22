@@ -2,7 +2,7 @@ package modelsData
 
 import (
 	"hyper-pal/models/pal"
-	"github.com/satori/go.uuid"
+	"hyper-pal/system"
 )
 
 type File struct {
@@ -17,7 +17,7 @@ type File struct {
 
 func CreateFileFromPal(palFile *modelsPal.File) *File {
 	return &File{
-		Id: 			uuid.NewV4().String(),
+		Id: 			system.NewV4String(),
 		ExternalId:		palFile.Id,
 		Filename:		palFile.FileName,
 		Size:			palFile.FileSize,

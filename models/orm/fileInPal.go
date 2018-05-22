@@ -4,6 +4,7 @@ import (
 	"time"
 	"hyper-pal/models/data"
 	"github.com/astaxie/beego/orm"
+	"hyper-pal/models/pal"
 )
 
 type FileInPal struct {
@@ -24,6 +25,10 @@ func (*FileInPal) TableName() string {
 	return "files_in_pal"
 }
 
+func (o *FileInPal) HadChanged(file *modelsPal.File) bool {
+	return !(o.Title == file.Title && o.Description == file.Description && o.Filename == file.FileName && o.Size == file.FileSize)
+}
+
 func CreateFileInPal(contentItemId, libraryId, spaceId, recordId string, file *modelsData.File) *FileInPal {
 	return &FileInPal{
 		contentItemId,
@@ -38,6 +43,29 @@ func CreateFileInPal(contentItemId, libraryId, spaceId, recordId string, file *m
 		time.Now(),
 		time.Now(),
 	}
+}
+
+func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newContentItemId string) (err error) {
+	o.Title = file.Title
+	o.Description = file.Description
+	o.Filename = file.FileName
+	o.Size = file.FileSize
+
+	if newContentItemId != "" && newContentItemId != o.ContentItemId {
+		// Change PK
+		_, err = ormer.QueryTable(o).Filter("content_item_id", o.ContentItemId).Update(orm.Params{
+			"title":           o.Title,
+			"description":     o.Description,
+			"filename":        o.Filename,
+			"size":            o.Size,
+			"content_item_id": newContentItemId,
+		})
+	} else {
+		// The same PK
+		_, err = ormer.Update(o, "title", "description", "filename", "size")
+	}
+
+	return
 }
 
 // Can return nil if fileInPal is not imported.

@@ -4,8 +4,8 @@
 
 * go get -u github.com/astaxie/beego
 * go get -u github.com/beego/bee
-* go get github.com/go-sql-driver/mysql
-* go get github.com/satori/go.uuid
+* go get -u github.com/go-sql-driver/mysql
+* go get -u github.com/satori/go.uuid
 
 ## Compile
 
