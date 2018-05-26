@@ -14,11 +14,11 @@ import (
 	"os"
 	"io"
 	"archive/zip"
-	"github.com/satori/go.uuid"
 	"net/http"
 	"hyper-pal/models/orm"
 	"github.com/astaxie/beego/orm"
 	"time"
+	"hyper-pal/system"
 )
 
 const PAL_RECORDS_PAGESIZE = 20
@@ -78,7 +78,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				file := modelsData.CreateFileFromPal(filePal)
 
 				// Upload to ContentItem.
-				contentItemId, err := o.uploadFile(file, space.LibraryId)
+				contentItemId, err := o.uploadFile(file, space.LibraryId, false)
 				if err != nil {
 					continue
 				}
@@ -92,8 +92,35 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				log.Println(fmt.Sprintf("File uploaded (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
 				countProceedUploaded++
 			} else {
-				log.Println(fmt.Sprintf("File already uploaded (contentItemId: %s)", fip.ContentItemId))
-				countProceedSkipped++
+				// File present in Library, check for updating.
+				if (fip.HadChanged(filePal)) {
+					log.Println(fmt.Sprintf("File changed (contentItemId: %s)", fip.ContentItemId))
+
+					// Download file from PAL.
+					if err = o.proceedRecordDownload(&record, filePal); err != nil {
+						continue
+					}
+					file := modelsData.CreateFileFromPal(filePal)
+					file.Id = fip.ContentItemId
+
+					// Upload to ContentItem.
+					contentItemId, err := o.uploadFile(file, space.LibraryId, true)
+					if err != nil {
+						continue
+					}
+
+					// Update data in DB.
+					err = fip.UpdateByFile(ormer, filePal, contentItemId)
+					if err != nil {
+						log.Println("AHTUNG! Can not update files_in_pal: " + err.Error())
+						continue
+					}
+					log.Println(fmt.Sprintf("File updated (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
+					countProceedUpdated++
+				} else {
+					log.Println(fmt.Sprintf("File already uploaded (contentItemId: %s)", fip.ContentItemId))
+					countProceedSkipped++
+				}
 			}
 		}
 		countProceededWithPages += PAL_RECORDS_PAGESIZE
@@ -161,7 +188,7 @@ func (o *AssetLibraryPhillips) TestUpload() error {
 	})
 
 	// Upload
-	if _, err := o.uploadFile(file, "96ae7ea0-20a5-11e3-a2bc-001ec9b84463"); err != nil {
+	if _, err := o.uploadFile(file, "96ae7ea0-20a5-11e3-a2bc-001ec9b84463", false); err != nil {
 		return err
 	}
 
@@ -190,12 +217,12 @@ func (o *AssetLibraryPhillips) CopyFile(src, dst string) error {
 	return out.Close()
 }
 
-func (o *AssetLibraryPhillips) uploadFile(file *modelsData.File, libraryId string) (contentItemId string, err error) {
+func (o *AssetLibraryPhillips) uploadFile(file *modelsData.File, libraryId string, needDeleteBefore bool) (contentItemId string, err error) {
 	// Do not forget delete temp file.
 	defer o.deleteFile(file.Fullpath)
 
 	// Upload in Hyper service.
-	contentItemId, err = o.getHyper().UploadFile(file, libraryId)
+	contentItemId, err = o.getHyper().UploadFile(file, libraryId, needDeleteBefore)
 
 	return
 }
@@ -240,7 +267,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 	// Download file, save it, unzip.
 
 	// Create zip file in OS.
-	zipFilename := o.getTmpPath() + uuid.NewV4().String()
+	zipFilename := o.getTmpPath() + system.NewV4String()
 	zipFile, err := os.Create(zipFilename)
 	if err != nil {
 		log.Println(err.Error())
@@ -267,7 +294,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 		}
 		defer zipReader.Close()
 		// Create original file from zip with source filename.
-		file.OutFilename = o.getTmpPath() + uuid.NewV4().String()
+		file.OutFilename = o.getTmpPath() + system.NewV4String()
 		var outFile *os.File
 		outFile, err = os.Create(file.OutFilename)
 		if err != nil {
