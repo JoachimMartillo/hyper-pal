@@ -43,7 +43,9 @@ func initOrm() {
 func registerModels() {
 	orm.RegisterModel(
 		new(modelsOrm.PalSpace),
-		new(modelsOrm.FileInPal))
+		new(modelsOrm.FileInPal),
+		new(modelsOrm.ClassificationInPal),
+		new(modelsOrm.TagsInLibraries))
 }
 
 func startWorkers() {

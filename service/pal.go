@@ -19,6 +19,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"time"
 	"hyper-pal/system"
+	"strings"
 )
 
 const PAL_RECORDS_PAGESIZE = 20
@@ -65,7 +66,15 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				continue
 			}
 
+			// Prepare tags. CI: fa6f574b-3b5a-4afa-ba8e-82ad9f46990b, recId 32cfd6aaf56647b8b93ba8e300a84f8d
+			var tagIds []string
+			tagIds, err = o.proceedTags(ormer, &record, space.ClassificationId, space.LibraryId)
+			if err != nil {
+				continue
+			}
+
 			// Check file already imported
+			contentItemId := ""
 			fip, err := modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid, record.Id, space.LibraryId)
 			if err != nil {
 				log.Println(err.Error())
@@ -78,7 +87,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				file := modelsData.CreateFileFromPal(filePal)
 
 				// Upload to ContentItem.
-				contentItemId, err := o.uploadFile(file, space.LibraryId, false)
+				contentItemId, err = o.uploadFile(file, space.LibraryId, false)
 				if err != nil {
 					continue
 				}
@@ -104,7 +113,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 					file.Id = fip.ContentItemId
 
 					// Upload to ContentItem.
-					contentItemId, err := o.uploadFile(file, space.LibraryId, true)
+					contentItemId, err = o.uploadFile(file, space.LibraryId, true)
 					if err != nil {
 						continue
 					}
@@ -118,10 +127,22 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 					log.Println(fmt.Sprintf("File updated (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
 					countProceedUpdated++
 				} else {
+					contentItemId = fip.ContentItemId
 					log.Println(fmt.Sprintf("File already uploaded (contentItemId: %s)", fip.ContentItemId))
 					countProceedSkipped++
 				}
 			}
+
+			// Update tags for imported/existing contentItem.
+			resourceTags := ""
+			if len(tagIds) > 0 {
+				resourceTags = strings.Join(tagIds, "|")
+			}
+			if _, err = ormer.Raw("update ContentItemsInLibraries set resource_tags_uuid = ? where content_item_id = ? and library_uuid = ?", resourceTags, contentItemId, space.LibraryId).Exec(); err != nil {
+				log.Println(fmt.Sprintf("AHTUNG!!! Can not update tags for contentItem (%s)", contentItemId))
+				// And do no more.
+			}
+
 		}
 		countProceededWithPages += PAL_RECORDS_PAGESIZE
 
@@ -245,6 +266,195 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (file *mo
 	return
 }
 
+func (o *AssetLibraryPhillips) proceedTags(ormer orm.Ormer, record *modelsPal.Record, topClassificationId, libraryUuid string) (tagIds []string, err error) {
+	//defer panic("procced tags")
+	/*byte, _ := json.Marshal(record.Classfications.Items)
+	println()
+	println()
+	println(string(byte))
+	println()
+	println()*/
+
+	tagIds = make([]string, 0)
+	for _, recordClassification := range record.Classfications.Items {
+		/*println()
+		println(recordClassification.Id)
+		println()*/
+		var classificationInPal *modelsOrm.ClassificationInPal
+		// Check maybe present in our DB.
+		classificationInPal, err = new(modelsOrm.ClassificationInPal).LoadByClassificationId(ormer, recordClassification.Id)
+		if err != nil {
+			return
+		} else if classificationInPal != nil {
+			// Already present
+			if classificationInPal.TagId == nil {
+				// Dead-end classification.
+				//log.Println(fmt.Sprintf("  -- Dead classification (%s)", recordClassification.Id))
+				continue
+			} else {
+				// Working classification.
+				log.Println(fmt.Sprintf("  -- Working classification (%s)", recordClassification.Id))
+			}
+		} else {
+			var classification *modelsPal.Classification
+			classification, err = o.getClassification(recordClassification.Id)
+			if err != nil {
+				return
+			}
+			if classification == nil {
+				// No access, save and ignore it.
+				classification := &modelsPal.Classification{
+					Id: recordClassification.Id,
+				}
+				if classificationInPal, err = new(modelsOrm.ClassificationInPal).Insert(ormer, classification, nil, topClassificationId, libraryUuid); err != nil {
+					return
+				}
+				continue
+			}
+
+			if classificationInPal, err = o.autoGetClassificationsInPal(ormer, classification, topClassificationId, libraryUuid); err != nil {
+				return
+			}
+			if classificationInPal == nil {
+				// No tags for this classification.
+				continue
+			}
+		}
+
+		// Prepared worked classification.
+		var tagIdsOne []string
+		if tagIdsOne, err = o.GetTagIds(ormer, classificationInPal, topClassificationId); err != nil {
+			return
+		}
+		for _, tagId := range tagIdsOne {
+			// Do not duplicate tags.
+			found := false
+			for _, tagIdMain := range tagIds {
+				if tagId == tagIdMain {
+					found = true
+					break
+				}
+			}
+			if !found {
+				tagIds = append(tagIds, tagId)
+			}
+		}
+	}
+
+	if len(tagIds) > 0 {
+		byteTags, err2 := json.Marshal(tagIds)
+		if err2 == nil {
+			log.Println(fmt.Sprintf("  -- Tags: %s", string(byteTags)))
+		} else {
+			log.Println("Error: " + err.Error())
+		}
+	}
+
+	return
+}
+
+/**
+ * Returns nil if no classification or top classification is different (or it is top) or it is root.
+ */
+func (o *AssetLibraryPhillips) autoGetClassificationsInPal(ormer orm.Ormer, classification *modelsPal.Classification, topClassificationId, libraryUuid string) (classificationInPal *modelsOrm.ClassificationInPal, err error) {
+	log.Println(fmt.Sprintf("  -- Start classification (%s)", classification.Id)) // Debug
+	/*if classification.Id == topClassificationId {
+		// It is top classification.
+		log.Println(fmt.Sprintf("It is top classification (%s)", classification.Id)) // Debug
+		return
+	}*/
+	if !classification.IsRoot && classification.ParentId == "" {
+		// It is root classification.
+		log.Println(fmt.Sprintf("  -- It is not root classification but without parent (%s)", classification.Id)) // Debug
+		return
+	}
+
+	// Try to detect classficationInPal.
+	if classificationInPal, err = new(modelsOrm.ClassificationInPal).LoadByClassificationId(ormer, classification.Id); err != nil {
+		log.Println(fmt.Sprintf("  -- Can not read classification (%s) from DB: %s", classification.Id, err.Error()))
+		return
+	}
+	if classificationInPal != nil {
+		// Classification known.
+		log.Println(fmt.Sprintf("  -- Classification found (%s)", classification.Id)) // Debug
+		return
+	}
+
+	// Classification is new, detect parent.
+	classificationInPal = new(modelsOrm.ClassificationInPal)
+	var parentTagId *string
+	if /*classification.ParentId == topClassificationId ||*/ classification.IsRoot {
+		// I am very first, add to DB.
+		parentTagId = nil
+	} else {
+		// Read parent classification from PAL.
+		var parentClassification *modelsPal.Classification
+		parentClassification, err = o.getClassification(classification.ParentId)
+		if err != nil || parentClassification == nil {
+			return
+		}
+
+		var parentClassificationInPal *modelsOrm.ClassificationInPal
+		if parentClassificationInPal, err = o.autoGetClassificationsInPal(ormer, parentClassification, topClassificationId, libraryUuid); err != nil || parentClassificationInPal == nil {
+			return
+		}
+		parentTagId = parentClassificationInPal.TagId
+	}
+
+	// Add to DB
+	if _, err = classificationInPal.Insert(ormer, classification, parentTagId, topClassificationId, libraryUuid); err != nil {
+		log.Println(fmt.Sprintf("  -- Can not insert classificationInPal (%s) in DB: %s", classification.Id, err.Error()))
+		return
+	}
+	if classificationInPal.TagId == nil {
+		log.Println(fmt.Sprintf("  -- Classification (%s) added to DB with EMPTY tag", classificationInPal.ClassificationId))
+	} else {
+		log.Println(fmt.Sprintf("  -- Classification (%s) added to DB with tag (%s)", classificationInPal.ClassificationId, *classificationInPal.TagId))
+	}
+
+	return
+}
+
+/**
+ * Returns empty slice if classifications are not part of topClassificationId.
+ */
+func (o *AssetLibraryPhillips) GetTagIds(ormer orm.Ormer, classificationInPal *modelsOrm.ClassificationInPal, topClassificationId string) (tagIds []string, err error) {
+	tagIds = make([]string, 0)
+	if classificationInPal.ClassificationId == topClassificationId || classificationInPal.ParentClassificationId == nil {
+		// Top classification, return nothing.
+		return
+	}
+	if classificationInPal.TagId == nil {
+		// Child has no tag, means all tree does not have.
+		return
+	}
+	// Read all classificationsInPal tree for very child.
+	allCips := make([]*modelsOrm.ClassificationInPal, 0)
+	allCips = append(allCips, classificationInPal)
+	cipParentId := classificationInPal.ParentClassificationId
+	for cipParentId != nil {
+		cip := new(modelsOrm.ClassificationInPal)
+		if _, err = cip.LoadByClassificationId(ormer, *cipParentId); err != nil {
+			log.Println(fmt.Sprintf("  -- Can not load classificationInPal (%s) from DB: %s", *cipParentId, err.Error()))
+			return
+		}
+		if cip.TagId != nil {
+			// Only if classificationInPal has tag.
+			allCips = append(allCips, cip)
+			tagIds = append(tagIds, *cip.TagId)
+		}
+		cipParentId = cip.ParentClassificationId
+	}
+
+	/*println()
+	for _, cip := range allCips {
+		println(*cip.TagId)
+	}
+	println()*/
+
+	return
+}
+
 func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, file *modelsPal.File) (err error) {
 	// Order direct link to file.
 	link, err := o.getFileDownloadLink(record.Id)
@@ -353,7 +563,7 @@ func (o *AssetLibraryPhillips) getRecords(classificationId string, page int) (*m
 	}
 	o.setRequestPagintaion(request, page, PAL_RECORDS_PAGESIZE, "createdon")
 	o.setRequestFilter(request, "classification=" + classificationId)
-	o.setRequestFields(request, "fields,masterfile") // "fields,classifications,masterfile"
+	o.setRequestFields(request, "fields,classifications,masterfile")
 	response, err := request.Response()
 	if err != nil {
 		log.Println(err.Error())
@@ -413,6 +623,46 @@ func (o *AssetLibraryPhillips) getFile(masterfileId string) (*modelsPal.File, er
 	}
 
 	return file, nil
+}
+
+/**
+ * Returns nil if 404 (PAL shows unaccessable classifications with 404).
+ */
+func (o *AssetLibraryPhillips) getClassification(classificationId string) (classification *modelsPal.Classification, err error) {
+	request, err := o.createGetRequest("classification/" + classificationId)
+	if err != nil {
+		return
+	}
+	response, err := request.Response()
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+	defer response.Body.Close()
+	body, err := request.String()
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	if (response.StatusCode == http.StatusNotFound) {
+		message := fmt.Sprintf("  -- No access to Classification (%s)", classificationId) // Not error!
+		log.Println(message)
+		classification = nil
+		return
+	} else if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
+		err = errors.New(fmt.Sprintf("Can not get Classification (%s): %s", strconv.Itoa(response.StatusCode), body))
+		log.Println(err.Error())
+		return
+	}
+
+	classification = new(modelsPal.Classification)
+	if err = json.Unmarshal([]byte(body), &classification); err != nil {
+		log.Println(fmt.Sprintf("Can not decode Classification: %s", err.Error()))
+		return
+	}
+
+	return
 }
 
 func (o *AssetLibraryPhillips) getFileDownloadLink(recordId string) (string, error) {
