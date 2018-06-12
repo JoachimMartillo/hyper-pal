@@ -22,7 +22,7 @@ type FileInPal struct {
 }
 
 func (*FileInPal) TableName() string {
-	return "files_in_pal"
+	return "FilesInPal"
 }
 
 func (o *FileInPal) HadChanged(file *modelsPal.File) bool {
