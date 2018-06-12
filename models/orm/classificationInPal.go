@@ -14,7 +14,7 @@ type ClassificationInPal struct {
 }
 
 func (*ClassificationInPal) TableName() string {
-	return "classifications_in_pal"
+	return "ClassificationsInPal"
 }
 
 func (o *ClassificationInPal) LoadByClassificationId(ormer orm.Ormer, classificationId string) (*ClassificationInPal, error) {

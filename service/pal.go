@@ -95,7 +95,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				// Save data to DB.
 				_, err = ormer.Insert(modelsOrm.CreateFileInPal(contentItemId, space.LibraryId, space.Uuid, record.Id, file))
 				if err != nil {
-					log.Println("AHTUNG! Can not insert files_in_pal: " + err.Error())
+					log.Println("AHTUNG! Can not insert FilesInPal: " + err.Error())
 					continue
 				}
 				log.Println(fmt.Sprintf("File uploaded (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
@@ -121,7 +121,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 					// Update data in DB.
 					err = fip.UpdateByFile(ormer, filePal, contentItemId)
 					if err != nil {
-						log.Println("AHTUNG! Can not update files_in_pal: " + err.Error())
+						log.Println("AHTUNG! Can not update FilesInPal: " + err.Error())
 						continue
 					}
 					log.Println(fmt.Sprintf("File updated (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
