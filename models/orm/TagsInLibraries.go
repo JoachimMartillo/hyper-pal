@@ -29,7 +29,7 @@ func (o *TagsInLibraries) AddClassification(ormer orm.Ormer, classification *mod
 	o.LibraryUuid = libraryUuid
 	o.Txt = classification.Name
 	o.ParentId = parentTagId
-	o.IsResource = true // Always resource tag.
+	o.IsResource = false // Always Tag.
 
 	// Save
 	if _, err := ormer.Insert(o); err != nil {
