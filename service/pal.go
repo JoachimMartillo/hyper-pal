@@ -119,7 +119,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 					}
 
 					// Update data in DB.
-					err = fip.UpdateByFile(ormer, filePal, contentItemId)
+					contentItemId, err = fip.UpdateByFile(ormer, filePal, contentItemId)
 					if err != nil {
 						log.Println("AHTUNG! Can not update FilesInPal: " + err.Error())
 						continue
