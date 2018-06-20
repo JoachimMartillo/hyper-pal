@@ -134,11 +134,11 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			}
 
 			// Update tags for imported/existing contentItem.
-			resourceTags := ""
+			tagIdsStr := ""
 			if len(tagIds) > 0 {
-				resourceTags = strings.Join(tagIds, "|")
+				tagIdsStr = strings.Join(tagIds, "|")
 			}
-			if _, err = ormer.Raw("update ContentItemsInLibraries set resource_tags_uuid = ? where content_item_id = ? and library_uuid = ?", resourceTags, contentItemId, space.LibraryId).Exec(); err != nil {
+			if _, err = ormer.Raw("update ContentItemsInLibraries set tags_uuid = ?, resource_tags_uuid = ? where content_item_id = ? and library_uuid = ?", tagIdsStr, "", contentItemId, space.LibraryId).Exec(); err != nil {
 				log.Println(fmt.Sprintf("AHTUNG!!! Can not update tags for contentItem (%s)", contentItemId))
 				// And do no more.
 			}
@@ -431,6 +431,7 @@ func (o *AssetLibraryPhillips) GetTagIds(ormer orm.Ormer, classificationInPal *m
 	// Read all classificationsInPal tree for very child.
 	allCips := make([]*modelsOrm.ClassificationInPal, 0)
 	allCips = append(allCips, classificationInPal)
+	tagIds = append(tagIds, *classificationInPal.TagId)
 	cipParentId := classificationInPal.ParentClassificationId
 	for cipParentId != nil {
 		cip := new(modelsOrm.ClassificationInPal)
@@ -449,6 +450,11 @@ func (o *AssetLibraryPhillips) GetTagIds(ormer orm.Ormer, classificationInPal *m
 	/*println()
 	for _, cip := range allCips {
 		println(*cip.TagId)
+	}
+	println()*/
+	/*println()
+	for _, tag := range tagIds {
+		println(tag)
 	}
 	println()*/
 
