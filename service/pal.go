@@ -135,10 +135,16 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 
 			// Update tags for imported/existing contentItem.
 			tagIdsStr := ""
+			resourceTagIdsStr := ""
 			if len(tagIds) > 0 {
 				tagIdsStr = strings.Join(tagIds, "|")
 			}
-			if _, err = ormer.Raw("update ContentItemsInLibraries set tags_uuid = ?, resource_tags_uuid = ? where content_item_id = ? and library_uuid = ?", tagIdsStr, "", contentItemId, space.LibraryId).Exec(); err != nil {
+			configIsResource, _ := beego.AppConfig.Bool("hyper.importer.tag.isResource")
+			if configIsResource {
+				resourceTagIdsStr = tagIdsStr
+				tagIdsStr = ""
+			}
+			if _, err = ormer.Raw("update ContentItemsInLibraries set tags_uuid = ?, resource_tags_uuid = ? where content_item_id = ? and library_uuid = ?", tagIdsStr, resourceTagIdsStr, contentItemId, space.LibraryId).Exec(); err != nil {
 				log.Println(fmt.Sprintf("AHTUNG!!! Can not update tags for contentItem (%s)", contentItemId))
 				// And do no more.
 			}
