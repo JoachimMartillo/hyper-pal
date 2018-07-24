@@ -19,6 +19,7 @@ hyper.importer.email = anton@hyperactive.to
 hyper.importer.language.uuid = dcdbb9c0-da55-11e1-a2bc-001ec9b84463
 hyper.importer.language.name = English
 hyper.importer.language.identifier = EN
+hyper.importer.tag.isResource = false
 
 hyper.api.url = http://127.0.0.1:9000/api/
 hyper.api.auth.email = kirill.lyubimov@hyperactive.to
