@@ -5,6 +5,8 @@ import (
 	"hyper-pal/models/pal"
 	"lib-go-logger/logger"
 	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego"
+	"sync"
 )
 
 type TagsInLibraries struct {
@@ -16,6 +18,11 @@ type TagsInLibraries struct {
 	ParentId				*string
 	IsResource				bool
 }
+
+var (
+	configIsResource		bool
+	configIsResourceOnce	sync.Once
+)
 
 func (*TagsInLibraries) TableName() string {
 	return "TagsInLibraries"
@@ -29,7 +36,13 @@ func (o *TagsInLibraries) AddClassification(ormer orm.Ormer, classification *mod
 	o.LibraryUuid = libraryUuid
 	o.Txt = classification.Name
 	o.ParentId = parentTagId
-	o.IsResource = false // Always Tag.
+
+	// Check maybe Resource in config
+	configIsResourceOnce.Do(func () {
+		configIsResource, _ = beego.AppConfig.Bool("hyper.importer.tag.isResource")
+	})
+	o.IsResource = configIsResource
+
 
 	// Save
 	if _, err := ormer.Insert(o); err != nil {

@@ -45,7 +45,9 @@ func CreateFileInPal(contentItemId, libraryId, spaceId, recordId string, file *m
 	}
 }
 
-func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newContentItemId string) (err error) {
+func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newContentItemId string) (contentItemId string, err error) {
+	contentItemId = o.ContentItemId
+
 	o.Title = file.Title
 	o.Description = file.Description
 	o.Filename = file.FileName
@@ -53,6 +55,7 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 	o.ModifiedAt = time.Now()
 
 	if newContentItemId != "" && newContentItemId != o.ContentItemId {
+		/*
 		// Change PK
 		_, err = ormer.QueryTable(o).Filter("content_item_id", o.ContentItemId).Update(orm.Params{
 			"title":           o.Title,
@@ -62,8 +65,18 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 			"content_item_id": newContentItemId,
 			"modified_at":	   o.ModifiedAt,
 		})
+		*/
+		err = ormer.Begin()
+		_, err = ormer.Raw("update ContentItem set uuid = ? where uuid = ?", contentItemId, newContentItemId).Exec()
+		if err == nil {
+			_, err = ormer.Update(o, "title", "description", "filename", "size", "modified_at")
+		}
+		if err == nil {
+			err = ormer.Commit()
+		} else {
+			ormer.Rollback()
+		}
 	} else {
-		// The same PK
 		_, err = ormer.Update(o, "title", "description", "filename", "size", "modified_at")
 	}
 

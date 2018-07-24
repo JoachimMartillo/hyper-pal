@@ -34,20 +34,16 @@ type Hyper struct {
 	languageIdentifier			string
 }
 
-func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, needDeleteBefore bool) (contentItemId string, err error) {
+func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, isUpdating bool) (contentItemId string, err error) {
 	// Prepare auth
 	cookies, err := o.sendAuthSession()
 	if err != nil {
 		return
 	}
 
-	if needDeleteBefore && file.Id != "" {
+	/*if needDeleteBefore && file.Id != "" {
 		o.deleteContentItem(file.Id, libraryId, cookies) // Ignore deleting error.
-		/*if err = o.deleteContentItem(file.Id, libraryId, cookies); err != nil {
-			contentItemId = file.Id
-			return
-		}*/
-	}
+	}*/
 
 	// Upload file to Hyper temporary.
 	log.Println("Trying uploading file...")
@@ -82,12 +78,14 @@ func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, needDeleteBe
 	//log.Println(string(txt))
 
 	// Push contentItem.
-	if needDeleteBefore {
+	if isUpdating {
 		log.Println(fmt.Sprintf("Trying updating contentItem %s...", file.Id))
+		_, err = o.updateContentItem(contentItem, libraryId, cookies)
+		contentItemId = contentItem.Id
 	} else {
 		log.Println("Trying creating contentItem...")
+		contentItemId, err = o.createContentItem(contentItem, libraryId, cookies)
 	}
-	contentItemId, err = o.createContentItem(contentItem, libraryId, cookies)
 	if err != nil {
 		return
 	}
@@ -286,6 +284,42 @@ func (o *Hyper) createContentItem(contentItem *modelsHyper.ContentItem, libraryI
 
 	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
 		err = errors.New(fmt.Sprintf("Can not create contentItem (%d): %s", response.StatusCode, body))
+		log.Println(err.Error())
+		return
+	}
+
+	return
+}
+
+func (o *Hyper) updateContentItem(contentItem *modelsHyper.ContentItem, libraryId string, cookies []*http.Cookie) (body string, err error) {
+	requestBody, err := json.Marshal(&contentItem)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+	//log.Println(string(requestBody))
+	request := httplib.Put(o.getApiUrl() + "contentItems/" + contentItem.Id + "?dbUuid=" + libraryId).
+		Body(requestBody).
+		Header("Accept", "application/json").
+		Header("Content-Type", "application/json")
+	for _, cookie := range cookies {
+		request.SetCookie(cookie)
+	}
+
+	response, err := request.Response()
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+	defer response.Body.Close()
+	body, err = request.String()
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
+		err = errors.New(fmt.Sprintf("Can not update contentItem (%d): %s", response.StatusCode, body))
 		log.Println(err.Error())
 		return
 	}
