@@ -479,6 +479,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 	if err != nil {
 		return
 	}
+	request.SetTimeout(10 * time.Second, 10 * time.Minute)
 	response, err := request.Response()
 	if err != nil {
 		log.Println(err.Error())
@@ -491,22 +492,21 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 	// Create zip file in OS.
 	zipFilename := o.getTmpPath() + system.NewV4String()
 	zipFile, err := os.Create(zipFilename)
+	if zipFile != nil {
+		defer o.closeRemoveZip(zipFile, zipFilename)
+	}
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 	// Copy response to zipfile.
 	fileSize, err := io.Copy(zipFile, response.Body)
-	if err == nil {
-		err = zipFile.Close()
-	}
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 
 	if response.Header.Get("Content-Type") == "application/zip" {
-		defer o.deleteFile(zipFilename) // Do not forget to delete anyway.
 		// Create zipReader from zipfile.
 		var zipReader *zip.ReadCloser
 		zipReader, err = zip.OpenReader(zipFilename)
@@ -554,6 +554,12 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 	}
 
 	return
+}
+
+func (o *AssetLibraryPhillips) closeRemoveZip(file *os.File, filename string) {
+	file.Close()
+	o.deleteFile(filename)
+
 }
 
 func (o *AssetLibraryPhillips) deleteFile(filename string) error {
