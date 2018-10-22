@@ -1,0 +1,26 @@
+# Copy me to app.conf
+
+appname = hyper-pal
+httpaddr = "127.0.0.1"
+httpport = 9020
+runmode = dev
+
+dBDriver = mysql
+dBSource = <DB_SOURCE>
+dbMaxIdle = 20
+dbMacConn = 20
+ormDebug = false
+
+pal.api.url = https://dev.assetlibrary.philips.com/RestAPI
+pal.api.auth.token = <PAL_AUTH_TOKE>
+pal.api.header.registration = DAMDev
+
+hyper.importer.email = anton@hyperactive.to
+hyper.importer.language.uuid = dcdbb9c0-da55-11e1-a2bc-001ec9b84463
+hyper.importer.language.name = English
+hyper.importer.language.identifier = EN
+hyper.importer.tag.isResource = false
+
+hyper.api.url = http://127.0.0.1:9000/api/
+hyper.api.auth.email = <ADMIN_USER_EMAIL>
+hyper.api.auth.password = <ADMIN_USER_PASSWORD>
