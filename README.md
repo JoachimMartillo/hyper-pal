@@ -7,6 +7,10 @@
 * go get -u github.com/go-sql-driver/mysql
 * go get -u github.com/satori/go.uuid
 
+To load all libraries:
+
+* go get ./...
+
 ## Compile
 
 * env GOOS=linux GOARCH=amd64 go build -o pal-import
