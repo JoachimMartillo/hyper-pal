@@ -1,16 +1,16 @@
 package modelsOrm
 
 import (
-	"time"
 	"github.com/astaxie/beego/orm"
-	"hyper-pal/models/pal"
+	"pal-importer/models/pal"
+	"time"
 )
 
 type ClassificationInPal struct {
-	ClassificationId   		string			`orm:"pk"`
-	ParentClassificationId	*string
-	TagId					*string
-	CreatedAt				time.Time
+	ClassificationId       string `orm:"pk"`
+	ParentClassificationId *string
+	TagId                  *string
+	CreatedAt              time.Time
 }
 
 func (*ClassificationInPal) TableName() string {
@@ -44,7 +44,7 @@ func (o *ClassificationInPal) Insert(ormer orm.Ormer, classification *modelsPal.
 			ormer.Rollback()
 			return o, err
 		}
-		tagId =  &tag.Uuid
+		tagId = &tag.Uuid
 	}
 	// Insert obj.
 	if _, err = ormer.Insert(o.FillFromClassification(classification, tagId)); err != nil {

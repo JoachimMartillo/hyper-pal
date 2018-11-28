@@ -1,13 +1,13 @@
 package main
 
 import (
-	"hyper-pal/service"
-	"github.com/astaxie/beego/orm"
-	"time"
-	"os"
 	"github.com/astaxie/beego"
-	"hyper-pal/models/orm"
+	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
+	"os"
+	"pal-importer/models/orm"
+	"pal-importer/service"
+	"time"
 )
 
 func init() {
@@ -18,16 +18,17 @@ func init() {
 func initOrm() {
 	orm.DefaultTimeLoc = time.UTC
 	orm.RegisterDriver("mysql", orm.DRMySQL)
+	orm.RegisterDataBase("default", "mysql", "root:BRidge6-5094@/ORM_TEST?charset=utf8")
 	registerModels()
 
 	if _, err := orm.GetDB(); err != nil {
 		// Connect default DB
 		driverName := os.Getenv("DB_DRIVER")
 		dataSource := os.Getenv("DB_SOURCE")
-		if (driverName == "") {
+		if driverName == "" {
 			driverName = beego.AppConfig.String("dbDriver")
 		}
-		if (dataSource == "") {
+		if dataSource == "" {
 			dataSource = beego.AppConfig.String("dbSource")
 		}
 		maxIdle, _ := beego.AppConfig.Int("dbMaxIdle")
@@ -49,7 +50,7 @@ func registerModels() {
 }
 
 func startWorkers() {
-	go new (service.WorkerMainInstance).Start(nil)
+	go new(service.WorkerMainInstance).Start(nil)
 }
 
 func main() {

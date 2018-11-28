@@ -1,20 +1,20 @@
 package service
 
 import (
-	"github.com/astaxie/beego/orm"
-	"hyper-pal/models/orm"
-	"time"
-	"log"
 	"fmt"
+	"github.com/astaxie/beego/orm"
+	"log"
+	"pal-importer/models/hyper"
+	"pal-importer/models/orm"
 	"sync"
-	"hyper-pal/models/hyper"
+	"time"
 )
 
 type WorkerMainInstance struct {
 	WorkerFunctions
 
-	onceGetHyper	sync.Once
-	hyper			*Hyper
+	onceGetHyper sync.Once
+	hyper        *Hyper
 	//onceGetPal		sync.Once
 	//pal				*AssetLibraryPhillips
 }
@@ -22,7 +22,7 @@ type WorkerMainInstance struct {
 func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 	o.SetOrmer(ormer)
 	//didSomething := false
-	pauseTime := 5 * time.Second // 5 Seconds.
+	pauseTime := 5 * time.Second         // 5 Seconds.
 	updateRepeatTime := 15 * time.Minute // 15 Min
 	firstTime := true
 	if err := modelsOrm.ClearPalSpaces(o.GetOrmer()); err != nil {
@@ -112,7 +112,7 @@ func (o *WorkerMainInstance) makeLibrary(space *modelsOrm.PalSpace) (err error) 
 }
 
 func (o *WorkerMainInstance) getHyper() *Hyper {
-	o.onceGetHyper.Do(func () {
+	o.onceGetHyper.Do(func() {
 		o.hyper = new(Hyper)
 	})
 	return o.hyper
