@@ -18,7 +18,13 @@ func init() {
 func initOrm() {
 	orm.DefaultTimeLoc = time.UTC
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:BRidge6-5094@/ORM_TEST?charset=utf8")
+	var hostname string
+	var err0 error
+
+	hostname, err0 = os.Hostname()
+	if (err0 == nil) && (hostname == "joachimmartillo-XPS-8700") {
+		orm.RegisterDataBase("default", "mysql", "root:BRidge6-5094@/ORM_TEST?charset=utf8")
+	}
 	registerModels()
 
 	if _, err := orm.GetDB(); err != nil {

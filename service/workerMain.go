@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	"log"
+	"os"
 	"pal-importer/models/hyper"
 	"pal-importer/models/orm"
 	"sync"
@@ -26,7 +27,9 @@ func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 	updateRepeatTime := 15 * time.Minute // 15 Min
 	firstTime := true
 	if err := modelsOrm.ClearPalSpaces(o.GetOrmer()); err != nil {
+		fmt.Printf("pal-importer: unable to start. error in clearing PalSpaces.\n")
 		log.Println(err.Error())
+		os.Exit(-10)
 		return
 	}
 
