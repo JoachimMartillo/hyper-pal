@@ -61,7 +61,9 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			countProceed++
 			// Prepare File from Record.
 			log.Println(fmt.Sprintf("Proceed record: %s", record.Id))
-			filePal, err := o.proceedRecord(&record)
+			var filePal *modelsPal.File
+			var err error
+			filePal, err = o.proceedRecord(&record)
 			if err != nil {
 				continue
 			}
@@ -75,7 +77,8 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 
 			// Check file already imported
 			contentItemId := ""
-			fip, err := modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid, record.Id, space.LibraryId)
+			var fip *modelsOrm.FileInPal
+			fip, err = modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid, record.Id, space.LibraryId)
 			if err != nil {
 				log.Println(err.Error())
 				continue
