@@ -25,9 +25,12 @@ func initOrm() {
 	if (err0 == nil) && (hostname == "joachimmartillo-XPS-8700") {
 		orm.RegisterDataBase("default", "mysql", "root:BRidge6-5094@/ORM_TEST?charset=utf8")
 	}
+	if (err0 == nil) && (hostname == "algotrader-XPS-13-9350") {
+		orm.RegisterDataBase("default", "mysql", "root:BRidge6-5094@/ORM_TEST?charset=utf8")
+	}
 	registerModels()
 
-	if _, err := orm.GetDB(); err != nil {
+	if _, err := orm.GetDB(); err != nil { // need to make work with dummy databases.
 		// Connect default DB
 		driverName := os.Getenv("DB_DRIVER")
 		dataSource := os.Getenv("DB_SOURCE")
