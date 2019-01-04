@@ -67,6 +67,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			if err != nil {
 				continue
 			}
+			println("proceedRecord: " + filePal.Id + ", " + filePal.FileName)
 
 			// Prepare tags. CI: fa6f574b-3b5a-4afa-ba8e-82ad9f46990b, recId 32cfd6aaf56647b8b93ba8e300a84f8d
 			var tagIds []string
@@ -78,6 +79,8 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			// Check file already imported
 			contentItemId := ""
 			var fip *modelsOrm.FileInPal
+			println("FindOneFileInPalByFirstUpload: PalSpace (" + space.Uuid + "),")
+			println("record.Id (" + record.Id + "), Library (" + space.LibraryId + ")")
 			fip, err = modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid, record.Id, space.LibraryId)
 			if err != nil {
 				log.Println(err.Error())
@@ -88,6 +91,8 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 					continue
 				}
 				file := modelsData.CreateFileFromPal(filePal)
+
+				// put a println here
 
 				// Upload to ContentItem.
 				contentItemId, err = o.uploadFile(file, space.LibraryId, false)
