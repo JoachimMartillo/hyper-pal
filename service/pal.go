@@ -251,7 +251,7 @@ func (o *AssetLibraryPhillips) CopyFile(src, dst string) error {
 func (o *AssetLibraryPhillips) uploadFile(file *modelsData.File, libraryId string, needDeleteBefore bool) (contentItemId string, err error) {
 	// Do not forget delete temp file.
 	defer o.deleteFile(file.Fullpath)
-
+	log.Println("[uploadFile: " + libraryId)
 	// Upload in Hyper service.
 	contentItemId, err = o.getHyper().UploadFile(file, libraryId, needDeleteBefore)
 
