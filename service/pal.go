@@ -63,11 +63,12 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			log.Println(fmt.Sprintf("Proceed record: %s", record.Id))
 			var filePal *modelsPal.File
 			var err error
+			println("Before proceedRecord (MasterFile.Id): " + record.MasterFile.Id)
 			filePal, err = o.proceedRecord(&record)
 			if err != nil {
 				continue
 			}
-			println("proceedRecord: " + filePal.Id + ", " + filePal.FileName)
+			println("After proceedRecord (filePal.Id) (filePal.FileName): " + filePal.Id + ", " + filePal.FileName)
 
 			// Prepare tags. CI: fa6f574b-3b5a-4afa-ba8e-82ad9f46990b, recId 32cfd6aaf56647b8b93ba8e300a84f8d
 			var tagIds []string
@@ -85,8 +86,9 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			if err != nil {
 				log.Println(err.Error())
 				continue
-			} else if fip == nil {
+			} else if fip == nil { // No file in Pal?
 				// Download file from PAL.
+
 				if err = o.proceedRecordDownload(&record, filePal); err != nil {
 					continue
 				}
@@ -152,7 +154,8 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				resourceTagIdsStr = tagIdsStr
 				tagIdsStr = ""
 			}
-			if _, err = ormer.Raw("update ContentItemsInLibraries set tags_uuid = ?, resource_tags_uuid = ? where content_item_id = ? and library_uuid = ?", tagIdsStr, resourceTagIdsStr, contentItemId, space.LibraryId).Exec(); err != nil {
+			if _, err = ormer.Raw("update ContentItemsInLibraries set tags_uuid = ?, resource_tags_uuid = ? where content_item_id = ? and library_uuid = ?",
+				tagIdsStr, resourceTagIdsStr, contentItemId, space.LibraryId).Exec(); err != nil {
 				log.Println(fmt.Sprintf("AHTUNG!!! Can not update tags for contentItem (%s)", contentItemId))
 				// And do no more.
 			}
