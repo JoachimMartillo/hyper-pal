@@ -56,7 +56,8 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 	log.Println(fmt.Sprintf("Starting import PAL with %d records", records.TotalCount))
 
 	for {
-		log.Println(fmt.Sprintf("Proceed page %d, records %d", page, len(records.Items)))
+		log.Println(fmt.Sprintf("Proceed page %d, records %d", page,
+			len(records.Items)))
 		for _, record := range records.Items {
 			countProceed++
 			// Prepare File from Record.
@@ -65,14 +66,19 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			var err error
 			println("Before proceedRecord (MasterFile.Id): " + record.MasterFile.Id)
 			filePal, err = o.proceedRecord(&record)
+			println("After proceedRecord: " + filePal.FileName)
 			if err != nil {
 				continue
 			}
-			println("After proceedRecord (filePal.Id) (filePal.FileName): " + filePal.Id + ", " + filePal.FileName)
+			println("After proceedRecord (filePal.Id) (filePal.FileName): " +
+				filePal.Id + ", " + filePal.FileName)
 
-			// Prepare tags. CI: fa6f574b-3b5a-4afa-ba8e-82ad9f46990b, recId 32cfd6aaf56647b8b93ba8e300a84f8d
+			// Prepare tags. CI: fa6f574b-3b5a-4afa-ba8e-82ad9f46990b,
+			// recId 32cfd6aaf56647b8b93ba8e300a84f8d
+
 			var tagIds []string
-			tagIds, err = o.proceedTags(ormer, &record, space.ClassificationId, space.LibraryId)
+			tagIds, err = o.proceedTags(ormer, &record, space.ClassificationId,
+				space.LibraryId)
 			if err != nil {
 				continue
 			}
@@ -81,8 +87,10 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			contentItemId := ""
 			var fip *modelsOrm.FileInPal
 			println("FindOneFileInPalByFirstUpload: PalSpace (" + space.Uuid + "),")
-			println("record.Id (" + record.Id + "), Library (" + space.LibraryId + ")")
-			fip, err = modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid, record.Id, space.LibraryId)
+			println("record.Id (" + record.Id + "), Library (" +
+				space.LibraryId + ")")
+			fip, err = modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid,
+				record.Id, space.LibraryId)
 			if err != nil {
 				log.Println(err.Error())
 				continue
@@ -93,6 +101,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 					continue
 				}
 				file := modelsData.CreateFileFromPal(filePal)
+				println("after CreateFileFromPal: " + file.Filename)
 
 				// put a println here
 
@@ -103,38 +112,51 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				}
 
 				// Save data to DB.
-				_, err = ormer.Insert(modelsOrm.CreateFileInPal(contentItemId, space.LibraryId, space.Uuid, record.Id, file))
+				_, err = ormer.Insert(modelsOrm.CreateFileInPal(contentItemId,
+					space.LibraryId, space.Uuid, record.Id, file))
 				if err != nil {
-					log.Println("AHTUNG! Can not insert FilesInPal: " + err.Error())
+					log.Println("AHTUNG! Can not insert FilesInPal: " +
+						err.Error())
 					continue
 				}
-				log.Println(fmt.Sprintf("File uploaded (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
+				log.Println(fmt.Sprintf("File uploaded (PalFileId / contentItemId): %s / %s",
+					file.Filename, file.ExternalId, contentItemId))
 				countProceedUploaded++
 			} else {
 				// File present in Library, check for updating.
 				if fip.HadChanged(filePal) {
-					log.Println(fmt.Sprintf("File changed (contentItemId: %s)", fip.ContentItemId))
+					log.Println(fmt.Sprintf("File changed (contentItemId: %s) "+
+						" (Filename: %s)",
+						fip.ContentItemId,
+						fip.Filename))
 
 					// Download file from PAL.
 					if err = o.proceedRecordDownload(&record, filePal); err != nil {
 						continue
 					}
 					file := modelsData.CreateFileFromPal(filePal)
+					println("after CreateFileFromPal (2) : " +
+						file.Filename)
 					file.Id = fip.ContentItemId
 
 					// Upload to ContentItem.
-					contentItemId, err = o.uploadFile(file, space.LibraryId, true)
+					contentItemId, err = o.uploadFile(file,
+						space.LibraryId, true)
+					println("after uploadFile: " + contentItemId)
 					if err != nil {
 						continue
 					}
 
 					// Update data in DB.
-					contentItemId, err = fip.UpdateByFile(ormer, filePal, contentItemId)
+					contentItemId, err = fip.UpdateByFile(ormer, filePal,
+						contentItemId)
+					println("after UpdateByFile: " + contentItemId)
 					if err != nil {
-						log.Println("AHTUNG! Can not update FilesInPal: " + err.Error())
+						log.Println("AHTUNG! Can not update FilesInPal: " +
+							err.Error())
 						continue
 					}
-					log.Println(fmt.Sprintf("File updated (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
+					log.Println(fmt.Sprintf("File (%s) updated (PalFileId / contentItemId): %s / %s", file.ExternalId, contentItemId))
 					countProceedUpdated++
 				} else {
 					contentItemId = fip.ContentItemId
