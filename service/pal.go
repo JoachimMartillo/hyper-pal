@@ -53,8 +53,10 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 	if err != nil {
 		return
 	}
+	println("ProceedImport invoked with arguments: " + space.Name + "," + space.LibraryId + "," +
+		space.ClassificationId + " and an ormer interface.")
 	log.Println(fmt.Sprintf("Starting import PAL with %d records", records.TotalCount))
-
+	// I use bare printlns for debugging comments.
 	for {
 		log.Println(fmt.Sprintf("Proceed page %d, records %d", page,
 			len(records.Items)))
