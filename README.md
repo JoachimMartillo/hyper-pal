@@ -33,3 +33,5 @@ commit;
 ```
 update PalSpaces set proceeded_at = addtime(proceeded_at, '-00:20:00');
 ```
+
+There are files showing a live configuration and a template in the conf directory
