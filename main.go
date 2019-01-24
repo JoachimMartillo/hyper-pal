@@ -14,10 +14,12 @@ import (
 // into symbol table
 
 func init() {
-	initOrm()
-	startWorkers()
+	initOrm()      // database initialization
+	startWorkers() // the workers are needed for the
+	// the asynchronous database and client interface
 }
 
+// This stuff all initializes the Beego Orm database subsystem.
 func initOrm() {
 	orm.DefaultTimeLoc = time.UTC
 	orm.RegisterDriver("mysql", orm.DRMySQL)
@@ -44,11 +46,11 @@ func initOrm() {
 }
 
 func registerModels() {
-	orm.RegisterModel(
-		new(modelsOrm.PalSpace),
-		new(modelsOrm.FileInPal),
-		new(modelsOrm.ClassificationInPal),
-		new(modelsOrm.TagsInLibraries))
+	orm.RegisterModel( // These are databases pal-importer uses
+		new(modelsOrm.PalSpace),            // start with pal space
+		new(modelsOrm.FileInPal),           // find file in pal
+		new(modelsOrm.ClassificationInPal), // organize classification in pal -- pal protocol
+		new(modelsOrm.TagsInLibraries))     // transform into TagsInLibraries
 }
 
 func startWorkers() {
@@ -56,5 +58,5 @@ func startWorkers() {
 }
 
 func main() {
-	beego.Run()
+	beego.Run() // get beego running
 }
