@@ -67,7 +67,7 @@ func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 
 func (o *WorkerMainInstance) importSpace(space *modelsOrm.PalSpace) (err error) {
 	log.Println(fmt.Sprintf("Start import space %s", space.Uuid))
-	// These database operations are the reason for multiple operations.
+	// These database operations are the reason for multiple workers.
 	// The database operations are synchronous (unlike node.js). Another worker should continue
 	// while this one waits.
 	// Mark as started.
