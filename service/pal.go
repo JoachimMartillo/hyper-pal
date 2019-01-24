@@ -1,43 +1,43 @@
 package service
 
 import (
-	"github.com/astaxie/beego"
-	"sync"
-	"log"
-	"github.com/astaxie/beego/httplib"
-	"strconv"
-	"fmt"
+	"archive/zip"
 	"encoding/json"
 	"errors"
-	"hyper-pal/models/pal"
-	"hyper-pal/models/data"
-	"os"
-	"io"
-	"archive/zip"
-	"net/http"
-	"hyper-pal/models/orm"
+	"fmt"
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/orm"
-	"time"
-	"hyper-pal/system"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"pal-importer/models/data"
+	"pal-importer/models/orm"
+	"pal-importer/models/pal"
+	"pal-importer/system"
+	"strconv"
 	"strings"
+	"sync"
+	"time"
 )
 
 const PAL_RECORDS_PAGESIZE = 20
 
 type AssetLibraryPhillips struct {
-	digMaxDuration	time.Duration
-	digStartTime	time.Time
+	digMaxDuration time.Duration
+	digStartTime   time.Time
 
-	onceGetApiUrl 	sync.Once
-	apiUrl			string
-	mutexToken		sync.Mutex
-	token			string
-	onceAuthToken	sync.Once
-	authToken		string
-	onceRegHeader	sync.Once
-	regHeader		string
-	onceGetHyper	sync.Once
-	hyper			*Hyper
+	onceGetApiUrl sync.Once
+	apiUrl        string
+	mutexToken    sync.Mutex
+	token         string
+	onceAuthToken sync.Once
+	authToken     string
+	onceRegHeader sync.Once
+	regHeader     string
+	onceGetHyper  sync.Once
+	hyper         *Hyper
 }
 
 func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer orm.Ormer) (err error) {
@@ -102,7 +102,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				countProceedUploaded++
 			} else {
 				// File present in Library, check for updating.
-				if (fip.HadChanged(filePal)) {
+				if fip.HadChanged(filePal) {
 					log.Println(fmt.Sprintf("File changed (contentItemId: %s)", fip.ContentItemId))
 
 					// Download file from PAL.
@@ -157,7 +157,8 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			break // Finish!
 		}
 		// Prepare new page for cycling.
-		page++; if records, err = o.getRecords(space.ClassificationId, page); err != nil {
+		page++
+		if records, err = o.getRecords(space.ClassificationId, page); err != nil {
 			return
 		}
 	}
@@ -166,7 +167,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 		countProceedUploaded,
 		countProceedUpdated,
 		countProceedSkipped,
-		countProceed - countProceedUploaded - countProceedUpdated - countProceedSkipped,
+		countProceed-countProceedUploaded-countProceedUpdated-countProceedSkipped,
 		countProceed))
 	err = nil
 	return
@@ -199,7 +200,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 func (o *AssetLibraryPhillips) TestUpload() error {
 	// Copy test file
 	filename := o.getTmpPath() + "test001.jpg"
-	if err := o.CopyFile(filename, filename + "_copy"); err != nil {
+	if err := o.CopyFile(filename, filename+"_copy"); err != nil {
 		log.Println(err.Error())
 		return err
 	}
@@ -207,9 +208,9 @@ func (o *AssetLibraryPhillips) TestUpload() error {
 
 	// Create container.
 	file := modelsData.CreateFileFromPal(&modelsPal.File{
-		Id: "9a86f7f6-b22f-4b35-8102-54fbf9c603a5",
-		FileName: "testImage.jpg",
-		FileSize: 1824194,
+		Id:          "9a86f7f6-b22f-4b35-8102-54fbf9c603a5",
+		FileName:    "testImage.jpg",
+		FileSize:    1824194,
 		OutFilename: filename,
 		Description: "Test description",
 	})
@@ -479,7 +480,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 	if err != nil {
 		return
 	}
-	request.SetTimeout(10 * time.Second, 10 * time.Minute)
+	request.SetTimeout(10*time.Second, 10*time.Minute)
 	response, err := request.Response()
 	if err != nil {
 		log.Println(err.Error())
@@ -580,7 +581,7 @@ func (o *AssetLibraryPhillips) getRecords(classificationId string, page int) (*m
 		return nil, err
 	}
 	o.setRequestPagintaion(request, page, PAL_RECORDS_PAGESIZE, "createdon")
-	o.setRequestFilter(request, "classification=" + classificationId)
+	o.setRequestFilter(request, "classification="+classificationId)
 	o.setRequestFields(request, "fields,classifications,masterfile")
 	response, err := request.Response()
 	if err != nil {
@@ -594,7 +595,7 @@ func (o *AssetLibraryPhillips) getRecords(classificationId string, page int) (*m
 		return nil, err
 	}
 
-	if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
+	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
 		err = errors.New(fmt.Sprintf("Can not get Records (%s): %s", strconv.Itoa(response.StatusCode), body))
 		log.Println(err.Error())
 		return nil, err
@@ -628,7 +629,7 @@ func (o *AssetLibraryPhillips) getFile(masterfileId string) (*modelsPal.File, er
 		return nil, err
 	}
 
-	if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
+	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
 		err = errors.New(fmt.Sprintf("Can not get File (%s): %s", strconv.Itoa(response.StatusCode), body))
 		log.Println(err.Error())
 		return nil, err
@@ -663,12 +664,12 @@ func (o *AssetLibraryPhillips) getClassification(classificationId string) (class
 		return
 	}
 
-	if (response.StatusCode == http.StatusNotFound) {
+	if response.StatusCode == http.StatusNotFound {
 		message := fmt.Sprintf("  -- No access to Classification (%s)", classificationId) // Not error!
 		log.Println(message)
 		classification = nil
 		return
-	} else if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
+	} else if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
 		err = errors.New(fmt.Sprintf("Can not get Classification (%s): %s", strconv.Itoa(response.StatusCode), body))
 		log.Println(err.Error())
 		return
@@ -705,7 +706,7 @@ func (o *AssetLibraryPhillips) getFileDownloadLink(recordId string) (string, err
 		return "", err
 	}
 
-	if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
+	if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
 		err = errors.New(fmt.Sprintf("Can not Order file (%s): %s", strconv.Itoa(response.StatusCode), body))
 		log.Println(err.Error())
 		return "", err
@@ -751,7 +752,7 @@ func (o *AssetLibraryPhillips) digLinkFromOrder(order *modelsPal.OrderFile) (lin
 				log.Println(err.Error())
 				return "", err
 			}
-			if (response.StatusCode < http.StatusOK || response.StatusCode >= 300) {
+			if response.StatusCode < http.StatusOK || response.StatusCode >= 300 {
 				err = errors.New(fmt.Sprintf("Can not get Order (%s): %s", strconv.Itoa(response.StatusCode), body))
 				log.Println(err.Error())
 				return "", err
@@ -776,7 +777,7 @@ func (o *AssetLibraryPhillips) digLinkFromOrder(order *modelsPal.OrderFile) (lin
 }
 
 func (o *AssetLibraryPhillips) getApiUrl() string {
-	o.onceGetApiUrl.Do(func () {
+	o.onceGetApiUrl.Do(func() {
 		o.apiUrl = beego.AppConfig.String("pal.api.url")
 		if o.apiUrl == "" {
 			log.Panic("No pal.api.url in config")
@@ -797,15 +798,15 @@ func (o *AssetLibraryPhillips) getToken() (string, error) {
 }
 
 func (o *AssetLibraryPhillips) refreshToken() (string, error) {
-	o.onceAuthToken.Do(func () {
+	o.onceAuthToken.Do(func() {
 		o.authToken = beego.AppConfig.String("pal.api.auth.token")
 		if o.authToken == "" {
 			log.Panic("No pal.api.auth.token in config")
 		}
 	})
 
-	request := httplib.Post(o.getApiUrl() + "/auth").
-		Header("Authorization", "Basic " + o.authToken).
+	request := httplib.Post(o.getApiUrl()+"/auth").
+		Header("Authorization", "Basic "+o.authToken).
 		Header("Registration", o.getRegistrationHeader()).
 		Header("api-version", "1")
 	response, err := request.Response()
@@ -842,7 +843,7 @@ func (o *AssetLibraryPhillips) refreshToken() (string, error) {
 }
 
 func (o *AssetLibraryPhillips) getRegistrationHeader() string {
-	o.onceRegHeader.Do(func () {
+	o.onceRegHeader.Do(func() {
 		o.regHeader = beego.AppConfig.String("pal.api.header.registration")
 		if o.regHeader == "" {
 			log.Panic("No pal.api.header.registration in config")
@@ -852,7 +853,7 @@ func (o *AssetLibraryPhillips) getRegistrationHeader() string {
 }
 
 func (o *AssetLibraryPhillips) getHyper() *Hyper {
-	o.onceGetHyper.Do(func () {
+	o.onceGetHyper.Do(func() {
 		o.hyper = new(Hyper)
 	})
 	return o.hyper
@@ -872,20 +873,20 @@ func (o *AssetLibraryPhillips) createPostRequest(action string, body interface{}
 }
 
 func (o *AssetLibraryPhillips) createHttpRequest(action, method string) (*httplib.BeegoHTTPRequest, error) {
-	request := httplib.NewBeegoRequest(o.getApiUrl() + "/" + action, method)
+	request := httplib.NewBeegoRequest(o.getApiUrl()+"/"+action, method)
 	token, err := o.getToken()
 	if err != nil {
 		return request, err
 	}
 	return request.
-		Header("Authorization", "Token " + token).
-		Header("Registration", o.getRegistrationHeader()).
-		Header("api-version", "1").
-		Header("accept-encoding", "gzip, deflate").
-		Header("accept-language", "en-US,en;q=0.8").
-		Header("Content-Type", "application/hal+json").
-		Header("user-agent", "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36").
-		Header("accept", "application/json"),
+			Header("Authorization", "Token "+token).
+			Header("Registration", o.getRegistrationHeader()).
+			Header("api-version", "1").
+			Header("accept-encoding", "gzip, deflate").
+			Header("accept-language", "en-US,en;q=0.8").
+			Header("Content-Type", "application/hal+json").
+			Header("user-agent", "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36").
+			Header("accept", "application/json"),
 		nil
 }
 

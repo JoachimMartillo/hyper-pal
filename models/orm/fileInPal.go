@@ -1,24 +1,24 @@
 package modelsOrm
 
 import (
-	"time"
-	"hyper-pal/models/data"
 	"github.com/astaxie/beego/orm"
-	"hyper-pal/models/pal"
+	"pal-importer/models/data"
+	"pal-importer/models/pal"
+	"time"
 )
 
 type FileInPal struct {
-	ContentItemId   string			`orm:"pk"`
-	LibraryId		string
-	SpaceId			string
-	RecordId        string
-	FileId			string
-	Filename		string
-	Size			int64
-	Title			string
-	Description		string
-	CreatedAt		time.Time
-	ModifiedAt		time.Time
+	ContentItemId string `orm:"pk"`
+	LibraryId     string
+	SpaceId       string
+	RecordId      string
+	FileId        string
+	Filename      string
+	Size          int64
+	Title         string
+	Description   string
+	CreatedAt     time.Time
+	ModifiedAt    time.Time
 }
 
 func (*FileInPal) TableName() string {
@@ -56,15 +56,15 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 
 	if newContentItemId != "" && newContentItemId != o.ContentItemId {
 		/*
-		// Change PK
-		_, err = ormer.QueryTable(o).Filter("content_item_id", o.ContentItemId).Update(orm.Params{
-			"title":           o.Title,
-			"description":     o.Description,
-			"filename":        o.Filename,
-			"size":            o.Size,
-			"content_item_id": newContentItemId,
-			"modified_at":	   o.ModifiedAt,
-		})
+			// Change PK
+			_, err = ormer.QueryTable(o).Filter("content_item_id", o.ContentItemId).Update(orm.Params{
+				"title":           o.Title,
+				"description":     o.Description,
+				"filename":        o.Filename,
+				"size":            o.Size,
+				"content_item_id": newContentItemId,
+				"modified_at":	   o.ModifiedAt,
+			})
 		*/
 		err = ormer.Begin()
 		_, err = ormer.Raw("update ContentItem set uuid = ? where uuid = ?", contentItemId, newContentItemId).Exec()
@@ -86,8 +86,8 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 // Can return nil if fileInPal is not imported.
 func FindOneFileInPalByFirstUpload(ormer orm.Ormer, spaceId, recordId, libraryId string) (fileInPal *FileInPal, err error) {
 	fileInPal = &FileInPal{
-		SpaceId: spaceId,
-		RecordId: recordId,
+		SpaceId:   spaceId,
+		RecordId:  recordId,
 		LibraryId: libraryId,
 	}
 	if err = ormer.Read(fileInPal, "spaceId", "recordId", "libraryId"); err == orm.ErrNoRows {

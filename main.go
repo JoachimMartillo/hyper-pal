@@ -1,14 +1,17 @@
 package main
 
 import (
-	"hyper-pal/service"
-	"github.com/astaxie/beego/orm"
-	"time"
-	"os"
 	"github.com/astaxie/beego"
-	"hyper-pal/models/orm"
+	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
+	"os"
+	"pal-importer/models/orm"
+	"pal-importer/service"
+	"time"
 )
+
+// go initializes each file with func init() -- init() is not enter
+// into symbol table
 
 func init() {
 	initOrm()
@@ -24,10 +27,10 @@ func initOrm() {
 		// Connect default DB
 		driverName := os.Getenv("DB_DRIVER")
 		dataSource := os.Getenv("DB_SOURCE")
-		if (driverName == "") {
+		if driverName == "" {
 			driverName = beego.AppConfig.String("dbDriver")
 		}
-		if (dataSource == "") {
+		if dataSource == "" {
 			dataSource = beego.AppConfig.String("dbSource")
 		}
 		maxIdle, _ := beego.AppConfig.Int("dbMaxIdle")
@@ -49,7 +52,7 @@ func registerModels() {
 }
 
 func startWorkers() {
-	go new (service.WorkerMainInstance).Start(nil)
+	go new(service.WorkerMainInstance).Start(nil)
 }
 
 func main() {

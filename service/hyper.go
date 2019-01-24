@@ -1,37 +1,36 @@
 package service
 
 import (
-	"github.com/astaxie/beego"
-	"sync"
-	"log"
-	"hyper-pal/models/data"
 	"bytes"
-	"mime/multipart"
-	"os"
-	"io"
-	"fmt"
-	"net/http"
-	"io/ioutil"
 	"encoding/json"
 	"errors"
-	"hyper-pal/models/hyper"
+	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/httplib"
+	"io"
+	"io/ioutil"
+	"log"
+	"mime/multipart"
+	"net/http"
+	"os"
+	"pal-importer/models/data"
+	"pal-importer/models/hyper"
 	"strconv"
+	"sync"
 )
 
 type Hyper struct {
-
-	onceGetApiUrl 				sync.Once
-	apiUrl						string
-	onceGetUserEmail			sync.Once
-	userEmail					string
-	onceGetAuthEmailPassword	sync.Once
-	authEmail					string
-	authPassword				string
-	onceGetLanguage				sync.Once
-	languageUuid				string
-	languageName				string
-	languageIdentifier			string
+	onceGetApiUrl            sync.Once
+	apiUrl                   string
+	onceGetUserEmail         sync.Once
+	userEmail                string
+	onceGetAuthEmailPassword sync.Once
+	authEmail                string
+	authPassword             string
+	onceGetLanguage          sync.Once
+	languageUuid             string
+	languageName             string
+	languageIdentifier       string
 }
 
 func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, isUpdating bool) (contentItemId string, err error) {
@@ -47,7 +46,7 @@ func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, isUpdating b
 
 	// Upload file to Hyper temporary.
 	log.Println("Trying uploading file...")
-	body, err := Upload(o.getApiUrl() + "uploadFile", file.Fullpath, cookies)
+	body, err := Upload(o.getApiUrl()+"uploadFile", file.Fullpath, cookies)
 	if err != nil {
 		log.Println(err.Error())
 		return
@@ -170,7 +169,7 @@ func (o *Hyper) CreateLibrary(title, companyId string) (libraryResponse *modelsH
 		return
 	}
 
-	request := httplib.Post(o.getApiUrl() + "company/" + companyId + "/libraries?languageUuid=" + languageUuid).
+	request := httplib.Post(o.getApiUrl()+"company/"+companyId+"/libraries?languageUuid="+languageUuid).
 		Body(requestBody).
 		Header("Accept", "application/json").
 		Header("Content-Type", "application/json")
@@ -212,7 +211,7 @@ func (o *Hyper) sendAuthSession() (cookies []*http.Cookie, err error) {
 	}
 	req, err := http.NewRequest(
 		"POST",
-		o.getApiUrl() + "authenticate",
+		o.getApiUrl()+"authenticate",
 		bytes.NewBuffer(authBody))
 	if err != nil {
 		log.Println(err.Error())
@@ -262,7 +261,7 @@ func (o *Hyper) createContentItem(contentItem *modelsHyper.ContentItem, libraryI
 		return
 	}
 	//log.Println(string(requestBody))
-	request := httplib.Post(o.getApiUrl() + "libraries/" + libraryId + "/contentItems").
+	request := httplib.Post(o.getApiUrl()+"libraries/"+libraryId+"/contentItems").
 		Body(requestBody).
 		Header("Accept", "application/json").
 		Header("Content-Type", "application/json")
@@ -298,7 +297,7 @@ func (o *Hyper) updateContentItem(contentItem *modelsHyper.ContentItem, libraryI
 		return
 	}
 	//log.Println(string(requestBody))
-	request := httplib.Put(o.getApiUrl() + "contentItems/" + contentItem.Id + "?dbUuid=" + libraryId).
+	request := httplib.Put(o.getApiUrl()+"contentItems/"+contentItem.Id+"?dbUuid="+libraryId).
 		Body(requestBody).
 		Header("Accept", "application/json").
 		Header("Content-Type", "application/json")
@@ -328,7 +327,7 @@ func (o *Hyper) updateContentItem(contentItem *modelsHyper.ContentItem, libraryI
 }
 
 func (o *Hyper) deleteContentItem(contentItemId, libraryId string, cookies []*http.Cookie) (err error) {
-	request := httplib.Post(o.getApiUrl() + "contentItems/" + contentItemId + "?dbUuid=" + libraryId).
+	request := httplib.Post(o.getApiUrl()+"contentItems/"+contentItemId+"?dbUuid="+libraryId).
 		Header("Accept", "application/json").
 		Header("Content-Type", "application/json")
 	for _, cookie := range cookies {
@@ -358,7 +357,7 @@ func (o *Hyper) deleteContentItem(contentItemId, libraryId string, cookies []*ht
 }
 
 func (o *Hyper) getApiUrl() string {
-	o.onceGetApiUrl.Do(func () {
+	o.onceGetApiUrl.Do(func() {
 		o.apiUrl = beego.AppConfig.String("hyper.api.url")
 		if o.apiUrl == "" {
 			log.Panic("No hyper.api.url in config")
@@ -368,7 +367,7 @@ func (o *Hyper) getApiUrl() string {
 }
 
 func (o *Hyper) getUserEmail() string {
-	o.onceGetUserEmail.Do(func () {
+	o.onceGetUserEmail.Do(func() {
 		o.userEmail = beego.AppConfig.String("hyper.importer.email")
 		if o.userEmail == "" {
 			log.Panic("No hyper.importer.email in config")
@@ -378,7 +377,7 @@ func (o *Hyper) getUserEmail() string {
 }
 
 func (o *Hyper) getAuthEmailPassword() (string, string) {
-	o.onceGetAuthEmailPassword.Do(func () {
+	o.onceGetAuthEmailPassword.Do(func() {
 		o.authEmail = beego.AppConfig.String("hyper.api.auth.email")
 		if o.authEmail == "" {
 			log.Panic("No hyper.api.auth.email in config")
@@ -392,7 +391,7 @@ func (o *Hyper) getAuthEmailPassword() (string, string) {
 }
 
 func (o *Hyper) getLanguage() (string, string, string) {
-	o.onceGetLanguage.Do(func () {
+	o.onceGetLanguage.Do(func() {
 		o.languageUuid = beego.AppConfig.String("hyper.importer.language.uuid")
 		if o.languageUuid == "" {
 			log.Panic("No hyper.importer.language.uuid in config")

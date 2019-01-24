@@ -1,5 +1,5 @@
 # Copy me to app.conf
-
+#This is an active configuration.
 appname = hyper-pal
 httpaddr = "127.0.0.1"
 httpport = 9020

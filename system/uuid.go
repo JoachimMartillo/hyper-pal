@@ -2,9 +2,9 @@ package system
 
 import (
 	"github.com/satori/go.uuid"
+	"math/rand"
 	"strconv"
 	"time"
-	"math/rand"
 )
 
 func NewV4String() string {
