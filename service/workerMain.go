@@ -19,12 +19,14 @@ type WorkerMainInstance struct {
 	//pal				*AssetLibraryPhillips
 }
 
+// Here is the real start of the program
 func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 	o.SetOrmer(ormer)
 	//didSomething := false
 	pauseTime := 5 * time.Second         // 5 Seconds.
 	updateRepeatTime := 15 * time.Minute // 15 Min
 	firstTime := true
+	// misleading function name -- ClearPalSpaces is a sort of restart
 	if err := modelsOrm.ClearPalSpaces(o.GetOrmer()); err != nil {
 		log.Println(err.Error())
 		return
@@ -37,7 +39,7 @@ func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 			time.Sleep(pauseTime)
 		}
 		firstTime = false
-
+		// This function just reads all the spaces out of the PalSpace data table
 		spaces, err := modelsOrm.FindPalSpacesAll(o.GetOrmer())
 		if err != nil {
 			log.Println(err.Error())
@@ -65,13 +67,16 @@ func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 
 func (o *WorkerMainInstance) importSpace(space *modelsOrm.PalSpace) (err error) {
 	log.Println(fmt.Sprintf("Start import space %s", space.Uuid))
-
+	// These database operations are the reason for multiple operations.
+	// The database operations are synchronous (unlike node.js). Another worker should continue
+	// while this one waits.
 	// Mark as started.
 	if err = space.UpdateStatus(o.GetOrmer(), modelsOrm.SPACE_STATUS_STARTED, ""); err != nil {
 		return o.finishImportUpdate(space, err)
 	}
 
-	// Check Library.
+	// Check Library. -- We make if it is not there
+	// Here is the conversion from Phillips Assets to library in HyperCMS
 	if err = o.makeLibrary(space); err != nil {
 		return o.finishImportUpdate(space, err)
 	}

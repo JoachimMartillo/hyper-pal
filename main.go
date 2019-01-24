@@ -54,9 +54,9 @@ func registerModels() {
 }
 
 func startWorkers() {
-	go new(service.WorkerMainInstance).Start(nil)
+	go new(service.WorkerMainInstance).Start(nil) // Here is where program really starts.
 }
 
 func main() {
-	beego.Run() // get beego running
+	beego.Run() // get beego running -- This is boiler plate.
 }
