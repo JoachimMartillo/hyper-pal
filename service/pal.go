@@ -55,7 +55,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 	}
 	log.Println(fmt.Sprintf("Starting import PAL with %d records", records.TotalCount))
 
-	for {
+	for { // proceedRecord and proceedTags are making get requests to download from PalSpace to pal-importer
 		log.Println(fmt.Sprintf("Proceed page %d, records %d", page, len(records.Items)))
 		for _, record := range records.Items {
 			countProceed++
@@ -74,6 +74,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			}
 
 			// Check file already imported
+			// I think it is checking record by record & not file by file
 			contentItemId := ""
 			fip, err := modelsOrm.FindOneFileInPalByFirstUpload(ormer, space.Uuid, record.Id, space.LibraryId)
 			if err != nil {
@@ -84,6 +85,8 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				if err = o.proceedRecordDownload(&record, filePal); err != nil {
 					continue
 				}
+				// this seems to be where a CMS file (including path) is created from collection
+				// of records in PalSpace
 				file := modelsData.CreateFileFromPal(filePal)
 
 				// Upload to ContentItem.
@@ -247,6 +250,7 @@ func (o *AssetLibraryPhillips) CopyFile(src, dst string) error {
 
 func (o *AssetLibraryPhillips) uploadFile(file *modelsData.File, libraryId string, needDeleteBefore bool) (contentItemId string, err error) {
 	// Do not forget delete temp file.
+	// Is this file created in a path relative to the temp directory?
 	defer o.deleteFile(file.Fullpath)
 
 	// Upload in Hyper service.
@@ -263,6 +267,8 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (file *mo
 	}
 
 	// Find description of file infields of Record.
+	// It seems that Pal-Importer is interested in only one field description & one field title
+	// according to the Adam REST API
 	if fieldDescription := record.Fields.FindByFieldName("Asset_Description"); fieldDescription != nil {
 		file.Description = fieldDescription.GetValueFirstString()
 	}
@@ -272,6 +278,8 @@ func (o *AssetLibraryPhillips) proceedRecord(record *modelsPal.Record) (file *mo
 
 	return
 }
+
+// STOPPED HERE!!!!
 
 func (o *AssetLibraryPhillips) proceedTags(ormer orm.Ormer, record *modelsPal.Record, topClassificationId, libraryUuid string) (tagIds []string, err error) {
 	//defer panic("procced tags")

@@ -47,9 +47,15 @@ func (o *WorkerMainInstance) Start(ormer orm.Ormer) {
 		}
 
 		// Search for "hot" import spaces.
+		// I think spaces are added to the PalSpace data table in the processing
+		// of the Adam Rest Api
+		// What exactly does spaceHot mean? Is it just SPACE_STATUS_TOPROCEED?
 		for _, spaceHot := range spaces {
 			if spaceHot.Status == modelsOrm.SPACE_STATUS_TOPROCEED {
 				// Start in background mode.
+				// That is start another task. For performance sake all
+				// database operations are associated with their own
+				// thread of control.
 				go o.importSpace(spaceHot) // We do not catch error here.
 			}
 		}
@@ -89,6 +95,7 @@ func (o *WorkerMainInstance) importSpace(space *modelsOrm.PalSpace) (err error) 
 	return o.finishImportUpdate(space, err)
 }
 
+// upDateSpace means finishImportUpdate if possible?
 func (o *WorkerMainInstance) updateSpace(space *modelsOrm.PalSpace) (err error) {
 	if space.LibraryId == "" {
 		log.Println(fmt.Sprintf("No library to silent-update space %s", space.Uuid))
@@ -133,7 +140,7 @@ func (o *WorkerMainInstance) getPal() *AssetLibraryPhillips {
 
 // Silent mode.
 func (o *WorkerMainInstance) updateProceededAt(space *modelsOrm.PalSpace) {
-	if err := space.UpdateProceededAt(o.GetOrmer()); err != nil {
+	if err := space.UpdateProceededAt(o.GetOrmer()); err != nil { // getting specific database entry
 		log.Println("Can not update proceeded_at: " + err.Error())
 	}
 }

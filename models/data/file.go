@@ -23,6 +23,6 @@ func CreateFileFromPal(palFile *modelsPal.File) *File {
 		Size:        palFile.FileSize,
 		Description: palFile.Description,
 		Title:       palFile.Title,
-		Fullpath:    palFile.OutFilename,
+		Fullpath:    palFile.OutFilename, // OutFilename seems to be target OS pathname
 	}
 }
