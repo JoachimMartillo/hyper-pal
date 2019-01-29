@@ -90,6 +90,7 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 }
 
 // Can return nil if fileInPal is not imported.
+// Are we checking whether a file expected to be present is really present???
 func FindOneFileInPalByFirstUpload(ormer orm.Ormer, spaceId, recordId, libraryId string) (fileInPal *FileInPal, err error) {
 	fileInPal = &FileInPal{
 		SpaceId:   spaceId,
