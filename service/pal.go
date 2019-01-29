@@ -289,7 +289,7 @@ func (o *AssetLibraryPhillips) proceedTags(ormer orm.Ormer, record *modelsPal.Re
 	println(string(byte))
 	println()
 	println()*/
-
+	// mapping classifications to tags?
 	tagIds = make([]string, 0)
 	for _, recordClassification := range record.Classfications.Items {
 		/*println()
@@ -305,6 +305,7 @@ func (o *AssetLibraryPhillips) proceedTags(ormer orm.Ormer, record *modelsPal.Re
 			if classificationInPal.TagId == nil { // classification with no matching Tag???
 				// Dead-end classification.
 				//log.Println(fmt.Sprintf("  -- Dead classification (%s)", recordClassification.Id))
+				// the classification does not map to a tag
 				continue
 			} else {
 				// Working classification.
