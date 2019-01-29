@@ -302,7 +302,7 @@ func (o *AssetLibraryPhillips) proceedTags(ormer orm.Ormer, record *modelsPal.Re
 			return
 		} else if classificationInPal != nil {
 			// Already present
-			if classificationInPal.TagId == nil {
+			if classificationInPal.TagId == nil { // classification with no matching Tag???
 				// Dead-end classification.
 				//log.Println(fmt.Sprintf("  -- Dead classification (%s)", recordClassification.Id))
 				continue
@@ -330,7 +330,7 @@ func (o *AssetLibraryPhillips) proceedTags(ormer orm.Ormer, record *modelsPal.Re
 			if classificationInPal, err = o.autoGetClassificationsInPal(ormer, classification, topClassificationId, libraryUuid); err != nil {
 				return
 			}
-			if classificationInPal == nil {
+			if classificationInPal == nil { // keep looking for classification that can be mapped to a Tag???
 				// No tags for this classification.
 				continue
 			}
@@ -394,7 +394,7 @@ func (o *AssetLibraryPhillips) autoGetClassificationsInPal(ormer orm.Ormer, clas
 		log.Println(fmt.Sprintf("  -- Classification found (%s)", classification.Id)) // Debug
 		return
 	}
-
+	// if the Classification is new, how do we map it to a tag???
 	// Classification is new, detect parent.
 	classificationInPal = new(modelsOrm.ClassificationInPal)
 	var parentTagId *string
@@ -413,7 +413,7 @@ func (o *AssetLibraryPhillips) autoGetClassificationsInPal(ormer orm.Ormer, clas
 		if parentClassificationInPal, err = o.autoGetClassificationsInPal(ormer, parentClassification, topClassificationId, libraryUuid); err != nil || parentClassificationInPal == nil {
 			return
 		}
-		parentTagId = parentClassificationInPal.TagId
+		parentTagId = parentClassificationInPal.TagId // is this where we create a new Tag???
 	}
 
 	// Add to DB
@@ -433,6 +433,7 @@ func (o *AssetLibraryPhillips) autoGetClassificationsInPal(ormer orm.Ormer, clas
 /**
  * Returns empty slice if classifications are not part of topClassificationId.
  */
+// How is the array of tagIds used????
 func (o *AssetLibraryPhillips) GetTagIds(ormer orm.Ormer, classificationInPal *modelsOrm.ClassificationInPal, topClassificationId string) (tagIds []string, err error) {
 	tagIds = make([]string, 0)
 	if classificationInPal.ClassificationId == topClassificationId || classificationInPal.ParentClassificationId == nil {
@@ -443,7 +444,8 @@ func (o *AssetLibraryPhillips) GetTagIds(ormer orm.Ormer, classificationInPal *m
 		// Child has no tag, means all tree does not have.
 		return
 	}
-	// Read all classificationsInPal tree for very child.
+	// Read all classificationsInPal tree for every child.
+	// Are we walking up the Classifications?
 	allCips := make([]*modelsOrm.ClassificationInPal, 0)
 	allCips = append(allCips, classificationInPal)
 	tagIds = append(tagIds, *classificationInPal.TagId)

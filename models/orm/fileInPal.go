@@ -21,14 +21,18 @@ type FileInPal struct {
 	ModifiedAt    time.Time
 }
 
+// I wonder why the name of the FilesInPal datatable must be obtained by a method.
 func (*FileInPal) TableName() string {
 	return "FilesInPal"
 }
 
+// I hate not parenthesizing expressions like the one below -- but I resolved not to
+// to modify the code until the files are fully commented.
 func (o *FileInPal) HadChanged(file *modelsPal.File) bool {
 	return !(o.Title == file.Title && o.Description == file.Description && o.Filename == file.FileName && o.Size == file.FileSize)
 }
 
+// most of the FileInPal record
 func CreateFileInPal(contentItemId, libraryId, spaceId, recordId string, file *modelsData.File) *FileInPal {
 	return &FileInPal{
 		contentItemId,
@@ -45,6 +49,7 @@ func CreateFileInPal(contentItemId, libraryId, spaceId, recordId string, file *m
 	}
 }
 
+// why is the primary key changed -- essentially unlinking item from other data tables
 func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newContentItemId string) (contentItemId string, err error) {
 	contentItemId = o.ContentItemId
 
@@ -54,6 +59,7 @@ func (o *FileInPal) UpdateByFile(ormer orm.Ormer, file *modelsPal.File, newConte
 	o.Size = file.FileSize
 	o.ModifiedAt = time.Now()
 
+	// should parenthesize
 	if newContentItemId != "" && newContentItemId != o.ContentItemId {
 		/*
 			// Change PK
