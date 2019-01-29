@@ -396,6 +396,7 @@ func (o *AssetLibraryPhillips) autoGetClassificationsInPal(ormer orm.Ormer, clas
 		return
 	}
 	// if the Classification is new, how do we map it to a tag???
+	// multiple classifications can go to multiple tags, but the logic remains complex.
 	// Classification is new, detect parent.
 	classificationInPal = new(modelsOrm.ClassificationInPal)
 	var parentTagId *string
@@ -415,6 +416,7 @@ func (o *AssetLibraryPhillips) autoGetClassificationsInPal(ormer orm.Ormer, clas
 			return
 		}
 		parentTagId = parentClassificationInPal.TagId // is this where we create a new Tag???
+		// we gave extract classificationinPal to TagsinLibraries
 	}
 
 	// Add to DB
@@ -502,6 +504,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 	// Download file, save it, unzip.
 
 	// Create zip file in OS.
+	// so far I have only found this proceedure for zipped files.
 	zipFilename := o.getTmpPath() + system.NewV4String()
 	zipFile, err := os.Create(zipFilename)
 	if zipFile != nil {
@@ -554,6 +557,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 		}
 	} else {
 		// Just use original file.
+		// What if original file was not zipped.
 		file.OutFilename = zipFilename
 	}
 
@@ -570,7 +574,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 
 func (o *AssetLibraryPhillips) closeRemoveZip(file *os.File, filename string) {
 	file.Close()
-	o.deleteFile(filename)
+	o.deleteFile(filename) // here we get rid of Zip file.
 
 }
 
@@ -586,6 +590,7 @@ func (o *AssetLibraryPhillips) getTmpPath() string {
 	return beego.AppPath + "/tmp/"
 }
 
+// getting records associated with a classifications???
 func (o *AssetLibraryPhillips) getRecords(classificationId string, page int) (*modelsPal.Records, error) {
 	request, err := o.createGetRequest("records")
 	if err != nil {
@@ -623,6 +628,7 @@ func (o *AssetLibraryPhillips) getRecords(classificationId string, page int) (*m
 	return records, nil
 }
 
+//masterfileID applies to a group of file versions???
 func (o *AssetLibraryPhillips) getFile(masterfileId string) (*modelsPal.File, error) {
 	request, err := o.createGetRequest("file/" + masterfileId + "/latestversion")
 	if err != nil {
@@ -658,6 +664,8 @@ func (o *AssetLibraryPhillips) getFile(masterfileId string) (*modelsPal.File, er
 /**
  * Returns nil if 404 (PAL shows unaccessable classifications with 404).
  */
+
+// checking a classification for sanity???
 func (o *AssetLibraryPhillips) getClassification(classificationId string) (classification *modelsPal.Classification, err error) {
 	request, err := o.createGetRequest("classification/" + classificationId)
 	if err != nil {
@@ -695,6 +703,8 @@ func (o *AssetLibraryPhillips) getClassification(classificationId string) (class
 	return
 }
 
+// is this really a file downloadlink or is it a record download link???
+// may all records that come from a file are associated with a specific file download link
 func (o *AssetLibraryPhillips) getFileDownloadLink(recordId string) (string, error) {
 	bodyRequest, err := json.Marshal(modelsPal.CreateBodyFileOrder().AddTargetRecordId(recordId))
 	//log.Println(string(bodyRequest))
@@ -733,6 +743,7 @@ func (o *AssetLibraryPhillips) getFileDownloadLink(recordId string) (string, err
 	return o.digLinkFromOrder(orderFile)
 }
 
+// Can files be ordered from PAL????
 func (o *AssetLibraryPhillips) digLinkFromOrder(order *modelsPal.OrderFile) (link string, err error) {
 	if order.Status == modelsPal.ORDER_STATUS_SUCCESS {
 		link = order.GetFirstFileLink()
@@ -787,6 +798,7 @@ func (o *AssetLibraryPhillips) digLinkFromOrder(order *modelsPal.OrderFile) (lin
 	return
 }
 
+// pal-importer being told to use a specific URI???
 func (o *AssetLibraryPhillips) getApiUrl() string {
 	o.onceGetApiUrl.Do(func() {
 		o.apiUrl = beego.AppConfig.String("pal.api.url")

@@ -33,6 +33,8 @@ type Hyper struct {
 	languageIdentifier       string
 }
 
+// These routines are for uploading from the pal-importer to hyper-cms.
+
 func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, isUpdating bool) (contentItemId string, err error) {
 	// Prepare auth
 	cookies, err := o.sendAuthSession()
@@ -70,6 +72,7 @@ func (o *Hyper) UploadFile(file *modelsData.File, libraryId string, isUpdating b
 	}
 
 	// Create contentItem
+	// making or updating a database record
 	contentItem := modelsHyper.CreateContentItemFromFile(file)
 	contentItem.SubmittedBy = o.getUserEmail()
 	contentItem.TemporaryFilePath = tmpFilename
@@ -155,6 +158,8 @@ func Upload(url, file string, cookies []*http.Cookie) (body []byte, err error) {
 
 	return
 }
+
+// I think a new PAL was found and an hyperCMS library needed to be created.
 
 func (o *Hyper) CreateLibrary(title, companyId string) (libraryResponse *modelsHyper.LibraryResponse, err error) {
 	cookies, err := o.sendAuthSession()
@@ -289,6 +294,8 @@ func (o *Hyper) createContentItem(contentItem *modelsHyper.ContentItem, libraryI
 
 	return
 }
+
+// tell hypercms about the new ContentItem and into which library it should be put.
 
 func (o *Hyper) updateContentItem(contentItem *modelsHyper.ContentItem, libraryId string, cookies []*http.Cookie) (body string, err error) {
 	requestBody, err := json.Marshal(&contentItem)
