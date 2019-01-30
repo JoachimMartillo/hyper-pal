@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/usergrouplistfielddefinition by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:59 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: UserGroupListFieldDefinition</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: UserGroupListFieldDefinition</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of the definition of a <a href="usergrouplistfield.html">UserGroupListField</a>
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Created on the specified date in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">dataType</td>
+									<td class="description">Gets the data type of this field.</td>
+									<td class="type">string (values: none, singlelinetext, multilinetext, numeric, datetime, date, time, optionlist, duration, userlist, usergrouplist, html, json, classificationlist, recordlist, recordlink, languagelist, dynamicoptionlist, textlist)</td>
+								</tr>
+								<tr>
+									<td class="name">enabledLanguages</td>
+									<td class="description">Enabled languages.</td>
+									<td class="type">Collection of guid items</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets the identifier for this field.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">indexed</td>
+									<td class="description">Gets the indicator if the field is indexed.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">inlineStyle</td>
+									<td class="description">Gets a inline css style for this field.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">isReadOnly</td>
+									<td class="description">Indicates whether this field is read only.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">isRequired</td>
+									<td class="description">Indicates whether this field is required.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">isUniqueIdentifier</td>
+									<td class="description">Indicates whether this field is a unique identifier.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">label</td>
+									<td class="description">Gets the label of this field.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">languageMode</td>
+									<td class="description">Gets the language mode of the field.</td>
+									<td class="type">string (values: single, multiple)</td>
+								</tr>
+								<tr>
+									<td class="name">memberships</td>
+									<td class="description">Gets the memberships of a field.</td>
+									<td class="type">Collection of guid items</td>
+								</tr>
+								<tr>
+									<td class="name">modifiedOn</td>
+									<td class="description">Modified on the specified date in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">name</td>
+									<td class="description">Gets the name for this field.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">schemaUpdateRequired</td>
+									<td class="description">Gets the indicator if the schema update is required.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">scope</td>
+									<td class="description">Gets the scope.</td>
+									<td class="type">string (values: recordcontentglobal, recordcontentclassdependent, recordcontentfloating, classificationprofileclassdependent, userglobal, filefiletypedependent, filefloating, indexertaskglobal, fileglobal, classificationprofilefloating, recordcontentcontenttypedependent, classificationprofilecontenttypedependent)</td>
+								</tr>
+								<tr>
+									<td class="name">scopeCategory</td>
+									<td class="description">Gets the scope category.</td>
+									<td class="type">string (values: record, file, classification, user, indexertask)</td>
+								</tr>
+								<tr>
+									<td class="name">sortIndex</td>
+									<td class="description">Gets the sorting index of this field.</td>
+									<td class="type">int32</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets a tag for this field containing extra information. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-usergrouplistfielddefinition' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/fielddefinition/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-UserGroupListFieldDefinition: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this field definition.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/fielddefinition/modifiedby.html">modifiedby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-UserGroupListFieldDefinition: modifiedby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that last modified this field definition.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/usergrouplistfielddefinition by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:59 GMT -->
+</html>

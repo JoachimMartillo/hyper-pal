@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/language by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:40 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: Language</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: Language</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a Language
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Gets the created on date in UTC of this language.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">culture</td>
+									<td class="description">Gets the culture of this language.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets the language identifier.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">isEnabledForFields</td>
+									<td class="description">Gets or sets a value indicating whether this language is enabled for fields.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">modifiedOn</td>
+									<td class="description">Gets the modified on date in UTC of this language.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">name</td>
+									<td class="description">Gets the name of this language.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets the Tag of this object. The value of this property has to be valid Xml. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-language' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/language/image.html">image</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Language: image</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the language&#39;s image</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/language/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Language: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this language.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/language/modifiedby.html">modifiedby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Language: modifiedby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that last modified this language.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>GET</span>
+										<span>/language/{languageId}/synonyms</span>
+									</td>
+									<td class="name">export</td>
+									<td class="title">Exports the list of synonyms for this language</td>
+									<td class="statuses">
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/language/{languageId}/synonyms</span>
+									</td>
+									<td class="name">import</td>
+									<td class="title">Imports the list of synonyms for this language</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Language not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-export">
+							<div class="example-item">
+								<span>Exporting synonyms</span>
+<div>
+					To export synonyms, issue a <b>GET</b> request to the /language/{id}/synonyms endpoint:
+				</div>
+<pre>GET /language/1b35bde3-c0d0-4eaa-8cdc-0afc662e583d/synonyms HTTP/1.1</pre>
+<div>
+					This will return the synonyms as a solr formatted file.
+					A <b>Content-Disposition</b> header will be added to the download.
+				</div>
+							</div>
+						</div>
+						<div id="example-import">
+							<div class="example-item">
+								<span>Importing synonyms</span>
+<div>
+					To import synonyms, issue a <b>PUT</b> request to the /language/{id}/synonyms
+					endpoint with the synonym list in solr file format as multipart form-data content:
+				</div>
+<pre>PUT /language/1b35bde3-c0d0-4eaa-8cdc-0afc662e583d/synonyms HTTP/1.1
+Content-Length: 244947
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) ...
+api-version: 1
+Authorization: Token OWQ0NWUxMjNkNDYyNDEzOTkzZDZiNWI4Mzk4ZTliZTY6QURBTU5FVA==
+Content-Type: multipart/form-data; boundary=----BoundaryzZaqkP0Sxn4p9XFF
+------BoundaryzZaqkP0Sxn4p9XFF
+Content-Disposition: form-data; name="file1"; filename="synonyms_solr.txt"
+Content-Type: text/plain
+[content]</pre>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/language by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:40 GMT -->
+</html>

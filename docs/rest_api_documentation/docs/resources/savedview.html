@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/savedview by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:40 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: SavedView</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: SavedView</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a saved view
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Gets the creation datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">dateAdded</td>
+									<td class="description">Gets the date when the saved view was shared if it was, or the date it was created on if it's not shared yet. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-savedview' and the value 'DateAdded' to your request.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets the Id of this saved view.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">isPublic</td>
+									<td class="description">Gets a value indicating whether this saved view is public, meaning that a global shared link is available.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">isShared</td>
+									<td class="description">Gets a value indicating whether this saved view shared. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-savedview' and the value 'IsShared' to your request.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">lastActivityDate</td>
+									<td class="description">Gets the date this saved view was last used. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-savedview' and the value 'LastActivityDate' to your request.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">modifiedOn</td>
+									<td class="description">Gets the last modification datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">myLastActivityDate</td>
+									<td class="description">Gets the date this saved view was last used by the current user. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-savedview' and the value 'MyLastActivityDate' to your request.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">name</td>
+									<td class="description">Gets the name of the saved view.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">scope</td>
+									<td class="description">Gets the scope of this saved view. Scope is used to define logical groups of multiple view types. E.g. to group all views related to a specific site or application.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets or sets the value for the Tag of this object. The value of this property should be valid Xml. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-savedview' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">viewProperties</td>
+									<td class="description">Gets the data of this saved view.</td>
+									<td class="type">Dictionary of pairs with string keys and string values</td>
+								</tr>
+								<tr>
+									<td class="name">viewType</td>
+									<td class="description">Gets the view type of this saved view. ViewType is used to store different view types used for the same scope. E.g. to differentiate between a search view and a collection view.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/savedview/modifiedby.html">modifiedby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-SavedView: modifiedby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that last modified this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/savedview/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-SavedView: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/savedview/{savedViewId}</span>
+									</td>
+									<td class="name">edit</td>
+									<td class="title">Edits an existing saved view.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Saved view not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>DELETE</span>
+										<span>/savedview/{savedViewId}</span>
+									</td>
+									<td class="name">delete</td>
+									<td class="title">Deletes an existing saved view.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Record not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/savedview/{savedViewId}/share</span>
+									</td>
+									<td class="name">share</td>
+									<td class="title">Share a saved view</td>
+									<td class="statuses">
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>GET</span>
+										<span>/savedview/{savedViewId}/share</span>
+									</td>
+									<td class="name">getshares</td>
+									<td class="title">Get a saved view&#39;s shares</td>
+									<td class="statuses">
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/savedview/{savedViewId}/lastactivitydate</span>
+									</td>
+									<td class="name">updatelastactivitydate</td>
+									<td class="title">Update the last activity date for a saved view</td>
+									<td class="statuses">
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-edit">
+							<div class="example-item">
+								<span>Editing a saved view</span>
+<pre>PUT /savedview/1fe6e87a31bc4208bd1ca4f000dbfaff
+{
+	"name": "mySavedView",
+	"isPublic": false,
+	"scope": "testScope",
+	"viewType": "testViewType",
+	"tag": "&lt;xml&gt;test tag&lt;/xml&gt;",
+	"viewProperties": {
+		"myKey1": "myValue1",
+		"myKey2": "myValue2"
+	}
+}</pre>
+<br />
+<div>
+					Note that when editing the propertyBag for a saved view, you always need to specify the entire propertyBag.
+				</div>
+							</div>
+						</div>
+						<div id="example-delete">
+							<div class="example-item">
+								<span>Deleting a saved view</span>
+<pre>DELETE /savedview/8735a5a3e75a4bc0a2a1a3cd0069b669</pre>
+							</div>
+						</div>
+						<div id="example-sharing-a-saved-view">
+							<div class="example-item">
+								<span>Sharing a saved view</span>
+<div>
+					You can share a saved view via a PUT request to the <b>share</b> action endpoint:
+				</div>
+<pre>PUT /savedview/4535a5a3e75a4bc0a341a3cd0069b675/share
+{
+	"userIds": ["49631b3c-3a66-4c1f-8e21-a53e008e4716"],
+	"userGroupIds": [],
+	"updateRemoved":false
+}</pre>
+<div class="table">
+  <table class="first_column_nowrap">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>userIds</b>
+        </td>
+        <td>
+									A list of Ids of users you want to share the view with.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>userGroupIds</b>
+        </td>
+        <td>
+									A list of Ids of userGroups you want to share the view with.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>updateRemoved</b>
+        </td>
+        <td>
+									A boolean value indicating whether or not you want to remove any shares that existed before but are not specified in the current request.
+									Note that in order to remove all shares from a saved view, you must specify an empty array of userIds or userGroupIds in combination with the
+									<b>updateRemoved</b> flag set to true. Passing null or not passing anything for these values is not allowed when clearing them.
+								</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+							</div>
+						</div>
+						<div id="example-updating-last-activity-date">
+							<div class="example-item">
+								<span>Updating a saved view's last activity date</span>
+<div>
+					Updating a saved view's last activity date can be done by issuing a PUT request with an empty body to the following endpoint:
+				</div>
+<pre>PUT /savedview/4535a5a3e75a4bc0a341a3cd0069b675/lastactivitydate</pre>
+<div>
+					The saved view's last activity date for the currently logged on user will be set to the current date and time.
+				</div>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/savedview by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:41 GMT -->
+</html>

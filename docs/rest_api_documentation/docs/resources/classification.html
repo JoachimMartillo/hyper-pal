@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/classification by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:35 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: Classification</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: Classification</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a Classification
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">contentType</td>
+									<td class="description">Gets the content type of this classification.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Gets the creation datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">hasChildren</td>
+									<td class="description">Indicates if the classiciation has child classifications. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-classification' and the value 'HasChildren' to your request.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets the Id of this classification.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">identifier</td>
+									<td class="description">Gets the identifier of this classification.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">isRoot</td>
+									<td class="description">Indicates if the classification is a root classification.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">labels</td>
+									<td class="description">A collection of <a href="../nonresources/label.html">Label</a> items.</td>
+									<td class="type"><a href="../nonresources/labelcollection.html">LabelCollection</a></td>
+								</tr>
+								<tr>
+									<td class="name">modifiedOn</td>
+									<td class="description">Gets the last modification datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">name</td>
+									<td class="description">Gets the name of this classification.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">parentId</td>
+									<td class="description">Gets the Id of the parent of this classification.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">sortIndex</td>
+									<td class="description">Gets the index of this classification. This index indicates where this classification
+            is sorted in the list of children of the parent of this classification.</td>
+									<td class="type">int32</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets or sets the value for the Tag of this object. The value of this property has to be valid Xml. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-classification' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/parent.html">parent</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: parent</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="classification.html">Classification</a></td>
+								<td class="description">Gets the classification that is the parent of this classification.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/ancestors.html">ancestors</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: ancestors</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="linkedclassificationcollection.html">LinkedClassificationCollection</a></td>
+								<td class="description">Gets the ancestors of this classification</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/children.html">children</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: children</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="classificationcollection.html">ClassificationCollection</a></td>
+								<td class="description">Gets the children classification of this classification.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/image.html">image</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: image</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the classification&#39;s image</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/fields.html">fields</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: fields</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="fieldcollection.html">FieldCollection</a></td>
+								<td class="description">Gets the collection containing all the textfields of this classification.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/recordpermissions.html">recordpermissions</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: recordpermissions</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="classificationpermissions.html">ClassificationPermissions</a></td>
+								<td class="description">Gets the collection containing all the record permissions of this classification.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/classificationtreepermissions.html">classificationtreepermissions</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: classificationtreepermissions</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="classificationpermissions.html">ClassificationPermissions</a></td>
+								<td class="description">Gets the collection containing all the classification tree permissions of this classification.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/slaveclassifications.html">slaveclassifications</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: slaveclassifications</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="classificationcollection.html">ClassificationCollection</a></td>
+								<td class="description">Gets the collection containing all the classifications this classification maps to.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/modifiedby.html">modifiedby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: modifiedby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that last modified this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/classification/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Classification: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/classification/{classificationId}</span>
+									</td>
+									<td class="name">edit</td>
+									<td class="title">Edits an existing classification.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Classification not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>DELETE</span>
+										<span>/classification/{classificationId}</span>
+									</td>
+									<td class="name">delete</td>
+									<td class="title">Deletes an existing classification.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Classification not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/classification/{classificationId}/recordpermissions</span>
+									</td>
+									<td class="name">recordpermissionsedit</td>
+									<td class="title">Set the record permissions of a classification.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad Request</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Classification not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/classification/{classificationId}/classificationtreepermissions</span>
+									</td>
+									<td class="name">classificationtreepermissionsedit</td>
+									<td class="title">Set the classification tree permissions of a classification.</td>
+									<td class="statuses">
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-classifications-direct-push">
+							<div class="example-item">
+								<span>Immediate propagation for classification updates.</span>
+<div>
+				For POST, PUT and DELETE operations on the /classification resource you can force an immediate update of the search index, or immediate propagation. To do so, add the boolean header/query-string parameter <b>set-immediateSearchIndexUpdate</b> and set it to "true". If you don't specify this parameter, or set it to "false", the change will be added to the queue of the Enterprise search synchronization process.
+				Setting the parameter to true will immediately push the classification changes to the search index, so that this classification can immediately be found, e.g. while an ETL  import is still running. This is important, for example, when importing both the child and parent classifications.
+			</div>
+<pre>PUT /classification/1fe6e87a31bc4208bd1ca4f000dbfaff
+"set-immediateSearchIndexUpdate": "true",
+{
+"name": "Digital Images",
+"identifer": "digital_images",
+"sortIndex": 6,
+...
+}</pre>
+							</div>
+						</div>
+						<div id="example-edit">
+							<div class="example-item">
+								<span>Editing a classification (full body)</span>
+<pre>PUT /classification/1fe6e87a31bc4208bd1ca4f000dbfaff
+{
+	"name": "Digital Images",
+	"identifer": "digital_images",
+	"sortIndex": 6,
+	"fields": {
+		"addOrUpdate": [
+			{
+				"id": "7B4E156C-0730-45D9-B904-A3CD007C02A5",
+				"localizedValues": [
+					{
+						"languageId": "C2BD4F9B-BB95-4BCB-80C3-1E924C9C26DC",
+						"value": "All images coming from a digital source"
+					}
+				]
+			},
+			{
+				"id": "AB57432B-C899-40CF-BD44-802D5201973C",
+				"sortIndex": 1
+			}
+		],
+		"remove": [
+			{
+				"id": "1A5842C2-3204-41F9-9527-D7E2F293131E"
+			},
+			{
+				"id": "D78B9DA1-A1E2-4DBE-8E2A-8F8FA62667F5"
+			}
+		]
+	},
+	"labels": [
+		{
+			"languageId": "C2BD4F9B-BB95-4BCB-80C3-1E924C9C26DC",
+			"value": "Brands - English"
+		},
+		{
+			"languageId": "1ED74A99-84CD-4A9C-BFEB-A4D000EC3275",
+			"value": "Brands - Dutch"
+		}
+	],
+	"slaveclassifications": {
+		"addOrUpdate": ["21d41eb183234b0cbe7b6a9c898b1de1", "21d41eb183234b0cbe7b6a9c898b1de1"],
+		"remove":[ "21d41eb183234b0cbe7b6a9c898b1de1 ]
+	}
+}</pre>
+<br />
+<ul>
+  <li>
+						Field operations are similar to editing fields on a record.<br />
+						For more detailed examples of such operations and the field values that can be provided when creating or editing classifications, see 
+						<a href="record.html#example-edit">Editing a record</a>.
+					</li>
+  <li>
+						Labels cannot be added or removed, but their value can be set or cleared.<br />
+						A languageId and value should always be specified. Explicitly specifying a null value clears the label.
+					</li>
+</ul>
+							</div>
+						</div>
+						<div id="example-edit-attributesonly">
+							<div class="example-item">
+								<span>Editing a classification (attributes only)</span>
+<pre>PUT /classification/1fe6e87a31bc4208bd1ca4f000dbfaff
+{
+	"name": "New Classification Name"
+}</pre>
+							</div>
+						</div>
+						<div id="example-delete">
+							<div class="example-item">
+								<span>Deleting a classification</span>
+<pre>DELETE /classification/8735a5a3e75a4bc0a2a1a3cd0069b669</pre>
+							</div>
+						</div>
+						<div id="example-classificationpremissions">
+							<div class="example-item">
+								<span>Editing record or classification tree permissions on a classification</span>
+<p>There are two different endpoints for classification permissions: recordpermissions and classificationtreepermissions</p>
+<p>Both endpoints accept the same request body:</p>
+<pre>PUT /classification/8735a5a3e75a4bc0a2a1a3cd0069b669/{recordpermissions|classificationtreepermissions}
+{
+	"breakInheritance":false,
+	"permissions": {
+		"addOrUpdate": [
+			{
+					"userGroupId":"21d41eb183234b0cbe7b6a9c898b1de1",
+					"accessRight":"Read"
+			},
+			{
+					"userGroupId":"21d41eb183234b0cbe7b6a9c898b1de1",
+					"accessRight":"FullControl"
+			}
+		],
+		"remove": [
+			{
+					"userGroupId":"21d41eb183234b0cbe7b6a9c898b1de1
+			}
+		]
+	}
+}</pre>
+<p>
+				Please refer to <a href="../nonresources/classificationusergrouppermission.html"> for the complete list of access rights.</a></p>
+							</div>
+						</div>
+						<div id="example-slaveclassifications">
+							<div class="example-item">
+								<span>Slave Classifications</span>
+<p>
+					A slave classification is a classification that is mapped to another classification, so that records automatically get linked to that slave classification once they are linked to the master classification. They can be configured through the <a href="classificationpagedcollection.html#example-create">creation of a classification</a> and/or <a href="classification.html#example-edit">editing of a classification</a>.
+				</p>
+<p>
+					By adding the header value "select-classification: SlaveClassifications" all slave classifications of the current classification will be returned.
+				</p>
+<pre>GET /classification/id
+select-classification: SlaveClassifications</pre>
+<p>The body of the editing request is in the following format:</p>
+<pre>PUT /classification/8735a5a3e75a4bc0a2a1a3cd0069b669
+{
+	"slaveclassifications": {
+		"addOrUpdate": [ "ae82e88999d8479ab48ca3cd0069b4ba" ],
+		"remove": [ "ae82e88999d8479ab48ca3cd0069b4ba" ]
+	}
+}</pre>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/classification by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:38 GMT -->
+</html>

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/user by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:56 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: User</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: User</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a user.
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Gets the creation datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">email</td>
+									<td class="description">Gets or sets the email addres of this user. The email address it not required and has a maximum length of 254 characters.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">expirationDate</td>
+									<td class="description">Gets or sets the date on which this user account will expire.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets or sets the Id of this user.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">languageForUIId</td>
+									<td class="description">Gets or sets the default language used by this user for the static text displayed on the user interfaces.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">languageId</td>
+									<td class="description">Gets or sets the default language used by this user when accessing fields.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">lastFailedLogOnDate</td>
+									<td class="description">Returns the last date on which someone tried to log on using this username and a wrong password. It returns null if no wrong password has ever been used or if the user has logged in successfully since.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">lastSuccessfulLogOnDate</td>
+									<td class="description">Returns the last UTC date on which someone successfully logged in using this user's account. It returns if no one has ever logged in using this account.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">lockedOut</td>
+									<td class="description">Gets or sets a bool that controls whether this user account is locked out or not.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">modifiedOn</td>
+									<td class="description">Gets the last modification datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">name</td>
+									<td class="description">Gets or sets the name of this user. This name is required, has to be unique, is not case sensitive and has a maximum length of 50 characters.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">secondLastSuccessfulLogOnDate</td>
+									<td class="description">Returns the second last date on which someone successfully logged in using this user's account. It returns if no one has ever logged in using this account.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">storageQuota</td>
+									<td class="description">Gets or sets the the maximum number of bytes that a user can own. The unit used is bytes.</td>
+									<td class="type">int64</td>
+								</tr>
+								<tr>
+									<td class="name">storageUsed</td>
+									<td class="description">Gets the sum of all the filesizes of which this user is the owner. The unit used is bytes.</td>
+									<td class="type">int64</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets or sets the value for the Tag of this object. The value of this property should be valid Xml. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-user' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/user/fields.html">fields</a>
+								</td>
+								<td class="selectkey">
+										<span>select-User: fields</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="fieldcollection.html">FieldCollection</a></td>
+								<td class="description">Gets a collection of all the fields of this user.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/user/memberships.html">memberships</a>
+								</td>
+								<td class="selectkey">
+										<span>select-User: memberships</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="usergroupcollection.html">UserGroupCollection</a></td>
+								<td class="description">Gets a collection of all the UserGroups that this user is member of. Allows you to add or remove the membership of this user to a group.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/user/image.html">image</a>
+								</td>
+								<td class="selectkey">
+										<span>select-User: image</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets an object allowing you to control the picture of this user.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/user/modifiedby.html">modifiedby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-User: modifiedby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that last modified this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/user/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-User: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/user by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:58 GMT -->
+</html>

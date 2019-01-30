@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,600");
+@import url("https://fonts.googleapis.com/css?family=Inconsolata");
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font: 400 87.5%/1.6 'Open Sans', sans-serif;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	color: #434649;
+	background-color: transparent;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	color: #0092bc;
+	text-decoration: underline;
+}
+
+	a:hover {
+		color: #44c1e3;
+	}
+
+h1 {
+	margin: 0;
+	padding: 0;
+	font-size: 2rem;
+	font-weight: 300;
+	color: #0092bc;
+}
+
+h2 {
+	font-size: 1.5rem;
+	font-weight: 300;
+	margin: 0;
+	padding: 1rem 0 1rem;
+}
+
+h4 {
+	font-size: 1.2857rem;
+	font-weight: 400;
+	color: #97999b;
+	margin: 0;
+	padding: 1rem 0 0.5rem;
+}
+
+h5 {
+	color: #97999b;
+	margin-bottom: 5px;
+	font-size: 1rem;
+	font-weight: 300;
+	text-transform: uppercase;
+}
+
+pre, code {
+	border: 0.5mm solid #DBDDDF;
+	font-family: 'Inconsolata', monospace;
+	word-break: break-word;
+}
+
+pre {
+	padding: 0.5rem 0.75rem;
+	-moz-tab-size: 4;
+	tab-size: 4;
+	font-size: 1rem;
+	margin-left: 1cm;
+	margin-right: 1cm;
+}
+
+strong {
+	font-weight: 600;
+}
+
+@page {
+	margin: 1.5cm 1.5cm 2.5cm;
+}
+
+.main {
+	overflow: visible;
+}
+
+	.main a:after {
+		color: #97999B;
+		content: " (" attr(href) ") ";
+	}
+
+.page-header h1 {
+	color: #0092BC;
+	margin: 0;
+	padding: 0;
+}
+
+.page-header .warning {
+	background: transparent;
+	width: 100%;
+	border: 0.5mm solid #ffa300;
+	color: #434649;
+	padding: 0.25cm;
+}
+
+.toc > ul {
+	margin-top: 0;
+}
+
+.top, #top, .anchor, h2 > a, h3 > a, h4 > a, h5 > a {
+	display: none;
+}
+
+table td, table th {
+	vertical-align: top;
+	text-align: left;
+	padding: 0.25cm;
+	border-bottom: 0.5mm solid #DBDDDF;
+}
+
+* {
+	page-break-before: auto;
+}

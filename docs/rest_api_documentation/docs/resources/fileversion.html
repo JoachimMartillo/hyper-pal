@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/fileversion by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:32 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: FileVersion</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: FileVersion</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a specific version of a <a href="file.html">File</a>
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">comment</td>
+									<td class="description">Gets the comment on this file version.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">content</td>
+									<td class="description">Gets the value of the Content of this object. The value of this property should be a valid XML.
+            An empty string will be automatically converted to null. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-fileversion' and the value 'Content' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">crc32</td>
+									<td class="description">Gets the CRC32 checksum of this file version.</td>
+									<td class="type">int32</td>
+								</tr>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Gets the creation datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">fileCreatedOn</td>
+									<td class="description">Gets creation datetime of the physical asset file, in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">fileExtension</td>
+									<td class="description">Gets the file extension of this file version. An empty string will be returned if this
+            file version does not have a file extension.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">fileModifiedOn</td>
+									<td class="description">Gets the date/time in UTC time on which the file version was last modified.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">fileName</td>
+									<td class="description">Gets the file name of this file version.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">fileSize</td>
+									<td class="description">Get the file size of this file version.</td>
+									<td class="type">int64</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets the id of the file version.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">info</td>
+									<td class="description">Gets the value of the Info of this object. The value of this property should be a valid XML.
+            An empty string will be automatically converted to null. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-fileversion' and the value 'Info' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">preventDownload</td>
+									<td class="description">Indicates whether the download of this file version is prevented.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">publicationItems</td>
+									<td class="description">Gets a collection of all the items used in this publication. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-fileversion' and the value 'PublicationItems' to your request.</td>
+									<td class="type">Collection of <a href="../nonresources/publicationitem.html">PublicationItem</a> items</td>
+								</tr>
+								<tr>
+									<td class="name">publications</td>
+									<td class="description">Gets a collection of all the publications this file version is an item of. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-fileversion' and the value 'Publications' to your request.</td>
+									<td class="type">Collection of guid items</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets the value for the Tag of this object. The value of this property should be a valid XML.
+            An empty string will be automatically converted to null. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-fileversion' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">versionLabel</td>
+									<td class="description">Gets the text that describes this file version. It is not required, can be
+            a maximum of 50 characters long and has to be unique for all the file versions.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">watermarkId</td>
+									<td class="description">Gets or sets the watermark id.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">watermarkType</td>
+									<td class="description">Gets or sets the watermark type.</td>
+									<td class="type">string (values: none, inheritfromfile, usespecified, usesetting)</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/fileversion/filetype.html">filetype</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: filetype</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="filetype.html">FileType</a></td>
+								<td class="description">Gets the file type of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/filepreviews.html">filepreviews</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: filepreviews</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="filepreviewcollection.html">FilePreviewCollection</a></td>
+								<td class="description">Gets a collection containing all the file previews of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/masterfilepreview.html">masterfilepreview</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: masterfilepreview</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="filepreview.html">FilePreview</a></td>
+								<td class="description">Gets the master file preview of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/fileversion/preview.html">preview</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: preview</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the master preview image of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/fileversion/thumbnail.html">thumbnail</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: thumbnail</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the master thumbnail of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/additionalfiles.html">additionalfiles</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: additionalfiles</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="additionalfilecollection.html">AdditionalFileCollection</a></td>
+								<td class="description">Gets a collection containing all the file previews of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/fileversion/watermark.html">watermark</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: watermark</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="watermark.html">Watermark</a></td>
+								<td class="description">Gets the watermark.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/fileversion/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileVersion: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-add-edit">
+							<div class="example-item">
+								<span>Adding or updating a file version</span>
+<div>
+				After a file upload process is finished, you will receive a file upload token.
+				You can use this token to add or update a record's file or file version.
+				See the examples on <a href="recordpagedcollection.html#example-create">creating a record</a> and
+				<a href="record.html#example-edit">editing a record</a> for more details on how to do it.
+				Keep in mind, the file upload token can be consumed only once.
+				<b>404 Not Found</b> error response is returned if you try consuming that token more than once.
+			</div>
+							</div>
+						</div>
+						<div id="example-applying-watermark">
+							<div class="example-item">
+								<span>Applying a watermark to a file version</span>
+<div>
+				A watermark can be applied to a file version and can be configured through the
+				<a href="recordpagedcollection.html#example-create">creation of a record</a> and/or
+				<a href="record.html#example-edit">editing of a record</a>. For more info, see the
+				<a href="watermark.html">Watermark resource</a> page.
+			</div>
+							</div>
+						</div>
+						<div id="example-Publication item">
+							<div class="example-item">
+								<span>Setting publication items</span>
+<div id="publication-item">
+				Every fileversion can be a publication or a publication item.<br />
+				By adding the header property "select-fileversion: PublicationItems" publication items of the current fileversion will be returned.
+				<pre>GET /fileversion/id
+select-fileversion: PublicationItems</pre>
+				The publicationitems property on the fileversion resource can be set through a PUT or POST (this will create a record with PublicationItems) request on /record/record-id. The fileversion specified in TargetFileVersionId must exist.
+				<pre>
+PUT /record/8735a5a3e75a4bc0a2a1a3cd0069b669
+{
+	"files": {
+		"addOrUpdate": [
+			{
+				"id": "da75e95e-e306-4f1d-baeb-a5980109c930",
+				"versions": {
+					"addOrUpdate": [
+						{
+							"id": "471CD6A8-29A9-441E-BD09-623903201248",
+							"publicationitems": [
+								{
+									"isManual": false,
+									"pageNumber": 1, 
+									"targetFileVersionId": "A49312A6-1F8F-4762-B4A5-246828F33597"
+								},
+								{
+									"isManual": false,
+									"pageNumber": 2,
+									"targetFileVersionId": "3ED5CA3C-87AC-4779-82D0-358D9124157F"
+								}
+							]
+						}
+					]
+				}
+			}
+		]
+	}
+}
+</pre><p>
+					NOTE: the "isManual" property is not mandatory, but it is recommended to set this property to <b>true</b> when manually setting publicationitems. If not specified the value is defined by ADAM. </p><p>Setting publication items will always overwrite the complete collection.</p><p>See the examples on <a href="recordpagedcollection.html#example-create">creating a record</a> and
+				<a href="record.html#example-edit">editing a record</a> for more details on how to set publication items on a record.</p></div>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/fileversion by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:34 GMT -->
+</html>

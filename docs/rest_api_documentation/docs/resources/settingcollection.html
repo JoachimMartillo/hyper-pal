@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/settingcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:40 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: SettingCollection</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: SettingCollection</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a collection of <a href="setting.html">Setting</a> items
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">items</td>
+									<td class="description">A collection of resource items.</td>
+									<td class="type">Collection of <a href="setting.html">Setting</a> items</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-list">
+							<div class="example-item">
+								<span>Getting multiple settings</span>
+<div>
+				You can retrieve more than one setting with a single request by stating the names of the
+				settings you would like to retrieve. Use the "<b>names</b>" query parameter to specify
+				a comma-separated list of setting names which you want to retrieve.
+			</div>
+<div>
+				For example:
+			</div>
+<pre>GET /settings?names=.accountLockoutDuration,.accountLockoutThreshold HTTP/1.1
+Accept: application/hal+json</pre>
+<div>
+				This request will not fail for the cases when a <a href="setting.html#example-read">
+				single setting fetch</a> will:
+				<ul><li>When a setting is not found: the missing setting will be omitted from the response.</li><li>When a setting is not <a href="setting.html">whitelisted</a>: it will not be returned either.</li><li>When the user doesn't have the <a href="setting.html#example-read-scoped">Role required to change</a>: the aggregated value for the current requestor will be returned using the ADAM setting value fallback mechanism.</li><li>When a setting is a <b>Role Setting</b>: tt will not be returned in the response.</li><li>If, due to all the specifics above, none of requested settings is returned,
+						the response will simply be an empty collection (but not 404 not found).</li></ul></div>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/settingcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:40 GMT -->
+</html>

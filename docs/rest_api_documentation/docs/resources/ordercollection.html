@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/ordercollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:39 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: OrderCollection</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: OrderCollection</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of collection of orders. Retrieving this collection is currently not exposed via the REST API. For details on the supported order types, see the documentation for
+            <a href="downloadorder.html">DownloadOrder</a>, <a href="emailorder.html">EmailOrder</a>, <a href="ftporder.html">FtpOrder</a> and , <a href="ftpresortorder.html">FtpResortOrder</a>
+					</p>
+				</div>
+			</section>
+
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>POST</span>
+										<span>/orders</span>
+									</td>
+									<td class="name">add</td>
+									<td class="title">Create an order</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>201</td>
+														<td>Request completed successfully. The header parameter &#39;Location&#39; contains the location of the new order resource.</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-add">
+							<div class="example-item">
+								<span>Creating a new download order</span>
+<pre>POST /orders HTTP/1.1
+{
+	"type": "download",
+	"creatorEmail": "frank.tremens@adamsoftware.net",
+	"disableNotification": "true",
+	"machineAffinity": true,
+	"machineName": "MACHINE1",
+	"siteAffinity": "DEFAULT",
+	"satelliteId": null,
+	"targets": [
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["MasterPreview", "MasterThumbnail"],
+			"assetType": "AllVersionsOfAllFiles"
+		},
+		{
+			"recordId": "0333844867764f819ea5a3cd006e67c5",
+			"targetTypes": ["MasterPreview"],
+			"assetType": "LatestVersionOfAllFiles"
+		},
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["Document"],
+			"assetType": "AllVersionsOfAllFiles",
+			"actions": [
+				{
+					"action": "resizeImage",
+					"parameters": {
+						"width": 120,
+						"height": 150,
+						"format": "KeepOriginal",
+						"resolution": 300,
+						"maxFileSize": 1048576,
+						"colorSpace": "KeepOriginal"
+					}
+				}
+			]
+		},
+	...
+	]
+}</pre>
+<br />
+<span>Creating a new email order</span>
+<pre>POST /orders HTTP/1.1
+{
+	"type": "email",
+	"emailSubject": "ADAM generated email",
+	"emailBody": "see attached files",
+	"emailRecipients": [ "administrator@adamsoftware.net", "all@adamsoftware.net" ],
+	"creatorEmail": "frank.tremens@adamsoftware.net",
+	"priority": 1,
+	"earliestStartDate": "2015-08-20T22:00:00Z",
+	"disableNotification": "true",
+	"machineAffinity": true,
+	"machineName": "MACHINE1",
+	"siteAffinity": "DEFAULT",
+	"satelliteId": null,
+	"targets": [
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["MasterPreview", "MasterThumbnail"],
+			"assetType": "AllVersionsOfAllFiles"
+		},
+		{
+			"recordId": "0333844867764f819ea5a3cd006e67c5",
+			"targetTypes": ["MasterPreview"],
+			"assetType": "LatestVersionOfAllFiles"
+		},
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["Document"],
+			"assetType": "AllVersionsOfAllFiles",
+			"actions": [
+				{
+					"action": "resizeImage",
+					"parameters": {
+						"width": 120,
+						"height": 150,
+						"format": "KeepOriginal",
+						"resolution": 300,
+						"maxFileSize": 1048576,
+						"colorSpace": "KeepOriginal"
+					}
+				}
+			]
+		},
+	...
+	]
+}</pre>
+<br />
+<span>Creating a new FTP order</span>
+<pre>POST /orders HTTP/1.1
+{
+	"type": "ftp",
+	"ftpHostname": "1.2.3.4",
+	"ftpUsername": "foo",
+	"ftpPassword": "bar",
+	"passiveTransfer": true,
+	"connectionType": "normal",
+	"creatorEmail": "frank.tremens@adamsoftware.net",
+	"priority": 1,
+	"earliestStartDate": "2015-08-20T22:00:00Z",
+	"disableNotification": "true",
+	"machineAffinity": true,
+	"machineName": "MACHINE1",
+	"siteAffinity": "DEFAULT",
+	"satelliteId": null,
+	"targets": [
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["MasterPreview", "MasterThumbnail"],
+			"assetType": "AllVersionsOfAllFiles"
+		},
+		{
+			"recordId": "0333844867764f819ea5a3cd006e67c5",
+			"targetTypes": ["MasterPreview"],
+			"assetType": "LatestVersionOfAllFiles"
+		},
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["Document"],
+			"assetType": "AllVersionsOfAllFiles",
+			"actions": [
+				{
+					"action": "resizeImage",
+					"parameters": {
+						"width": 120,
+						"height": 150,
+						"format": "KeepOriginal",
+						"resolution": 300,
+						"maxFileSize": 1048576,
+						"colorSpace": "KeepOriginal"
+					}
+				}
+			]
+		},
+	...
+	]
+}</pre>
+<br />
+<span>Creating a new FTP resort order</span>
+<pre>POST /orders HTTP/1.1
+{
+	"type": "ftpResort",
+	"creatorEmail": "frank.tremens@adamsoftware.net",
+	"priority": 1,
+	"earliestStartDate": "2015-08-20T22:00:00Z",
+	"disableNotification": "true",
+	"machineAffinity": true,
+	"machineName": "MACHINE1",
+	"siteAffinity": "DEFAULT",
+	"satelliteId": null,
+	"targets": [
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["MasterPreview", "MasterThumbnail"],
+			"assetType": "AllVersionsOfAllFiles"
+		},
+		{
+			"recordId": "0333844867764f819ea5a3cd006e67c5",
+			"targetTypes": ["MasterPreview"],
+			"assetType": "LatestVersionOfAllFiles"
+		},
+		{
+			"recordId": "15e1090e37a34428a5efa3cd007c7807",
+			"targetTypes": ["Document"],
+			"assetType": "AllVersionsOfAllFiles",
+			"actions": [
+				{
+					"action": "resizeImage",
+					"parameters": {
+						"width": 120,
+						"height": 150,
+						"format": "KeepOriginal",
+						"resolution": 300,
+						"maxFileSize": 1048576,
+						"colorSpace": "KeepOriginal"
+					}
+				}
+			]
+		},
+	...
+	]
+}</pre>
+<br />
+<div>
+					Shared order request attributes:
+				</div>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>type</b>
+        </td>
+        <td>
+									The type of the order that needs to be created.<br />
+									One of the following types needs to be provided:
+									<ul><li>download</li><li>email</li><li>ftp</li><li>ftpResort</li></ul></td>
+      </tr>
+      <tr>
+        <td>
+          <b>priority</b>
+        </td>
+        <td>
+									The priority of the download order should always be 0 and is not mandatory. <br />
+									For the FTP order, other priorities than 0 are supported.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>earliestStartDate</b>
+        </td>
+        <td>
+									The earliest start date of this order. When priority is 0 (like in download order), then the earliest start date is ignored.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>creatorEmail</b>
+        </td>
+        <td>
+									The e-mail address for this order. <br />
+									By default this is the e-mail address of the user who created this order.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>disableNotification</b>
+        </td>
+        <td>
+									A value indicating whether or not notification is enabled on this order.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>machineAffinity</b>
+        </td>
+        <td>
+										Indicates whether this order should be executed on a specific server or not. If set to True, the MachineName property should contain the right server name.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>machineName</b>
+        </td>
+        <td>
+									The name of the machine that needs to execute this order.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>siteAffinity</b>
+        </td>
+        <td>
+									The name of the site on which this order needs to be executed. <br />
+									Setting this property ensures that only maintenance managers, which are running on the specified site<br />
+									will execute the order. If not specified, the order can be executed on any site.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>satelliteId</b>
+        </td>
+        <td>
+									The id of the satellite on which this order needs to be executed. <br />
+									If not specified, the order will be executed locally.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>targets</b>
+        </td>
+        <td>An array of references to the records that need to be downloaded in specific formats.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<div>
+					FTP order specific request attributes:
+				</div>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>ftpHostname</b>
+        </td>
+        <td>
+									The FTP hostname.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>ftpUsername</b>
+        </td>
+        <td>
+									The FTP username.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>ftpPassword</b>
+        </td>
+        <td>
+									The FTP password.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>ftpPort</b>
+        </td>
+        <td>
+									The FTP port. Defaults to 21.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>ftpDirectory</b>
+        </td>
+        <td>
+									The FTP directory.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>proxyHostname</b>
+        </td>
+        <td>
+									The FTP proxy hostname.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>proxyUsername</b>
+        </td>
+        <td>
+									The FTP proxy username.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>proxyPassword</b>
+        </td>
+        <td>
+									The FTP proxy password.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>proxyPort</b>
+        </td>
+        <td>
+									The FTP proxy port. Defaults to 80.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>passiveTransfer</b>
+        </td>
+        <td>
+									Indicates if passive transfer is enabled.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>connectionType</b>
+        </td>
+        <td>
+									The FTP connection type. Can be one of the options listed below:
+									<ul><li>
+											normal
+										</li><li>
+											implicitEncryption
+										</li><li>
+											explicitSSLEncryption
+										</li><li>
+											explicitTLSEncryption
+										</li></ul></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<div>
+					Email order specific request attributes:
+				</div>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>recipients</b>
+        </td>
+        <td>
+									A list of recipients to send the mail to.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>subject</b>
+        </td>
+        <td>
+									The subject of the mail.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>body</b>
+        </td>
+        <td>
+									The body of the mail.
+								</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<div>
+					For each target, the following attributes need to be provided:
+				</div>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>recordId</b>
+        </td>
+        <td>
+									The id of the record that needs to be included in the download.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>targetTypes</b>
+        </td>
+        <td>
+									Array of one or more of the options listed below:
+									<ul><li>
+											Document
+										</li><li>
+											MasterThumbnail
+										</li><li>
+											AllThumbnails
+										</li><li>
+											MasterPreview
+										</li><li>
+											AllPreviews
+										</li><li>
+											AdditionalFiles
+										</li><li>
+											DocumentsOfAllItems
+										</li></ul></td>
+      </tr>
+      <tr>
+        <td>
+          <b>assetTypes</b>
+        </td>
+        <td>
+									One of the following available options:
+									<ul><li>
+											LatestVersionOfMasterFile
+										</li><li>
+											AllVersionsOfMasterFile
+										</li><li>
+											AllVersionsOfAllFiles
+										</li><li>
+											LatestVersionOfAllFiles
+										</li></ul></td>
+      </tr>
+      <tr>
+        <td>
+          <b>actions</b>
+        </td>
+        <td>
+									The actions that need to be executed on this target.
+								</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<div>
+					Order target action attributes
+				</div>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>action</b>
+        </td>
+        <td>
+									The name of the action that needs to be executed on the target. <br />
+									The following actions are supported:
+									<ul><li>ResizeImage</li><li>TranscodeVideo</li></ul></td>
+      </tr>
+      <tr>
+        <td>
+          <b>parameters</b>
+        </td>
+        <td>
+									The parameters that need to be passed to the action.
+								</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<h3>Actions</h3>
+<ul>
+  <li>
+    <b>
+							ResizeImage
+						</b>
+    <br />
+    <p>
+							Resizes an image.
+							You can find more information on which values should be set for this action in the Adam Developer Guide.
+							Have a look at the ResizeImageMediaAction constructor for detailed info.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>width</b>
+            </td>
+            <td>
+											The width to which the image needs to be resized.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>height</b>
+            </td>
+            <td>
+											The height to which the image needs to be resized.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>format</b>
+            </td>
+            <td>
+											The following formats are supported:
+											<ul><li>keepOriginal</li><li>jpg</li><li>png</li><li>tiff</li><li>bmp</li><li>eps</li><li>pdf</li></ul></td>
+          </tr>
+          <tr>
+            <td>
+              <b>resolution</b>
+            </td>
+            <td>
+											The resolution in dpi.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>maxFileSize</b>
+            </td>
+            <td>
+											The maximum file size of the resized image.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>colorSpace</b>
+            </td>
+            <td>
+											The following colorSpaces are supported:
+											<ul><li>keepOriginal</li><li>rgb</li><li>cmyk</li><li>lab</li><li>indexedColor</li><li>grayscale</li><li>bitmap</li></ul></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+              TranscodeVideo
+            </b>
+    <br />
+    <p>
+              Transcodes a video.
+              You can find more information on which values should be set for this action in the Adam Developer Guide.
+              Have a look at the TranscodeVideoMediaAction constructor for detailed info.
+            </p>
+    <p>
+              The following parameter attributes need to be provided:
+            </p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>maxHeight</b>
+            </td>
+            <td>
+                      The maximum height to which the video needs to be transcoded.
+                      <br />
+                      The following values are standard video heights:
+                      <ul><li>4320</li><li>2160</li><li>1080</li><li>720</li><li>576</li><li>480</li><li>288</li><li>240</li></ul></td>
+          </tr>
+          <tr>
+            <td>
+              <b>quality</b>
+            </td>
+            <td>
+                      The quality to which the video needs to be transcoded. <br />
+                      The following values are supported:
+                      <ul><li>Lowest</li><li>Low</li><li>Medium</li><li>High</li><li>Highest</li></ul></td>
+          </tr>
+          <tr>
+            <td>
+              <b>outputFormat</b>
+            </td>
+            <td>
+                      The format to which the video needs to be transcoded. <br />
+                      The following output formats are supported:
+                      <ul><li>mp4</li><li>webm</li></ul></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+</ul>
+							</div>
+						</div>
+						<div id="example-follow-up">
+							<div class="example-item">
+								<span>Following up on an order</span>
+<div>
+					Once the order has been created, a resource is returned containing the id and the status of the order.
+				</div>
+<div>
+					Orders with priority 0 will be processed immediately. If the order is successfully executed within
+					the timeout that is defined in the system setting <b>.maintenanceJobOutOfProcessTimeOut</b>,
+					an array of delivered files will be immediately included in the response. The delivered files can
+					be downloaded by following the contained URIs.
+				</div>
+<pre>{
+	"_links": {
+		"self": {
+			"href": "/order/94c217e4565f44d79beea4ba00a2fa97"
+		}
+	},
+	"id": "94c217e4565f44d79beea4ba00a2fa97",
+	"status": "Success",
+	"deliveredFiles": [
+		"/download?token=kac1YmSZhoJLpa3kGYXADQNTJNJwDVR_ge9J1yGj_EuFzxkvTcfyGNvw..."
+	]
+}</pre>
+<div>
+					If the order with priority 0 could not be processed within the defined timeout or if the priority
+					of the order is set to a higher value, the resource can be retrieved at a later time and a link
+					to the delivered files will be available upon successfully processing the order. The user which
+					will later retrieve the order must be assigned to the <b>ViewMaintenanceJobs</b> role in order
+					to access this resource.
+				</div>
+<pre>{
+	"_links": {
+		"self": {
+			"href": "/order/f0233034fd8441028977a4f000e0d35d"
+		}
+	},
+	"id": "f0233034fd8441028977a4f000e0d35d",
+	"status": "Executing",
+	"deliveredFiles": []
+}</pre>
+<div>
+					A generated order can be retrieved directly in the following way:
+				</div>
+<pre>GET /order/94c217e4565f44d79beea4ba00a2fa97 HTTP/1.1</pre>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/ordercollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:39 GMT -->
+</html>

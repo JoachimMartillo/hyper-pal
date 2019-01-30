@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/recordpagedcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:30 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: RecordPagedCollection</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: RecordPagedCollection</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a paged collection of <a href="record.html">Record</a> items
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">items</td>
+									<td class="description">One page of this paged collection, which is a subcollection of the complete collection.</td>
+									<td class="type">Collection of <a href="record.html">Record</a> items</td>
+								</tr>
+								<tr>
+									<td class="name">page</td>
+									<td class="description">The current page of this paged collection.</td>
+									<td class="type">int32</td>
+								</tr>
+								<tr>
+									<td class="name">pageSize</td>
+									<td class="description">The current page size of this paged collection.</td>
+									<td class="type">int32</td>
+								</tr>
+								<tr>
+									<td class="name">totalCount</td>
+									<td class="description">The total count of items in this paged collection, not just on the current page.</td>
+									<td class="type">int64</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>first</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the first page of this paged collection.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>prev</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the previous page of this paged collection.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>next</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the next page of this paged collection.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>last</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the last page of this paged collection.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>POST</span>
+										<span>/records</span>
+									</td>
+									<td class="name">create</td>
+									<td class="title">Creates a new record.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>201</td>
+														<td>
+					Request completed successfully. The header parameter &#39;Location&#39; contains the location of the new record resource.
+					The response body is a JSON object which contains the property &quot;id&quot; that corresponds to the newly created record resource id.
+				</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-search">
+							<div class="example-item">
+								<span>Searching for records</span>
+<div>
+				The parameters are specified as http headers.
+			</div>
+<pre>GET /records HTTP/1.1
+accept: application/hal+json
+filter: FileCount = 2
+sort: createdon
+page: 1
+pageSize: 20</pre>
+<div>
+				The parameters are specified as query string parameters.
+			</div>
+<pre>GET /records?filter=FileCount = 2&amp;sort=createdon&amp;page=1&amp;pagesize=10 HTTP/1.1</pre>
+<div>
+				The parameters are specified as a combination of query string parameters and http headers.
+			</div>
+<pre>GET /records?page=1&amp;pagesize=10 HTTP/1.1
+filter: FileCount = 2
+sort: createdon</pre>
+							</div>
+						</div>
+						<div id="example-create">
+							<div class="example-item">
+								<span>Creating a new record</span>
+<pre>POST /records
+{
+	"tag": "&lt;xml&gt;test tag&lt;/xml&gt;",
+	"contentType": "Record",
+	"classifications": {
+		"addOrUpdate": [
+			{
+				"id": "F0962A92-8725-4FFC-9301-926FFCB6527A",
+				"sortIndex": 2
+			},
+			{
+				"id": "AB57432B-C899-40CF-BD44-802D5201973C",
+				"sortIndex": 1
+			}
+		]
+	},
+	"files": {
+		"master": "NzZBN0Y0NDctRjQyMy00NTJDLThDNEMtMUY4MkQ0MjA4OUU0",
+		"addOrUpdate": [
+			{
+				"versions": {
+					"addOrUpdate": [
+						{
+							"id": "NzZBN0Y0NDctRjQyMy00NTJDLThDNEMtMUY4MkQ0MjA4OUU0",
+							"filename": "file1.png",
+							"tag": "&lt;xml&gt;another test tag&lt;/xml&gt;",
+							"versionLabel": "this is a dummy label",
+							"comment": "this is a comment"
+						}
+					]
+				}
+			},
+			{
+				"versions": {
+					"addOrUpdate": [
+						{
+							"id": "NDBFNEY4REMtN0FDQS00NjE2LUJFOTgtQTkxNTk5MTJENTFG",
+							"filename": "file3.png",
+							"tag": "&lt;xml&gt;yet another test tag&lt;/xml&gt;",
+							"versionLabel": "yet another dummy label",
+							"comment": "yet another comment",
+							"additionalFiles": {
+								"addOrUpdate": [
+									{
+										"id": "MkYzQjc0MTctQ0E3Ri00QUFELUEwQkQtNEIzRkQ2NzczOEY0",
+										"label": "new additional file label",
+										"tag": "&lt;xml&gt;and here yet another tag&lt;/xml&gt;",
+										"filename": "additional file name.jpg"
+									}
+								]
+							},
+							"previews": {
+								"addOrUpdate": [
+									{
+										"id": "MzRBMTA1MTYtQ0UyOC00RDRGLTlGOUEtNzQxMjg2NjgzMDNG",
+										"label": "new file preview",
+										"pageNumber": 2,
+										"tag": "&lt;xml&gt;oh yes, one more tag&lt;/xml&gt;"
+									}
+								]
+							},
+							"publicationItems": [
+								{
+									"pageNumber": 1,
+									"targetFileVersionId": "C8A0DBE0-4513-4A85-B31C-E2F3D68E5CE1"
+								},
+								{
+									"pageNumber": 2,
+									"targetFileVersionId": "D166A072-2D0D-42CE-810B-3E76F64BFFBD"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "DA75E95E-E306-4F1D-BAEB-A5980109C930",
+				"watermarktype": "UseSpecified",
+				"watermarkId": "CF4F6966-398D-4B26-B08B-2F5FE4809FD4"
+			},
+			{
+				"id": "DA75E95E-E306-4F1D-BAEB-A5980109C930",
+				"versions": {
+					"addOrUpdate": [
+						{
+							"id": "D55D1DE0-7E8E-4AF7-BF78-A598010AC47D",
+							"watermarktype": "None",
+							"watermarkId": "00000000-0000-0000-0000-000000000000"
+						}
+					]
+				}
+			}
+		]
+	},
+	"fields": {
+		"addOrUpdate": [
+			{
+				"id": "6980bb9511454c4896afa48f009ac883",
+				"localizedValues": [
+					{
+						"languageId": "00000000000000000000000000000000",
+						"values": ["3240c776b7454ac19291a3cd006ea6c3", "209d7ede48004a008885a3cd006b8b8c"]
+					}
+				]
+			}
+		]
+	}
+}</pre>
+<div>
+					For a more detailed example of values that can be provided when creating records, see:
+					<a href="record.html#example-edit">Editing a record</a><br />
+					See also:
+					<a href="record.html#example-records-direct-push">Immediate propagation for record updates</a></div>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/recordpagedcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:30 GMT -->
+</html>

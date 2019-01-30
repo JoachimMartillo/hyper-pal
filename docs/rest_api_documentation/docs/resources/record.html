@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/record by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:27 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: Record</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: Record</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a record.
+                <br />
+                There is one action on this resource, which is not documented in the relations section
+                and its purpose is to provide the possibility to download the image (binary stream) of
+                the record's master file preview or thumbnail.
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">contentType</td>
+									<td class="description">Gets or sets the value for the ContentType of this object. It can be either one of the following:
+            	<ul><li>Record: if the record is not typed. </li><li>Video: if the record is a video. </li></ul>.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Gets the creation datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets the Id of this record.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">modifiedOn</td>
+									<td class="description">Gets the last modification datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets or sets the value for the Tag of this object. The value of this property should be valid Xml. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-record' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/fields.html">fields</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: fields</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="fieldcollection.html">FieldCollection</a></td>
+								<td class="description">Gets the collection containing all the fields of this record.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/files.html">files</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: files</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="filecollection.html">FileCollection</a></td>
+								<td class="description">Gets the collection containing all the files of this record.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/preview.html">preview</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: preview</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the master preview of the latest version of the master file of this record</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/thumbnail.html">thumbnail</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: thumbnail</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the master thumbnail of the latest version of the master file of this record</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/masterfile.html">masterfile</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: masterfile</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="file.html">File</a></td>
+								<td class="description">Gets the file that is the master file of this record</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/masterfilelatestversion.html">masterfilelatestversion</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: masterfilelatestversion</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="fileversion.html">FileVersion</a></td>
+								<td class="description">Gets the latest version of the master file of this record</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/classifications.html">classifications</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: classifications</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="recordclassificationcollection.html">RecordClassificationCollection</a></td>
+								<td class="description">Gets the collection containing all the classifications of this record.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/modifiedby.html">modifiedby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: modifiedby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that last modified this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/record/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-Record: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/record/{recordId}</span>
+									</td>
+									<td class="name">edit</td>
+									<td class="title">Edits an existing record.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Record not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="http-method">
+										<span>DELETE</span>
+										<span>/record/{recordId}</span>
+									</td>
+									<td class="name">delete</td>
+									<td class="title">Deletes an existing record.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Record not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-read">
+							<div class="example-item">
+								<span>Reading a record without embedded resources</span>
+<div>
+				In case of <b>hal+json</b>, all subresources are represented as links to these resources.
+			</div>
+<pre>GET /record/271ee18ad0884ecebfc3a3cd0069d759 HTTP/1.1
+accept: application/hal+json</pre>
+<pre>{
+	"_links": {
+		"self": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759"
+		},
+		"fields": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/fields",
+			"select-key": "fields"
+		},
+		"files": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/files",
+			"select-key": "files"
+		},
+		"preview": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/image/preview",
+			"select-key": "preview"
+		},
+		"thumbnail": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/image/thumbnail",
+			"select-key": "thumbnail"
+		},
+		"masterfile": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/masterfile",
+			"select-key": "masterfile"
+		},
+		"classifications": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/classifications",
+			"select-key": "classifications"
+		}
+	},
+	"id": "271ee18ad0884ecebfc3a3cd0069d759",
+	"createdOn": "2014-10-23T06:25:21.073Z",
+	"modifiedOn": "2014-10-23T06:25:21.363Z",
+	"tag": null,
+	"contentType": "Record"
+}</pre>
+<div>
+				In case of <b>json</b>, all subresources are returned as null values.
+			</div>
+<pre>GET /record/271ee18ad0884ecebfc3a3cd0069d759 HTTP/1.1
+accept: application/json</pre>
+<pre>{
+	"id": "271ee18ad0884ecebfc3a3cd0069d759",
+	"fields": null,
+	"files": null,
+	"preview": null,
+	"thumbnail": null,
+	"masterFile": null,
+	"createdOn": "2014-10-23T06:25:21.073Z",
+	"modifiedOn": "2014-10-23T06:25:21.363Z",
+	"tag": null,
+	"contentType": "Record",
+	"classifications": null
+}</pre>
+							</div>
+						</div>
+						<div id="example-Read-using-unique-identifier-field">
+							<div class="example-item">
+								<span>Reading a record using a unique identifier field</span>
+<pre>GET /record/?fieldName={name}&amp;fieldValue={value} HTTP/1.1
+accept: application/hal+json</pre>
+<div>
+        If the value specified is from a numeric field, it will be parsed to a decimal with the culture of the logged on user.
+      </div>
+<pre>{
+	"id": "271ee18ad0884ecebfc3a3cd0069d759",
+	"fields": null,
+	"files": null,
+	"preview": null,
+	"thumbnail": null,
+	"masterFile": null,
+	"createdOn": "2014-10-23T06:25:21.073Z",
+	"modifiedOn": "2014-10-23T06:25:21.363Z",
+	"tag": null,
+	"contentType": "Record",
+	"classifications": null
+}</pre>
+							</div>
+						</div>
+						<div id="example-read-select">
+							<div class="example-item">
+								<span>Reading a record with embedded resources</span>
+<div>Read records and embed thumbnail and preview.</div>
+<pre>GET /record/271ee18ad0884ecebfc3a3cd0069d759 HTTP/1.1
+accept: application/hal+json
+select-record: thumbnail
+select-record: preview</pre>
+<pre>{
+	"_links": {
+		"self": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759"
+		},
+		"fields": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/fields",
+			"select-key": "fields"
+		},
+		"files": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/files",
+			"select-key": "files"
+		},
+		"masterfile": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/masterfile",
+			"select-key": "masterfile"
+		},
+		"classifications": {
+			"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/classifications",
+			"select-key": "classifications"
+		}
+	},
+	"id": "271ee18ad0884ecebfc3a3cd0069d759",
+	"createdOn": "2014-10-23T06:25:21.073Z",
+	"modifiedOn": "2014-10-23T06:25:21.363Z",
+	"tag": null,
+	"contentType": "Record",
+	"_embedded": {
+		"preview": {
+			"_links": {
+				"self": {
+					"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/image/preview"
+				}
+			},
+			"size": 10896,
+			"width": 480,
+			"height": 480,
+			"extension": "jpg",
+			"uri": "/image/9T72XFv_d9imNxyxhCqoRRsvStHec03rZCywLbemcY4ocOPwYGTJsG226NrGLXrYNMy6wdihphr7aqOf.../"
+		},
+		"thumbnail": {
+			"_links": {
+				"self": {
+					"href": "/record/271ee18ad0884ecebfc3a3cd0069d759/image/thumbnail"
+				}
+			},
+			"size": 3225,
+			"width": 160,
+			"height": 160,
+			"extension": "jpg",
+			"uri": "/image/9T72XFv_d9imNxyxhCqoRRsvStHec03rZCywLbemcY4ocOPwYGTJsG226NrGLXrYNMy6wdihphr7aqOf.../"
+		}
+	}
+}</pre>
+							</div>
+						</div>
+						<div id="example-read-image">
+							<div class="example-item">
+								<span>Retrieve the record's preview or thumbnail image binary data</span>
+<pre>GET /record/271ee18ad0884ecebfc3a3cd0069d759/image/preview/download HTTP/1.1</pre>
+<div>
+				The response is the stream of the record's preview image binary data (with the
+				content-type set to "image/jpeg" or "image/png", etc. depending on the type of the image returned).
+				Similar request can be used to retrieve the thumbnail:
+			</div>
+<pre>GET /record/271ee18ad0884ecebfc3a3cd0069d759/image/thumbnail/download HTTP/1.1</pre>
+							</div>
+						</div>
+						<div id="example-records-direct-push">
+							<div class="example-item">
+								<span>Immediate propagation for record updates.</span>
+<div>
+					For POST, PUT and DELETE operations on the /record resource you can force an immediate update of the search index, or immediate propagation. To do so, add the boolean header/query-string parameter <b>set-immediateSearchIndexUpdate</b> and set it to "true". If you don't specify this parameter, or set it to "false", the change will be added to the queue of the Enterprise search synchronization process.
+					Setting the parameter to true will immediately push the record changes to the search index, so that this record can immediately be found, e.g. while an ETL  import is still running. This is important, for example, when importing both the child and parent of linked records.
+				</div>
+<pre>PUT /record/8735a5a3e75a4bc0a2a1a3cd0069b669
+"set-immediateSearchIndexUpdate": "true",
+{
+"tag": "some tag",
+...
+}</pre>
+							</div>
+						</div>
+						<div id="example-edit">
+							<div class="example-item">
+								<span>Editing a record (full body)</span>
+<div>
+					"id" for addOrUpdate of a file version, additional file or file preview
+					can be a token or a guid. When adding a new file version, additional file
+					or file preview, you pass the token which you get after uploading a file
+					(please check the "See also" section below).
+					When editing, you pass the guid of an existing file.
+				</div>
+<div>
+							To create a new file, you have to specify at least one file version with a token for
+					</div>
+<pre>PUT /record/8735a5a3e75a4bc0a2a1a3cd0069b669
+{
+	"tag": "&lt;xml&gt;some tag&lt;/xml&gt;",
+	"contentType": "Record",
+	"classifications": {
+		"addOrUpdate": [
+			{
+				"id": "F0962A92-8725-4FFC-9301-926FFCB6527A",
+				"sortIndex": 2
+			},
+			{
+				"id": "AB57432B-C899-40CF-BD44-802D5201973C",
+				"sortIndex": 1
+			}
+		],
+		"remove": [
+			{
+				"id": "1A5842C2-3204-41F9-9527-D7E2F293131E"
+			},
+			{
+				"id": "D78B9DA1-A1E2-4DBE-8E2A-8F8FA62667F5"
+			},
+			{
+				"id": "09F59FE8-CD01-43FB-8B17-146C0AAB7A6A"
+			}
+		]
+	},
+	"files": {
+		"master": "NzZBN0Y0NDctRjQyMy00NTJDLThDNEMtMUY4MkQ0MjA4OUU0",
+		"addOrUpdate": [
+			{
+				"versions": {
+					"addOrUpdate": [
+						{
+							"id": "NzZBN0Y0NDctRjQyMy00NTJDLThDNEMtMUY4MkQ0MjA4OUU0",
+							"filename": "file1.png",
+							"tag": "&lt;xml&gt;some other tag&lt;/xml&gt;",
+							"versionLabel": "this is a dummy label",
+							"comment": "this is a comment for file with fields update"
+						}
+					]
+				},
+				"fields": {
+					"addOrUpdate": [
+						{
+							"id": "cddb3052c3694f3496efec4e1fdda338",
+							"localizedValues": [
+								{
+									"languageId": "c2bd4f9bbb954bcb80c31e924c9c26dc",
+									"value": "some text in English"
+								},
+								{
+									"languageId": "b0d62a54c4384e86945ea4b1009ed109",
+									"value": "some text in Dutch"
+								}
+							]
+						}
+					],
+					"remove": [
+						{
+							"id": "b75af862c30a496698ac6bdd7a86618f"
+						}
+					]
+				}
+			},
+			{
+				"id": "72728492-E0C1-4695-B2AA-6FE17E96FDF5",
+				"versions": {
+					"addOrUpdate": [
+						{
+							"id": "EAE049FC-F7CB-49D0-87B2-D0A0E8B79774",
+							"filename": "file3.png",
+							"tag": "&lt;xml&gt;yet another tag&lt;/xml&gt;",
+							"versionLabel": "yet another dummy label",
+							"comment": "yet another comment",
+							"additionalFiles": {
+								"addOrUpdate": [
+									{
+										"id": "MkYzQjc0MTctQ0E3Ri00QUFELUEwQkQtNEIzRkQ2NzczOEY0",
+										"label": "new additional file label",
+										"tag": "&lt;xml&gt;and here yet another tag&lt;/xml&gt;",
+										"filename": "new filename.jpg"
+									}
+								],
+								"remove": [
+									{
+										"id": "148BA512-5618-2246-8D94-72589D721B0Y"
+									}
+								]
+							},
+							"Previews": {
+								"master": "MzRBMTA1MTYtQ0UyOC00RDRGLTlGOUEtNzQxMjg2NjgzMDNG",
+								"addOrUpdate": [
+									{
+										"id": "MzRBMTA1MTYtQ0UyOC00RDRGLTlGOUEtNzQxMjg2NjgzMDNG",
+										"name": "new file preview",
+										"pageNumber": 2,
+										"tag": "&lt;xml&gt;oh yes, one more tag&lt;/xml&gt;"
+									}
+								],
+								"remove": [
+									{
+										"id": "AAEC425A-CA87-4495-B10D-CBA97776E9AA"
+									}
+								]
+							},
+							"publicationItems": [
+								{
+									"pageNumber": 1,
+									"targetFileVersionId": "C8A0DBE0-4513-4A85-B31C-E2F3D68E5CE1"
+								},
+								{
+									"pageNumber": 2,
+									"targetFileVersionId": "D166A072-2D0D-42CE-810B-3E76F64BFFBD"
+								}
+							]
+						}
+					],
+					"remove": [
+						{
+							"id": "318BA544-7453-4527-8D97-23589D721D9C"
+						},
+						{
+							"id": "B1137AEC-16DF-4E6C-96CF-007D74263530"
+						}
+					]
+				}
+			},
+			{
+				"id": "DA75E95E-E306-4F1D-BAEB-A5980109C930",
+				"watermarktype": "UseSpecified",
+				"watermarkId": "CF4F6966-398D-4B26-B08B-2F5FE4809FD4"
+			},
+			{
+				"id": "DA75E95E-E306-4F1D-BAEB-A5980109C930",
+				"versions": {
+					"addOrUpdate": [
+						{
+							"id": "D55D1DE0-7E8E-4AF7-BF78-A598010AC47D",
+							"watermarktype": "None",
+							"watermarkId": "00000000-0000-0000-0000-000000000000"
+						}
+					]
+				}
+			}
+		],
+		"remove": [
+			{
+				"id": "5B044ECA-7E34-4242-B608-9B942BF3063A"
+			}
+		]
+	},
+	"fields": {
+		"addOrUpdate": [
+			{
+				"id": "b149288b81d741d8b721a3cd0069b113",
+				"localizedValues": [
+					{
+						"languageId": "c2bd4f9bbb954bcb80c31e924c9c26dc",
+						"value": "some text in English"
+					},
+					{
+						"languageId": "b0d62a54c4384e86945ea4b1009ed109",
+						"value": "some text in Dutch"
+					}
+				]
+			},
+			{
+				"id": "6980bb9511454c4896afa48f009ac883",
+				"localizedValues": [
+					{
+						"languageId": "00000000000000000000000000000000",
+						"values": ["3240c776b7454ac19291a3cd006ea6c3", "209d7ede48004a008885a3cd006b8b8c"]
+					}
+				]
+			},
+			{
+				"id": "4d29b74f7ad2435294b9a49700a4ac3f",
+				"localizedValues": [
+					{
+						"languageId": "00000000000000000000000000000000",
+						"parents": [
+							{
+								"recordId": "8c19b5cb663b4f3ea4d7a3cd0069b4a8"
+							}
+						],
+						"children": [
+							{
+								"recordId": "7c0040fd01b64c3485bda3cd0069b377"
+							},
+							{
+								"recordId": "98e9cd4e992f496ba3aea3cd0069b3b3"
+							}
+						]
+					}
+				]
+			}
+		],
+		"remove": [
+			{
+				"id": "b149288b81d741d8b721a3cd0069b113"
+			}
+		]
+	}
+}</pre>
+<br />
+<ul>
+  <li>
+						The Rest API supports updating values in different languages in one call.
+						For every field value the id of the language needs to be set. <br />
+						For language independent fields, an empty guid needs to be provided.
+					</li>
+  <li>
+						The property that is used for setting values is dependent on the type of the field. <br />
+						Setting the value property to null behaves differently between the different field types.
+						<div class="table"><table><thead><tr><th>type</th><th>value property</th><th>behavior of setting value to null</th></tr></thead><tbody><tr><td>
+											SingleLineText, MultiLineText, Html, Numeric, DateTime, Date, Time, Duration
+										</td><td>
+											Value
+										</td><td>
+											Reset to default.
+										</td></tr><tr><td>
+											ClassificationList, LanguageList, OptionList, RecordList, UserList, UserGroupList, TextList
+										</td><td>
+											Values
+										</td><td>
+											Reset to defaults.
+										</td></tr><tr><td>
+											RecordLink
+										</td><td>
+											Parents <br />
+											Children <br />
+											Links
+										</td><td>
+											Ignore.
+										</td></tr><tr><td>
+											DynamicOptionList
+										</td><td>
+											Values
+										</td><td>
+											Reset to defaults.
+										</td></tr></tbody></table></div></li>
+  <li>
+						Only fields in Floating scope can be removed from the record.
+					</li>
+  <li>
+						The Value property of a Dynamic Option List field has a different data type when reading or writing.<br />
+						When reading it contains a list of objects, each with a "key" and "value" property. <br />
+						When writing it needs a list of strings, only containing the keys.
+					</li>
+</ul>
+							</div>
+						</div>
+						<div id="example-edit-attributesonly">
+							<div class="example-item">
+								<span>Editing a record (attributes only)</span>
+<pre>PUT /record/8735a5a3e75a4bc0a2a1a3cd0069b669
+{
+	"tag": "&lt;xml&gt;some tag&lt;/xml&gt;",
+	"contentType": "Record"
+}</pre>
+							</div>
+						</div>
+						<div id="example-delete">
+							<div class="example-item">
+								<span>Deleting a record</span>
+<pre>DELETE /record/8735a5a3e75a4bc0a2a1a3cd0069b669</pre>
+							</div>
+						</div>
+				</div>
+			</section>
+
+			<section class="block block--seealso">
+				<h3>See also</h3>
+				<div class="body">
+					<a href="file.html">File</a>
+				</div>
+			</section>
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/record by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:30 GMT -->
+</html>

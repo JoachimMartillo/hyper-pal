@@ -1,0 +1,1647 @@
+<!doctype HTML>
+<html lang="en">
+
+<!-- Mirrored from localhost:2015/docs/endpoints by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:27 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>ADAM REST API Documentation</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Endpoints</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+			<section class="block block--info">
+				<h3>Reading</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Route</th>
+								<th>Description</th>
+								<th>Parameters</th>
+							</tr>
+						</thead>
+							<tr>
+								<td>
+									/
+								</td>
+								<td>
+									Root of the API
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/additionalfile/{additionalFileId}
+								</td>
+								<td>
+									Read a single file version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													additionalFileId :
+												</code>
+												id of the file version
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification
+								</td>
+								<td>
+									Read a single classification using a unique field and its value
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fieldName :
+												</code>
+												name of the unique field
+											</li>
+											<li>
+												<code>
+													fieldValue :
+												</code>
+												Value of the field. If a numeric field value is specified, make sure to enter this value as a Culture Invariant string.
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification
+								</td>
+								<td>
+									Read a single classification by namePath
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													namePath :
+												</code>
+												namePath of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}
+								</td>
+								<td>
+									Read a single classification by id
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/ancestors
+								</td>
+								<td>
+									Read all the parents of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/children
+								</td>
+								<td>
+									Read all the children of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/classificationtreepermissions
+								</td>
+								<td>
+									Read the classification tree permissions of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/field/{fieldId}
+								</td>
+								<td>
+									Read a single field of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+											<li>
+												<code>
+													fieldId :
+												</code>
+												id of the field
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/fields
+								</td>
+								<td>
+									Read all fields of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/image
+								</td>
+								<td>
+									Read the image of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/parent
+								</td>
+								<td>
+									Read the parent of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/recordpermissions
+								</td>
+								<td>
+									Read the record permissions of a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classification/{classificationId}/slaveclassifications
+								</td>
+								<td>
+									Read the list of slave classifications for a classification
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the classification
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/classifications
+								</td>
+								<td>
+									Read a collection of classifications
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/download
+								</td>
+								<td>
+									Retrieve binary content of a file using secure download token
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													token :
+												</code>
+												Reference token to the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fielddefinition/{fieldDefinitionId}
+								</td>
+								<td>
+									Read a single field definition
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fieldDefinitionId :
+												</code>
+												id of the field definition
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fielddefinitions
+								</td>
+								<td>
+									Read a collection of field definitions
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fieldgroup/{fieldGroupId}
+								</td>
+								<td>
+									Read a single field group
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fieldGroupId :
+												</code>
+												id of the field group
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fieldgroup/{fieldGroupId}/createdby
+								</td>
+								<td>
+									Get a user that created the field group
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fieldGroupId :
+												</code>
+												id of the field group
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fieldgroup/{fieldGroupId}/members
+								</td>
+								<td>
+									Get the members of the field group
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fieldGroupId :
+												</code>
+												id of the field group
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fieldgroup/{fieldGroupId}/modifiedby
+								</td>
+								<td>
+									Get a user that last modified the field group
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fieldGroupId :
+												</code>
+												id of the field group
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fieldgroups
+								</td>
+								<td>
+									Read a collection of field groups
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}
+								</td>
+								<td>
+									Read a file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}/field/{fieldId}
+								</td>
+								<td>
+									Read a single field of a file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+											<li>
+												<code>
+													fieldId :
+												</code>
+												id of the field
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}/fields
+								</td>
+								<td>
+									Read all fields of a file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}/fileversions
+								</td>
+								<td>
+									Read all file versions of a file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}/image/preview
+								</td>
+								<td>
+									Read the preview of this file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}/image/thumbnail
+								</td>
+								<td>
+									Read the thumbnail of this file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}/latestversion
+								</td>
+								<td>
+									Read the latest file version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/file/{fileId}/watermark
+								</td>
+								<td>
+									Read the watermark of a file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileId :
+												</code>
+												id of the file
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/filepreview/{filePreviewId}
+								</td>
+								<td>
+									Read the preview of a file
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													filePreviewId :
+												</code>
+												id of the file preview
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/filepreview/{filePreviewId}/image/preview
+								</td>
+								<td>
+									Read the preview from a filepreview
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													filePreviewId :
+												</code>
+												id of the filepreview
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/filepreview/{filePreviewId}/image/thumbnail
+								</td>
+								<td>
+									Read the thumbnail from a filepreview
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													filePreviewId :
+												</code>
+												id of the filepreview
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/filetype/{fileTypeId}
+								</td>
+								<td>
+									Read a single file type
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileTypeId :
+												</code>
+												id of the file type
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/filetype/{fileTypeId}/image/icon
+								</td>
+								<td>
+									Read the icon of the filetype
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileTypeId :
+												</code>
+												id of the filetype
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/filetype/{fileTypeId}/image/thumbnail
+								</td>
+								<td>
+									Read the thumbnail of the filepreview of a filetype
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileTypeId :
+												</code>
+												id of the filetype
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/filetypes
+								</td>
+								<td>
+									Read a collection of file types
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}
+								</td>
+								<td>
+									Read a single file version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the file version
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}/additionalfiles
+								</td>
+								<td>
+									Read all additional files of a file version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the file version
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}/filepreviews
+								</td>
+								<td>
+									Read all previews of a fileversion
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the fileversion
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}/filetype
+								</td>
+								<td>
+									Read the file type for file version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the file version
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}/image/preview
+								</td>
+								<td>
+									Read the preview of the filepreview of a fileversion
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the fileversion
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}/image/thumbnail
+								</td>
+								<td>
+									Read the thumbnail of the filepreview of a fileversion
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the fileversion
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}/masterfilepreview
+								</td>
+								<td>
+									Read the master filepreview of a file version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the fileversion
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/fileversion/{fileVersionId}/watermark
+								</td>
+								<td>
+									Read the watermark of a file version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fileVersionId :
+												</code>
+												id of the file version
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/language/{languageId}
+								</td>
+								<td>
+									Read a single language
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													languageId :
+												</code>
+												id of the language
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/language/{languageId}/image
+								</td>
+								<td>
+									Read the image of a language
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													languageId :
+												</code>
+												id of the language
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/language/{languageId}/synonyms
+								</td>
+								<td>
+									Shortcut to download the exported list of synonyms
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													languageId :
+												</code>
+												id of the language
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/languages
+								</td>
+								<td>
+									Read a collection of languages
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/maintenancejob/{maintenanceJobId}
+								</td>
+								<td>
+									Read a single maintenance job
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													maintenanceJobId :
+												</code>
+												id of the maintenance job
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/maintenancejob/{maintenanceJobId}/target/{maintenanceTargetId}
+								</td>
+								<td>
+									Reads a single maintenance target
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													maintenanceJobId :
+												</code>
+												id of the maintenance job
+											</li>
+											<li>
+												<code>
+													maintenanceTargetId :
+												</code>
+												id of the maintenance target
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/maintenancejob/{maintenanceJobId}/targets
+								</td>
+								<td>
+									Read all targets of a maintenance job
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													maintenanceJobId :
+												</code>
+												id of the maintenance job
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/maintenancejobs
+								</td>
+								<td>
+									Currently not supported
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/order/{orderId}
+								</td>
+								<td>
+									Read a single order
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													orderId :
+												</code>
+												id of the order
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/order/{orderId}/target/{orderTargetId}
+								</td>
+								<td>
+									Read a single order
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													orderId :
+												</code>
+												id of the order
+											</li>
+											<li>
+												<code>
+													orderTargetId :
+												</code>
+												id of the order target
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/order/{orderId}/targets
+								</td>
+								<td>
+									Read all targets of an order
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													orderId :
+												</code>
+												id of the order
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/orders
+								</td>
+								<td>
+									Currently not supported
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record
+								</td>
+								<td>
+									Read a single record using a unique field and its value
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													fieldName :
+												</code>
+												Name of the unique field
+											</li>
+											<li>
+												<code>
+													fieldValue :
+												</code>
+												Value of the field. If a numeric field value is specified, make sure to enter this value as a Culture Invariant string.
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}
+								</td>
+								<td>
+									Read a single record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/classification/{classificationId}
+								</td>
+								<td>
+									Read a single record classification of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+											<li>
+												<code>
+													classificationId :
+												</code>
+												id of the target classification (not the id of record classification)
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/classifications
+								</td>
+								<td>
+									Read all record classifications of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/field/{fieldId}
+								</td>
+								<td>
+									Read a single field of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+											<li>
+												<code>
+													fieldId :
+												</code>
+												id of the field
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/fields
+								</td>
+								<td>
+									Read all fields of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/files
+								</td>
+								<td>
+									Read all files of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/image/preview
+								</td>
+								<td>
+									Read the preview of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/image/preview/download
+								</td>
+								<td>
+									Shortcut to download the binary content of related preview
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/image/thumbnail
+								</td>
+								<td>
+									Read the thumbnail of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/image/thumbnail/download
+								</td>
+								<td>
+									Shortcut to download the binary content of related thumbnail
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/masterfile
+								</td>
+								<td>
+									Read the masterfile of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/record/{recordId}/masterfilelatestversion
+								</td>
+								<td>
+									Read the latest version of the masterfile of a record
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													recordId :
+												</code>
+												id of the record
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/records
+								</td>
+								<td>
+									Read a collection of records
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/savedview/{savedViewId}
+								</td>
+								<td>
+									Read a single saved view
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													savedViewId :
+												</code>
+												id of the saved view
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/savedview/{savedViewId}/share
+								</td>
+								<td>
+									
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													savedViewId :
+												</code>
+												
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/savedviews
+								</td>
+								<td>
+									Read a collection of savedViews
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/setting/{settingName}
+								</td>
+								<td>
+									Read a single setting
+										<a href=resources/setting.html#example-read-scoped>More info</a>
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													settingName :
+												</code>
+												name of the setting
+											</li>
+											<li>
+												<code>
+													scope :
+												</code>
+												scope of the setting
+											</li>
+											<li>
+												<code>
+													scopeId :
+												</code>
+												id within the scope
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/settings
+								</td>
+								<td>
+									Read a collection of settings
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													names :
+												</code>
+												
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/statistics
+								</td>
+								<td>
+									Get the statistics
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/supportedversions
+								</td>
+								<td>
+									Read all supported versions of the API
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/supportedversions/{version}
+								</td>
+								<td>
+									Read the details of single supported version
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													version :
+												</code>
+												version of the API
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/user/{userId}
+								</td>
+								<td>
+									Read a single user
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													userId :
+												</code>
+												id of the user
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/user/{userId}/field/{fieldId}
+								</td>
+								<td>
+									Read a single field of a user
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													userId :
+												</code>
+												id of the user
+											</li>
+											<li>
+												<code>
+													fieldId :
+												</code>
+												id of the field
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/user/{userId}/fields
+								</td>
+								<td>
+									Read all fields of a user
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													userId :
+												</code>
+												id of the user
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/user/{userId}/image
+								</td>
+								<td>
+									Read the picture of this user
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													userId :
+												</code>
+												id of the user
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/user/{userId}/memberships
+								</td>
+								<td>
+									Read all fields of a user
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													userId :
+												</code>
+												id of the user
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/usergroup/{userGroupId}
+								</td>
+								<td>
+									Read a single user group
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													userGroupId :
+												</code>
+												id of the user group
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/usergroups
+								</td>
+								<td>
+									Read all user groups
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/watermark/{watermarkId}
+								</td>
+								<td>
+									Read a single watermark
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													watermarkId :
+												</code>
+												id of the watermark
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/watermark/{watermarkId}/image
+								</td>
+								<td>
+									Read the image of a watermark
+								</td>
+								<td>
+									<ul class="parameters">
+											<li>
+												<code>
+													watermarkId :
+												</code>
+												id of the watermark
+											</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									/watermarks
+								</td>
+								<td>
+									Read all user groups
+								</td>
+								<td>
+									<ul class="parameters">
+									</ul>
+								</td>
+							</tr>
+					</table>
+				</div>
+				<a class="top" href="#top">Back to top</a>
+			</section>
+		</main>
+	</div>
+	<script type="text/javascript" src="_scripts/jquery-1.11.3.min.js"></script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/endpoints by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:27 GMT -->
+</html>

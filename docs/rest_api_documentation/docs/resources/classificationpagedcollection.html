@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/classificationpagedcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:39 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: ClassificationPagedCollection</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: ClassificationPagedCollection</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a paged collection of <a href="classification.html">Classification</a> items
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">items</td>
+									<td class="description">One page of this paged collection, which is a subcollection of the complete collection.</td>
+									<td class="type">Collection of <a href="classification.html">Classification</a> items</td>
+								</tr>
+								<tr>
+									<td class="name">page</td>
+									<td class="description">The current page of this paged collection.</td>
+									<td class="type">int32</td>
+								</tr>
+								<tr>
+									<td class="name">pageSize</td>
+									<td class="description">The current page size of this paged collection.</td>
+									<td class="type">int32</td>
+								</tr>
+								<tr>
+									<td class="name">totalCount</td>
+									<td class="description">The total count of items in this paged collection, not just on the current page.</td>
+									<td class="type">int64</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>first</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the first page of this paged collection.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>prev</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the previous page of this paged collection.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>next</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the next page of this paged collection.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>last</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">A link to the last page of this paged collection.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>POST</span>
+										<span>/classifications</span>
+									</td>
+									<td class="name">create</td>
+									<td class="title">Creates a new classification.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>201</td>
+														<td>
+					Request completed successfully. The header parameter &#39;Location&#39; contains the location of the new classification resource.
+					The response body is a JSON object which contains the property &quot;id&quot; that corresponds to the newly created classification resource.
+				</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-search">
+							<div class="example-item">
+								<span>Searching for classifications</span>
+<div>
+				The parameters are specified as http headers.
+			</div>
+<pre>GET /classifications HTTP/1.1
+accept: application/hal+json
+filter: ModifiedOn in today
+sort: createdon
+page: 1
+pageSize: 20</pre>
+<div>
+				The parameters are specified as query string parameters.
+			</div>
+<pre>GET /classifications?filter=ModifiedOn+in+today&amp;sort=createdon&amp;page=1&amp;pagesize=10 HTTP/1.1</pre>
+<div>
+				The parameters are specified as a combination of query string parameters and http headers.
+			</div>
+<pre>GET /classifications?filter=ModifiedOn+in+today&amp;sort=createdon HTTP/1.1
+page: 1
+pageSize: 20</pre>
+							</div>
+						</div>
+						<div id="example-create">
+							<div class="example-item">
+								<span>Creating a new classification</span>
+<pre>POST /classifications HTTP/1.1
+{
+	"parentNamePath": "/StoreInfo/Europe",
+	"name": "Brand Related",
+	"identifier": "brand_related",
+	"sortIndex": 6,
+	"fields": {
+		"addOrUpdate": [
+			{
+				"id": "7b4e156c-0730-45d9-b904-a3cd007c02a5",
+				"localizedValues": [
+					{
+						"languageId": "C2BD4F9B-BB95-4BCB-80C3-1E924C9C26DC",
+						"value": "description - en"
+					}
+				]
+			}
+		]
+	},
+	"labels": [
+		{
+			"languageId": "C2BD4F9B-BB95-4BCB-80C3-1E924C9C26DC",
+			"value": "Brands - English"
+		},
+		{
+			"languageId": "1ED74A99-84CD-4A9C-BFEB-A4D000EC3275",
+			"value": "Brands - Dutch"
+		}
+	],
+	"slaveclassifications": {
+		"addOrUpdate": ["21d41eb183234b0cbe7b6a9c898b1de1", "21d41eb183234b0cbe7b6a9c898b1de1"]
+	}
+}</pre>
+<div>
+					Valid combinations of the isRoot, parentId and parentNamePath properties:
+				</div>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>isRoot</th>
+        <th>parentId</th>
+        <th>parentNamePath</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>true</b>
+        </td>
+        <td>
+									unset
+								</td>
+        <td>
+									unset
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>false</b> or unset
+								</td>
+        <td>
+									&lt;valid id&gt;
+								</td>
+        <td>
+									unset
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>false</b> or unset
+								</td>
+        <td>
+									unset
+								</td>
+        <td>
+									&lt;valid path&gt;
+								</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div>
+					For a more detailed example of values that can be provided when creating classifications,
+					see: <a href="classification.html#example-edit">Editing a classification</a><br />
+					See also:
+					<a href="classification.html#example-classifications-direct-push">Immediate propagation for classification updates</a></div>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/classificationpagedcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:39 GMT -->
+</html>

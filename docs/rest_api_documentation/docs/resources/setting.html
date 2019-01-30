@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/setting by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:27 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: Setting</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: Setting</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						<p>Represents a single setting in ADAM.</p>
+<p>Because settings can contain sensitive information, an additional security measure is present in the REST API
+            preventing access to settings unless explicitly allowed by the ADAM administrator.
+            In order to access (read/write) any of the settings in ADAM,
+            the administrator first needs to configure a whitelist of all the settings allowed to be
+            accessed through the REST API. This whitelist is a system setting in ADAM,
+            named '<b>.rest_SettingsWhitelist</b>', in the form of a comma-separated list of allowed setting names,
+            and can be updated through the System Studio.</p>
+<p>After the whitelist has been properly configured, consumers can access the settings specified
+            in the whitelist via the REST API.</p>
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">name</td>
+									<td class="description">Gets the name of the setting.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">value</td>
+									<td class="description">Gets the value of the setting.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>PUT</span>
+										<span>/setting/{settingName}</span>
+									</td>
+									<td class="name">edit</td>
+									<td class="title">Set the value of an existing setting for the specified scope.</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>204</td>
+														<td>Request completed successfully</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+													<tr>
+														<td>404</td>
+														<td>Setting not found</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-read">
+							<div class="example-item">
+								<span>Reading a setting</span>
+<pre>GET /setting/.mediaEngineForPreviewRotations HTTP/1.1</pre>
+<br />
+<div>If the setting is found, a resource is returned containing the name and the value of the setting.</div>
+<div>If the setting was not found, the API call will fail with a <b>404 Not found</b> HTTP status code.</div>
+<pre>{
+	"_links": {
+		"self": {
+			"href": "/setting/.mediaEngineForPreviewRotations"
+		}
+	},
+	"name": ".mediaEngineForPreviewRotations",
+	"value": "LeadTools"
+}</pre>
+							</div>
+						</div>
+						<div id="example-read-scoped">
+							<div class="example-item">
+								<span>Reading a setting from a specific scope</span>
+<pre>GET /setting/.recycleBinPath?scope=site&amp;scopeId=d4889b57-af11-4da9-aba1-c96d1b6a22ec HTTP/1.1</pre>
+<br />
+<div>If the setting is found, within a given scope, a resource is returned containing the name and the value of the setting.</div>
+<div>If the setting was not found, the API call will fail with a <b>404 Not found</b> HTTP status code.</div>
+<div>To access a setting through the Rest API, you must have the <b>Role required to change</b> which is defined on the setting definition.</div>
+<pre>{
+	"_links": {
+		"self": {
+			"href": "/setting/.recycleBinPath?scope=site&amp;scopeId=d4889b57-af11-4da9-aba1-c96d1b6a22ec"
+		}
+	},
+	"name": ".recycleBinPath",
+	"value": "C:\\Adam\\5.5\\DataFolder\\Recycle Bin"
+}</pre>
+							</div>
+						</div>
+						<div id="example-edit">
+							<div class="example-item">
+								<span>Setting a setting value</span>
+<pre>PUT /setting/.mediaEngineForPreviewRotations
+{
+	"name": ".mediaEngineForPreviewRotations",
+	"value": "LeadTools",
+	"scope": "User",
+	"scopeId": "1ED74A99-84CD-4A9C-BFEB-A4D000EC3275"
+}</pre>
+							</div>
+						</div>
+						<div id="example-rules">
+							<div class="example-item">
+								<span>Rules for passing parameters</span>
+<ul>
+  <li>
+    <b>Name</b>, <b>value</b> and <b>scope</b> properties are required to set the setting.<br /><b>Name</b> and <b>scope</b> properties are required to read the setting value in specific scope.<br />
+						Only <b>Name</b> is required to read the scope-independent setting value.
+					</li>
+  <li>
+    <b>Scope</b> can be <b>system</b>, <b>user</b>, <b>usergroup</b> or <b>site</b>.
+					</li>
+  <li>
+						When <b>scope</b> is set to <b>user</b>, <b>scopeId</b> is optional. Current user's id is used in this case.<br />
+						When <b>scope</b> is set to <b>usergroup</b> or <b>site</b>, <b>scopeId</b> is mandatory.
+					</li>
+</ul>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/setting by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:27 GMT -->
+</html>

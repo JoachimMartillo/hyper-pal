@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/filetype by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:45 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: FileType</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: FileType</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of a specific version of a <a href="file.html">File</a>
+					</p>
+				</div>
+			</section>
+
+				<section class="block block--properties">
+					<h3>Properties</h3>
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								<th>Property</th>
+								<th>Description</th>
+								<th>Type</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name">allowResize</td>
+									<td class="description">Gets or sets the allow resize.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">allowWatermark</td>
+									<td class="description">Gets or sets the allow watermark.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">catalogActions</td>
+									<td class="description">Gets or sets the collection of the catalog actions.</td>
+									<td class="type"><a href="../nonresources/filetypeactioncollection.html">FileTypeActionCollection</a></td>
+								</tr>
+								<tr>
+									<td class="name">createdOn</td>
+									<td class="description">Gets the creation datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">engineFormat</td>
+									<td class="description">Gets or sets the engine format.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">extension</td>
+									<td class="description">Gets or sets the extension of the file type.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">id</td>
+									<td class="description">Gets the identifier.</td>
+									<td class="type">guid</td>
+								</tr>
+								<tr>
+									<td class="name">kind</td>
+									<td class="description">Gets or sets the kind of the file type.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">labels</td>
+									<td class="description">Gets or sets the collection of the labels.</td>
+									<td class="type"><a href="../nonresources/labelcollection.html">LabelCollection</a></td>
+								</tr>
+								<tr>
+									<td class="name">mediaEngines</td>
+									<td class="description">Gets the collection of media engines.</td>
+									<td class="type">Collection of string items</td>
+								</tr>
+								<tr>
+									<td class="name">mimeType</td>
+									<td class="description">Gets or sets the mime type of the file type.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">modifiedOn</td>
+									<td class="description">Gets the last modification datetime in UTC time.</td>
+									<td class="type">datetime</td>
+								</tr>
+								<tr>
+									<td class="name">name</td>
+									<td class="description">Gets or sets the name of the file type.</td>
+									<td class="type">string</td>
+								</tr>
+								<tr>
+									<td class="name">previewKeepDimensions</td>
+									<td class="description">Gets or sets the preview keep dimensions.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">previewRequired</td>
+									<td class="description">Gets or sets the preview required.</td>
+									<td class="type">boolean</td>
+								</tr>
+								<tr>
+									<td class="name">tag</td>
+									<td class="description">Gets or sets the value for the Tag of this object. The value of this property should be a valid XML.
+            An empty string will be automatically converted to null. This property will not be returned by default. In order to include the property in the response, add a header with the name 'select-filetype' and the value 'Tag' to your request.</td>
+									<td class="type">string</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/filetype/icon.html">icon</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileType: icon</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the master preview image of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/filetype/thumbnail.html">thumbnail</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileType: thumbnail</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="image.html">Image</a></td>
+								<td class="description">Gets the master thumbnail of this file version.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/filetype/modifiedby.html">modifiedby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileType: modifiedby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that last modified this resource.</td>
+							</tr>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<a href="../rels/filetype/createdby.html">createdby</a>
+								</td>
+								<td class="selectkey">
+										<span>select-FileType: createdby</span>
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="user.html">User</a></td>
+								<td class="description">Gets or sets the user that created this resource.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/filetype by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:47 GMT -->
+</html>

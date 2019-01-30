@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from localhost:2015/docs/resources/maintenancejobcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:39 GMT -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Resource: MaintenanceJobCollection</title>
+	<link rel="stylesheet" media="screen" type="text/css" href="../_layout/styles.css"/>
+	<link rel="stylesheet" media="print" type="text/css" href="../_layout/print.css" />
+</head>
+
+<body>
+	<header class="page-header">
+		<h1 class="smaller"><a href="../../docs.html">ADAM REST API Documentation</a></h1>
+		<h2>Resource: MaintenanceJobCollection</h2>
+	</header>
+
+	<div class="wrapper">
+		<main class="main">
+			<a id="top"></a>
+
+			<section class="block block--info">
+				<h3>About this resource</h3>
+				<div class="body">
+					<p>
+						Representation of collection of <a href="maintenancejob.html">MaintenanceJob</a> items. Retrieving this collection is currently not exposed via the REST API.
+					</p>
+				</div>
+			</section>
+
+
+			<section class="block block--relations">
+				<h3>Relations</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Name</th>
+								<th>Select-key</th>
+								<th>Resource type</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="http-method">GET</td>
+								<td class="name">
+										<span>self</span>
+								</td>
+								<td class="selectkey">
+								</td>
+								<td class="resourcetype"><a class="resourcetype" href="index.html"></a></td>
+								<td class="description">Provides a link to this resource</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--actions">
+				<h3>Actions</h3>
+				<div class="table">
+					<table>
+						<thead>
+							<tr>
+								<th>Method</th>
+								<th>Action</th>
+								<th>Description</th>
+								<th>Response codes</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td class="http-method">
+										<span>POST</span>
+										<span>/maintenancejobs</span>
+									</td>
+									<td class="name">add</td>
+									<td class="title">Create a maintenance job</td>
+									<td class="statuses">
+											<table>
+													<tr>
+														<td>201</td>
+														<td>
+					Request completed successfully. The header parameter &#39;Location&#39; contains the location of the new maintenance job resource.
+					The response body is a JSON object which contains the property &quot;id&quot; that corresponds to the newly created maintenance job resource Id.
+				</td>
+													</tr>
+													<tr>
+														<td>400</td>
+														<td>Bad request (in general)</td>
+													</tr>
+													<tr>
+														<td>403</td>
+														<td>Insufficient permissions</td>
+													</tr>
+											</table>
+									</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="block block--examples" id="examples">
+				<h3>Examples</h3>
+				<div class="table">
+						<div id="example-create">
+							<div class="example-item">
+								<span>Creating a new maintenance job</span>
+<pre>POST /maintenancejobs HTTP/1.1
+{
+	"type": "record",
+	"priority": 1,
+	"creatorEmail": "frank.tremens@adamsoftware.net",
+	"disableNotification": "true",
+	"earliestStartDate": "2015-08-01T10:00:00Z",
+	"machineAffinity": true,
+	"machineName": "MACHINE1",
+	"siteAffinity": "DEFAULT",
+	"targets": [
+		{
+			"recordId": "bbf68a95b3f547e4acb9a3cd0069b702",
+			"forceRetry" : "true",
+			"tag": "&lt;xml&gt;some tag&lt;/xml&gt;"
+		},
+		{
+			"recordId": "8735a5a3e75a4bc0a2a1a3cd0069b669"
+		},
+		{
+			"recordId": "b2fcb9c50d264ac19a6ba3cd0069b785",
+			"tag": "&lt;xml&gt;some tag&lt;/xml&gt;"
+		}
+	],
+	"actions": [
+		{
+			"action": "classifyRecord",
+			"label": "a dummy label",
+			"description": "a dummy description",
+			"parameters": {
+				"classificationId": "209d7ede48004a008885a3cd006b8b8c"
+			}
+		}
+	]
+}</pre>
+<br />
+<h3>Maintenance job request attributes:</h3>
+<div class="table">
+  <table class="first_column_nowrap">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>type</b>
+        </td>
+        <td>
+									The type of maintenance job that needs to be created.<br />
+									One of the following types need to be provided:
+									<ul><li>record</li><li>classification</li></ul></td>
+      </tr>
+      <tr>
+        <td>
+          <b>priority</b>
+        </td>
+        <td>
+									The priority of this maintenance job. The priority has to be a number larger than or equal to zero. <br />
+									Any maintenance jobs with priority equal to 0 will be executed immediately after being saved. <br />
+									The execution of all other priorities is delayed.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>creatorEmail</b>
+        </td>
+        <td>
+									The e-mail address for this maintenance job. <br />
+									By default this is the e-mail address of the user that created this job.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>disableNotification</b>
+        </td>
+        <td>
+									A value indicating whether or not notification is enabled on this maintenance job.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>earliestStartDate</b>
+        </td>
+        <td>
+									The earliest date in utc on which this maintenance job can be executed. If the Priority is 0 then earliest start date is ignored.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>machineAffinity</b>
+        </td>
+        <td>
+									Indicates whether this maintenance job should be executed on a specific server or not. If set to True, the MachineName property should contain the right server name.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>machineName</b>
+        </td>
+        <td>
+									The name of the machine that needs to execute this maintenance job (only valid if the 'machineAffinity' is set to true).
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>siteAffinity</b>
+        </td>
+        <td>
+									The name of the site on which this maintenance job needs to be executed. <br />
+									Setting this property ensures that only maintenance managers, which are running on the specified site<br />
+									will execute the maintenance job. If not specified, the maintenance job can be executed on any site.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>targets</b>
+        </td>
+        <td>An array of references to records that this maintenance job needs to target.</td>
+      </tr>
+      <tr>
+        <td>
+          <b>actions</b>
+        </td>
+        <td>An array of actions that need to be executed on the targets of this maintenance job.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<h3>Maintenance job target attributes</h3>
+<div>(the column 'Target type' shows which property is valid for which kind of a maintenance job target)</div>
+<div class="table">
+  <table class="first_column_nowrap">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Target type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>forceRetry</b>
+        </td>
+        <td>
+									All
+								</td>
+        <td>
+									Controls whether or not a new maintenance job will be created to retry this target after it finished its execution.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>tag</b>
+        </td>
+        <td>
+									All
+								</td>
+        <td>
+									The tag for this target.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>recordId</b>
+        </td>
+        <td>
+          <a href="recordmaintenancetarget.html">RecordMaintenanceTarget</a>
+        </td>
+        <td>
+									The Id of the record on which this record maintenance job will be performed on.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>classificationId</b>
+        </td>
+        <td>
+          <a href="classificationmaintenancetarget.html">ClassificationMaintenanceTarget</a>
+        </td>
+        <td>
+									The Id of the classification on which this classification maintenance job will be performed on.
+								</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<h3>Maintenance job action attributes</h3>
+<div class="table">
+  <table class="first_column_nowrap">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <b>action</b>
+        </td>
+        <td>
+									The name of the action that needs to be executed on the targets. <br />
+									In case the targets of the maintenance job are records, the following actions are supported:
+									<ul><li>AppendTextField</li><li>ClassificationCopy</li><li>ClassificationMove</li><li>ClassifyRecord</li><li>Delete</li><li>OverwriteField</li><li>RefreshFileRecord</li><li>ReplaceTextField</li><li>UnclassifyRecord</li><li>ChangeContentType</li></ul></td>
+      </tr>
+      <tr>
+        <td>
+          <b>label</b>
+        </td>
+        <td>
+									Name of the action.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>description</b>
+        </td>
+        <td>
+									Short description of the action.
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>impact</b>
+        </td>
+        <td>
+									Estimated number of milliseconds it will take for this action to execute (read-only property).
+								</td>
+      </tr>
+      <tr>
+        <td>
+          <b>parameters</b>
+        </td>
+        <td>
+									The action-specific parameters that need to be passed to the action.
+								</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br />
+<h3>Actions</h3>
+<div>
+					Note: when editing multilingual fields, the LanguageId parameter is required. Due to performance
+					considerations however, this is not validated in the REST API when submitting a MaintenanceJob.
+					If you submit a job to edit a multilingual field without supplying a LanguageId parameter, the
+					default ADAM behavior takes place: the maintenance job will succeed but leaves the values of the
+					field untouched.
+				</div>
+<ul>
+  <li>
+    <b>
+							AppendTextField (valid for record maintenance job)
+						</b>
+    <br />
+    <p>
+							Adds a specific text to a textfield.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>fieldId</b>
+            </td>
+            <td>
+											The Id of the textfield.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>languageId</b>
+            </td>
+            <td>
+											The Id of the language of the field that needs to be updated.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>value</b>
+            </td>
+            <td>
+											The text that will be appended to the current value of the referenced field.
+										</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+							ClassificationCopy (valid for classification maintenance job)
+						</b>
+    <br />
+    <p>
+							Copies a classification to a specified parent classification.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>parentClassificationId</b>
+            </td>
+            <td>
+											The Id of the parent classification to which the target classification will be copied to.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>copySecurity</b>
+            </td>
+            <td>
+											Specifies if the security options of the target classification should be preserved during the copy process.
+										</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+							ClassificationMove (valid for classification maintenance job)
+						</b>
+    <br />
+    <p>
+							Moves a classification to a specified parent classification.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>parentClassificationId</b>
+            </td>
+            <td>
+											The Id of the parent classification to which the target classification will be moved to.
+										</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+							ClassifyRecord (valid for record maintenance job)
+						</b>
+    <br />
+    <p>
+							Classifies a record in a specific classification.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>classificationId</b>
+            </td>
+            <td>
+											The Id of the classification in which the record will be classified in.
+										</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+							UnclassifyRecord (valid for record maintenance job)
+						</b>
+    <br />
+    <p>
+							Unlinks a record from a specific classification.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>classificationId</b>
+            </td>
+            <td>
+											The Id of the classification that will be unlinked from the record.
+										</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+							Delete (valid for record maintenance job)
+						</b>
+    <br />
+    <p>
+							Deletes a record.
+						</p>
+    <p>
+							No parameters have to be provided.
+						</p>
+    <br />
+  </li>
+  <li>
+    <b>
+							OverwriteField (valid for record maintenance job)
+						</b>
+    <br />
+    <p>
+							Overwrites the value of a specific field with another value.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>fieldId</b>
+            </td>
+            <td>
+											The Id of the field for which the value will be overwritten. The following fields are supported:
+											<ul><li>SingleLineText</li><li>MultiLineText</li><li>Html</li><li>Numeric</li><li>DateTime</li><li>Time</li><li>Date</li><li>Duration</li><li>OptionList</li><li>UserList</li><li>UserGroupList</li><li>ClassificationList</li><li>RecordList</li><li>LanguageList</li></ul></td>
+          </tr>
+          <tr>
+            <td>
+              <b>languageId</b>
+            </td>
+            <td>
+											The Id of the language of the field that needs to be updated.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>value</b>
+            </td>
+            <td>
+											The new value of the referenced field. In case of lists, an array of Id's need to be provided.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>useReferences</b>
+            </td>
+            <td>
+											If set to false, then the specified value will be used as is. <br />
+											If set to true, the specified value is considered to contain references. These references will be resolved and the <br />
+											resolved value will be assigned to the field.<br />
+											See Chapter 22 ("<i>References</i>") of the ADAM Administrator Guide for more information.
+										</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+							RefreshFileRecord (valid for record maintenance job)
+						</b>
+    <br />
+    <p>
+							Refreshes all files of a record.
+						</p>
+    <p>
+							No parameters have to be provided.
+						</p>
+    <br />
+  </li>
+  <li>
+    <b>
+							ReplaceTextField (valid for record maintenance job)
+						</b>
+    <br />
+    <p>
+							Replaces a specific text by another text in a textfield.
+						</p>
+    <p>
+							The following parameter attributes need to be provided:
+						</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>fieldId</b>
+            </td>
+            <td>
+											The Id of the textfield.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>languageId</b>
+            </td>
+            <td>
+											The Id of the language of the field that needs to be updated.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>oldValue</b>
+            </td>
+            <td>
+											The value to be replaced.
+										</td>
+          </tr>
+          <tr>
+            <td>
+              <b>newValue</b>
+            </td>
+            <td>
+											The value to replace all occurrences of oldValue.
+										</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+  <li>
+    <b>
+              ChangeContentType (valid for record maintenance job)
+            </b>
+    <br />
+    <p>
+              Changes the content type for a specific record.
+            </p>
+    <p>
+              The following parameter attributes need to be provided:
+            </p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <b>contentType</b>
+            </td>
+            <td>
+                      The name of the content type to which the record needs to change to.
+                    </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  </li>
+</ul>
+							</div>
+						</div>
+				</div>
+			</section>
+
+
+		</main>
+	</div>
+
+	<script type="text/javascript" src="../_scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".block h3").click(function () {
+				var $parent = $(this).closest('.block');
+				if ($(this).next("div.table").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.table").toggle();
+				if ($(this).next("div.body").is(":visible")) {
+					$parent.addClass("block--collapsed");
+				} else {
+					$parent.removeClass("block--collapsed");
+				}
+				$(this).next("div.body").toggle();
+			});
+		});
+	</script>
+</body>
+
+
+<!-- Mirrored from localhost:2015/docs/resources/maintenancejobcollection by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Dec 2016 07:16:39 GMT -->
+</html>
