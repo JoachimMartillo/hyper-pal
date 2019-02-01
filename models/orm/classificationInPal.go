@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// remember that the primary key contains a unique value for each row of data
+// The first two values come from PAL. The last is created from PAL.
 type ClassificationInPal struct {
 	ClassificationId       string `orm:"pk"`
 	ParentClassificationId *string
