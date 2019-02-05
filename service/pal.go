@@ -82,6 +82,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 				continue
 			} else if fip == nil {
 				// Download file from PAL.
+				// Here is where the problem seems to occur.
 				if err = o.proceedRecordDownload(&record, filePal); err != nil {
 					continue
 				}
@@ -560,7 +561,7 @@ func (o *AssetLibraryPhillips) proceedRecordDownload(record *modelsPal.Record, f
 		// What if original file was not zipped.
 		file.OutFilename = zipFilename
 	}
-
+	// *** IS THE LOGIC HERE CORRECT FOR NON-ZIPPED PAL FILE -- LOOKS OKAY BUT MIGHT NOT BE!!
 	// Check filesize correct
 	if fileSize != int64(file.FileSize) {
 		o.deleteFile(file.OutFilename)
