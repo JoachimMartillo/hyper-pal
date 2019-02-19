@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "encoding/csv"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
@@ -9,6 +10,8 @@ import (
 	"pal-importer/service"
 	"time"
 )
+
+var excludeList []string
 
 // go initializes each file with func init() -- init() is not enter
 // into symbol table
