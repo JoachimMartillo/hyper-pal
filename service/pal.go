@@ -16,6 +16,8 @@ import (
 	"pal-importer/models/orm"
 	"pal-importer/models/pal"
 	"pal-importer/system"
+	"path/filepath"
+	_ "path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -23,6 +25,8 @@ import (
 )
 
 const PAL_RECORDS_PAGESIZE = 20
+
+var ExcludeList [][]string
 
 type AssetLibraryPhillips struct {
 	digMaxDuration time.Duration
@@ -38,6 +42,22 @@ type AssetLibraryPhillips struct {
 	regHeader     string
 	onceGetHyper  sync.Once
 	hyper         *Hyper
+}
+
+func isFileExcludedFromUpload(filename string) (result bool) {
+	var extension = filepath.Ext(filename)
+	if ExcludeList == nil {
+		return false
+	}
+	if ExcludeList[0] == nil {
+		return false
+	}
+	for _, s := range ExcludeList[0] {
+		if extension == s {
+			return true
+		}
+	}
+	return false
 }
 
 func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer orm.Ormer) (err error) {
@@ -63,6 +83,10 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			log.Println(fmt.Sprintf("Proceed record: %s", record.Id))
 			filePal, err := o.proceedRecord(&record)
 			if err != nil {
+				continue
+			}
+
+			if isFileExcludedFromUpload(filePal.FileName) {
 				continue
 			}
 

@@ -1,25 +1,39 @@
 package main
 
 import (
+	"encoding/csv"
 	_ "encoding/csv"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
+	"log"
 	"os"
 	"pal-importer/models/orm"
 	"pal-importer/service"
+	"strings"
 	"time"
 )
-
-var excludeList []string
 
 // go initializes each file with func init() -- init() is not enter
 // into symbol table
 
 func init() {
-	initOrm()      // database initialization
-	startWorkers() // the workers are needed for the
+	initExcludeList() // some files in PAL should not be uploaded
+	initOrm()         // database initialization
+	startWorkers()    // the workers are needed for the
 	// the asynchronous database and client interface
+}
+
+func initExcludeList() {
+	var err error
+	excludesCVS := beego.AppConfig.String("pal.export.excludes")
+	r := csv.NewReader(strings.NewReader(excludesCVS))
+	service.ExcludeList, err = r.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Print("The following file types will be excluded:\n", service.ExcludeList)
 }
 
 // This stuff all initializes the Beego Orm database subsystem.
