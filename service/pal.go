@@ -87,6 +87,7 @@ func (o *AssetLibraryPhillips) ProceedImport(space *modelsOrm.PalSpace, ormer or
 			}
 
 			if isFileExcludedFromUpload(filePal.FileName) {
+				log.Println(fmt.Sprintf("Excluded from upload: %s", filePal.FileName))
 				continue
 			}
 
